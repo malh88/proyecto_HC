@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIGESAPOL · Solicitud de HC desde los departamentos (maqueta)</title>
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <!-- Barra superior de SIGESAPOL -->
+  <div class="top">
+    <span class="logo">Sistema de Gestión<br>de Salud Policial<br>SIGESAPOL</span>
+    <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Archivo de HC ▾</span><span>[USUARIO] ▾</span>
+    <!-- Solo para la maqueta: permite ver la pantalla de cada perfil -->
+    <span class="rol">Ver como:
+      <select id="selRol">
+        <option value="dep">Departamento médico</option>
+        <option value="arc">Unidad de Archivo de HC</option>
+      </select>
+    </span>
+    <span class="rol" id="boxServ">Servicio: <select id="selServ"></select></span>
+    <span class="rt" id="lblEstab">Hospital Nacional PNP Luis N. Sáenz</span>
+  </div>
+
+  <div class="wrap">
+    <div class="side" id="side"></div>
+    <div class="main">
+      <h1>HOSPITAL NACIONAL PNP LUIS N. SAENZ<br><span id="lblUnidad">UNIDAD DE ARCHIVOS Y REGISTROS MEDICOS</span></h1>
+      <div class="flujo" id="flujo"></div>
+      <div id="vista"></div>
+    </div>
+  </div>
+
+  <!-- Ventana emergente reutilizable -->
+  <div class="velo" id="velo"><div class="modal" id="modal"></div></div>
+  <div class="aviso" id="aviso"></div>
+
+  <script src="reportes.js"></script>
+  <script src="archivo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
