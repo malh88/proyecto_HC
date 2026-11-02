@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flujo propuesto · Hemodiálisis SIGESAPOL</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.40">
+</head>
+<body data-pagina="flujo">
+<div class="top">
+  <span class="logo">Sistema de Gestión<br>de Salud Policial<br>SIGESAPOL</span>
+  <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Hemodiálisis ▾</span><a class="top-ef" href="enfermeria.html">Enfermería (EF) ▾</a><span>[USUARIO] ▾</span>
+  <span class="rol">Ver como:
+    <select id="selRol">
+      <option value="nef" selected>Nefrólogo (turno día)</option>
+      <option value="enf">Enfermería de Hemodiálisis (turno día)</option>
+      <option value="adm">Admisión de Hemodiálisis</option>
+      <option value="tec">Técnico de citas (Hemodiálisis)</option>
+    </select>
+  </span>
+  <span class="rt">Hospital Nacional PNP Luis N. Sáenz</span>
+</div>
+
+<div class="wrap">
+  <div class="side" id="side"></div>
+  <div class="main">
+    <h1>HOSPITAL NACIONAL PNP LUIS N. SAENZ<br>DEPARTAMENTO DE NEFROLOGÍA · SERVICIO DE HEMODIÁLISIS</h1>
+
+    <div class="bar">FLUJO PROPUESTO · PROGRAMA DE HEMODIÁLISIS</div>
+    <div class="box">
+      <div class="sub">FLUJO EXISTENTE EN SIGESAPOL</div>
+      <div class="pasos">
+        <a class="paso" href="citas.html"><span class="nm">PASO 1</span><span class="tt">Registro de Cita</span><span class="tx">Paciente</span></a>
+        <div class="fl" aria-hidden="true">→</div>
+        <div class="paso"><span class="nm">PASO 2</span><span class="tt">Citas Médicas</span></div>
+        <div class="fl" aria-hidden="true">→</div>
+        <div class="paso"><span class="nm">PASO 3</span><span class="tt">Atención</span><span class="tx">Atenciones Médicas o se deriva a Procedimientos Programados</span></div>
+        <div class="fl" aria-hidden="true">→</div>
+        <a class="paso" href="bandeja.html"><span class="nm">PASO 4 · NEFROLOGÍA</span><span class="tt">Módulo de Procedimientos Programados</span><span class="tx">Atender</span></a>
+      </div>
+
+      <div class="sub">NEFROLOGÍA · PRIMERA ATENCIÓN DEL PROGRAMA DE HEMODIÁLISIS</div>
+      <div class="pasos">
+        <a class="paso nv" href="atencion.html"><span class="nm">PROCEDIMIENTO PROGRAMADO · ÚNICA VEZ</span><span class="tt">Historia Clínica Inicial de Hemodiálisis</span><span class="tx">Médico · GUARDAR → FINALIZAR</span></a>
+        <div class="fl" aria-hidden="true">→</div>
+        <a class="paso nv" href="citas.html"><span class="nm">GESTIÓN DE CITAS · REGISTRO DE CITAS</span><span class="tt">Citas múltiples de hemodiálisis</span><span class="tx">Técnico de citas</span></a>
+        <div class="fl" aria-hidden="true">→</div>
+        <a class="paso nv" href="bandeja.html"><span class="nm">MÓDULO DE PROCEDIMIENTOS PROGRAMADOS</span><span class="tt">Una atención por cada cita</span><span class="tx">Se atiende el día que corresponde</span></a>
+      </div>
+
+      <div class="sub">CADA CITA (ATENCIÓN DE HEMODIÁLISIS) · MÓDULO DE PROCEDIMIENTO PROGRAMADO</div>
+      <div class="pasos">
+        <a class="paso nv" href="bandeja.html"><span class="nm">ATENDER</span><span class="tt">I.1 Evaluación inicial</span><span class="tx">Médico</span></a>
+        <div class="fl" aria-hidden="true">→</div>
+        <a class="paso nv" href="enfermeria.html"><span class="nm">MÓDULO DE ENFERMERÍA (EF)</span><span class="tt">Evolución de enfermería · Hemodiálisis</span><span class="tx">Enfermera</span></a>
+        <div class="fl" aria-hidden="true">→</div>
+        <a class="paso nv" href="bandeja.html"><span class="nm">CONTINUAR EV. FINAL</span><span class="tt">I.2 Evaluación final</span><span class="tx">Médico</span></a>
+        <div class="fl" aria-hidden="true">→</div>
+        <div class="paso"><span class="nm">ATENDIDO</span><span class="tt">HIST. ATENCIONES</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="aviso" id="aviso" role="status"></div>
+<script src="js/hemodialisis.js?v=3.40"></script>
+</body>
+</html>

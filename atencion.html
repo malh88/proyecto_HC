@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo de Procedimiento Programado · Atención 1ra vez · SIGESAPOL</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.40">
+</head>
+<body data-pagina="atencion">
+<div class="top">
+  <span class="logo">Sistema de Gestión<br>de Salud Policial<br>SIGESAPOL</span>
+  <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Hemodiálisis ▾</span><a class="top-ef" href="enfermeria.html">Enfermería (EF) ▾</a><span>[USUARIO] ▾</span>
+  <span class="rol">Ver como:
+    <select id="selRol">
+      <option value="nef" selected>Nefrólogo (turno día)</option>
+      <option value="enf">Enfermería de Hemodiálisis (turno día)</option>
+      <option value="adm">Admisión de Hemodiálisis</option>
+      <option value="tec">Técnico de citas (Hemodiálisis)</option>
+    </select>
+  </span>
+  <span class="rt">Hospital Nacional PNP Luis N. Sáenz</span>
+</div>
+
+<div class="wrap">
+  <div class="side" id="side"></div>
+  <div class="main">
+    <h1>HOSPITAL NACIONAL PNP LUIS N. SAENZ<br>DEPARTAMENTO DE NEFROLOGÍA · SERVICIO DE HEMODIÁLISIS</h1>
+
+    <div class="bar">MÓDULO DE PROCEDIMIENTO PROGRAMADO<span class="tag" style="background:#6C6C6C">cita única · Nº 13</span></div>
+    <div class="box">
+      <div class="tabs pp-tabs" role="tablist" aria-label="Secciones de la atención">
+        <div role="tab" tabindex="0" data-tab="nueva" class="on">NUEVA ATENCIÓN</div>
+        <div role="tab" tabindex="0" data-tab="hatn">HIST. ATENCIONES</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. EXÁMENES DE LABORATORIO</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. EXÁMENES DE RADIOLOGÍA</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. INTERCONSULTA</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. REFERENCIAS / CONTRARREFERENCIAS</div>
+        <div role="tab" tabindex="0" data-tab="happ">HIST. DE ATENCIONES P. PROGRAMADO</div>
+        <div role="tab" tabindex="0" data-tab="henf">HIST. ENFERMERÍA <span class="st" id="stHenf" hidden></span></div>
+        <div role="tab" tabindex="0" id="tabProg" hidden>PROGRAMACIÓN DE TURNOS Y CITAS</div>
+      </div>
+
+      <!-- ===================== NUEVA ATENCIÓN (pantalla actual) ===================== -->
+      <div data-panel="nueva">
+        <div class="dos">
+          <div><div class="sub" style="margin-top:0">DATOS DEL PACIENTE</div>
+            <div class="kv"><b>TIPO Y Nº DE DOC</b><span>: DNI - 40871236</span><b>APELLIDOS Y NOMBRES</b><span>: SALAS VERA DE PONCE MARTHA LUCIA</span><b>FECHA DE NACIMIENTO</b><span>: 23/02/1967</span><b>EDAD / SEXO</b><span>: 59 A, 7 M, 29 D - FEMENINO</span><b>TIPO DE BENEFICIARIO</b><span>: PADRES</span></div></div>
+          <div><div class="sub" style="margin-top:0">DATOS GENERALES DE LA ATENCIÓN</div>
+            <div class="kv"><b>COD. SITEDS SUSALUD</b><span>: 100000X0000T</span><b>FECHA Y HORA DE ATENCIÓN</b><span>: 22/10/2026 00:00:00</span><b>TIPO DE ATENCIÓN</b><span>: AMBULATORIO</span><b>SERVICIO SOLICITANTE</b><span>: NEFROLOGÍA</span><b>PROFESIONAL DE SALUD</b><span>: DNI - 42117854 / VILCHEZ MORA, RAUL ERNESTO · CMP: - RNE:</span></div></div>
+        </div>
+        <div class="sub">DATOS DEL RESPONSABLE DEL PROCEDIMIENTO</div>
+        <div class="tw"><table><tr><th>TIPO Y Nº DE DOC</th><th>APELLIDOS Y NOMBRES</th><th>ESPECIALIDAD</th><th>Nº DE CMP</th><th>Nº DE RNE</th></tr>
+          <tr><td colspan="5" class="vacio">⚠ La cita de este procedimiento no tiene médico programado en el turno. Programe al médico en el consultorio para que figure como responsable.</td></tr></table></div>
+        <div class="sub">PROCEDIMIENTO SOLICITADO</div>
+        <div class="tw"><table><tr><th style="width:30px"></th><th>Código</th><th>Descripción</th><th>Cantidad</th><th>Diagnóstico</th><th>Atención origen</th></tr>
+          <tr><td><input type="checkbox" checked aria-label="Procedimiento seleccionado"></td><td>90937</td><td>Procedimiento de hemodiálisis que requiere repetida(s) evaluación(es) con o sin una revisión médica substancial de la prescripción de la diálisis</td><td>01</td><td>Z49.2 - OTRAS DIALISIS</td><td><button type="button" class="btn sm g" data-origen aria-label="Ver atención origen">👁</button></td></tr></table></div>
+        <div id="notaReq"></div>
+        <div class="row" style="margin-top:8px"><div class="f3"><label for="obsProc">Observaciones de la realización del procedimiento</label><textarea class="in" id="obsProc" placeholder="— Registro de observaciones de la realización del procedimiento —"></textarea></div></div>
+        <div id="naHc"></div>
+        <div id="hcInline" class="hc-inline" hidden></div>
+        <div id="naExtra"></div>
+        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="bandeja.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn g" id="btnGuardar">GUARDAR</button></div>
+      </div>
+
+      <!-- ===================== HISTORIALES (sin cambios) ===================== -->
+      <!-- ===================== HIST. ENFERMERÍA: notas registradas en el Módulo de Enfermería ===================== -->
+      <div data-panel="prog" hidden></div>
+      <div data-panel="happ" hidden>
+        <div id="histApp"></div>
+      </div>
+      <div data-panel="henf" hidden>
+        <div id="histEnf"></div>
+      </div>
+
+      <div data-panel="hatn" hidden><div id="histAtn"></div></div>
+      <div data-panel="hist" hidden>
+        <div class="tw"><table><tr><th>Fecha</th><th>Servicio</th><th>Profesional</th><th>Detalle</th></tr><tr><td colspan="4" class="vacio">Historial existente de SIGESAPOL (sin cambios).</td></tr></table></div>
+      </div>
+
+    </div>
+    <div class="acciones"><a class="btn k" href="bandeja.html" style="text-decoration:none">← Volver al Módulo de Procedimientos Programados</a></div>
+  </div>
+</div>
+<!-- Ventana emergente «Cambiar cita» (mismo velo y modal de la v2) -->
+<div class="velo alto" id="veloHc"><div class="modal xl" id="hcModal" role="dialog" aria-modal="true" aria-labelledby="hcTit">
+        <div class="bar"><span id="hcTit">HISTORIA CLÍNICA INICIAL DEL PROGRAMA DE HEMODIÁLISIS · FICHAS 0026_01 Y 0026_02</span><button type="button" class="btn sm k" id="hcX" aria-label="Cerrar" style="margin-left:auto">✕</button></div>
+        <div class="box">
+          <div id="hcEstado"></div>
+          <fieldset id="fsHc" data-rol="nef">
+            <div class="sub">2.1 ANTECEDENTES PATOLÓGICOS</div>
+            <div class="row"><div class="f3"><label for="cErc">Enfermedad o condición clínica que produjo la enfermedad renal (CIE-10) <i>*</i></label><select class="in" id="cErc"><option>E11.2 · NEFROPATÍA DIABÉTICA</option><option>I12.0 · NEFROPATÍA HIPERTENSIVA</option><option>N03 · GLOMERULONEFRITIS CRÓNICA</option><option>OTRA</option></select></div><div class="f"><label for="f1hd">Fecha de primera hemodiálisis <i>*</i></label><input class="in" id="f1hd" type="date" value="2026-10-22"></div></div>
+            <div class="row"><div class="f2"><label for="com">Comorbilidades</label><input class="in" id="com" value="DM2, HTA, RETINOPATÍA DIABÉTICA"></div><div class="fh"><label for="ntr">N° de transfusiones</label><input class="in" id="ntr" value="1"></div><div class="f"><label for="diu">Diuresis residual 24 h (ml)</label><input class="in" id="diu" value="500"></div><div class="f"><label for="ale">Alergia a medicamentos</label><input class="in" id="ale" value="NIEGA"></div></div>
+            <div class="row"><div class="f2"><label for="medr">Medicación que recibe <span class="orig">de la última receta</span></label><input class="in" id="medr" value="INSULINA NPH 20 UI C/24 H · LOSARTÁN 50 MG C/12 H · AMLODIPINO 10 MG C/24 H"></div><div class="f"><label for="tdia">Tiempo de diálisis</label><input class="in" id="tdia" value="INICIO (1.ª SESIÓN)"></div><div class="f"><label>Transfusiones previas</label><div class="ops"><label class="ck"><input type="radio" name="trp" checked> SÍ</label><label class="ck"><input type="radio" name="trp"> NO</label></div></div></div>
+            <div class="row"><div class="f"><label for="dpd">Diálisis peritoneal · desde</label><input class="in" id="dpd" type="date"></div><div class="f"><label for="dph">hasta</label><input class="in" id="dph" type="date"></div><div class="f"><label for="trd">Trasplante renal · desde</label><input class="in" id="trd" type="date"></div><div class="f"><label for="trh">hasta</label><input class="in" id="trh" type="date"></div></div>
+
+            <div class="sub">2.2 OTROS ANTECEDENTES DE IMPORTANCIA</div>
+            <div class="row"><div class="f2"><label for="anm">Médicos</label><input class="in" id="anm" value="DM2 DESDE 2012 · HTA DESDE 2015 · TRANSFUSIÓN DE 1 PAQUETE GLOBULAR (09-2026)"></div><div class="f2"><label for="anq">Quirúrgicos</label><input class="in" id="anq" value="COLOCACIÓN DE CVC TEMPORAL YUGULAR INTERNA DERECHA (15-10-2026)"></div></div>
+            <div class="tw"><table><tr><th>Inmunización</th><th>Dosis</th><th>Fecha</th></tr>
+              <tr><td style="width:160px">Hepatitis B</td><td><input class="in" placeholder="1.ª dosis" aria-label="Hepatitis B 1.ª dosis" value="1.ª DOSIS"></td><td style="width:170px"><input class="in" type="date" aria-label="Fecha" value="2026-09-10"></td></tr>
+              <tr><td>Hepatitis B</td><td><input class="in" placeholder="2.ª dosis" aria-label="Hepatitis B 2.ª dosis" value="2.ª DOSIS"></td><td><input class="in" type="date" aria-label="Fecha" value="2026-10-10"></td></tr>
+              <tr><td>Hepatitis B</td><td><input class="in" placeholder="3.ª dosis" aria-label="Hepatitis B 3.ª dosis"></td><td><input class="in" type="date" aria-label="Fecha"></td></tr>
+              <tr><td>Hepatitis B</td><td><input class="in" placeholder="Refuerzo" aria-label="Hepatitis B refuerzo"></td><td><input class="in" type="date" aria-label="Fecha"></td></tr>
+              <tr><td>COVID-19</td><td><input class="in" placeholder="N° de dosis" aria-label="COVID-19 dosis" value="3 DOSIS"></td><td><input class="in" type="date" aria-label="Fecha" value="2023-05-12"></td></tr>
+              <tr><td>Influenza</td><td><input class="in" placeholder="Última dosis" aria-label="Influenza" value="ÚLTIMA DOSIS"></td><td><input class="in" type="date" aria-label="Fecha" value="2026-05-20"></td></tr>
+              <tr><td>Neumococo</td><td><input class="in" placeholder="Última dosis" aria-label="Neumococo" value="ÚLTIMA DOSIS"></td><td><input class="in" type="date" aria-label="Fecha" value="2025-08-14"></td></tr>
+            </table></div>
+
+            <div class="sub">ACCESO VASCULAR</div>
+            <div class="row"><div class="f2"><label for="avp">Accesos vasculares previos</label><input class="in" id="avp" value="NINGUNO (PRIMER ACCESO)"></div><div class="f"><label for="fpa">Fecha de creación del primer acceso</label><input class="in" id="fpa" type="date" value="2026-10-15"></div><div class="f"><label for="ccp">Causa de cambio o pérdida</label><input class="in" id="ccp" value="—"></div><div class="f"><label for="faa">Fecha del acceso actual</label><input class="in" id="faa" type="date" value="2026-10-15"></div></div>
+
+            <div class="sub">2.3 ENFERMEDAD ACTUAL Y 2.4 EXAMEN CLÍNICO</div>
+            <div class="row"><div class="f3"><label for="sin">Síntomas</label><textarea class="in" id="sin">Edema de miembros inferiores, náuseas, astenia y prurito de 2 semanas de evolución.</textarea></div></div>
+            <div class="row"><div class="f"><label for="hpe">Peso (kg) <i>*</i></label><input class="in" id="hpe" data-req inputmode="decimal" value="61.0"></div><div class="f"><label for="hta">Talla (cm) <i>*</i></label><input class="in" id="hta" data-req inputmode="decimal" value="158"></div><div class="f"><label for="hpa">PA (mmHg) <i>*</i></label><input class="in" id="hpa" data-req placeholder="120/80" value="150/90"></div><div class="f"><label for="hfc">FC</label><input class="in" id="hfc" value="88"></div><div class="f"><label for="hfr">FR</label><input class="in" id="hfr" value="20"></div><div class="f"><label for="hso">SO2 (%)</label><input class="in" id="hso" value="96"></div></div>
+            <div class="row"><div class="f"><label for="hpi">Piel</label><input class="in" id="hpi" value="PÁLIDA, SECA, SIN LESIONES"></div><div class="f"><label for="hub">Acceso vascular · ubicación</label><select class="in" id="hub"><option>YUGULAR INTERNA</option><option>SUBCLAVIA</option><option>FEMORAL</option><option>RADIAL</option><option>HUMERAL</option><option>OTROS</option></select></div><div class="f"><label for="hti">Tipo</label><select class="in" id="hti"><option selected>CATÉTER TEMPORAL</option><option>CATÉTER PERMANENTE</option><option>FÍSTULA ARTERIOVENOSA</option><option>INJERTO</option></select></div><div class="f"><label>Thrill de FAV</label><div class="ops"><label class="ck"><input type="radio" name="hth"> BUENO</label><label class="ck"><input type="radio" name="hth"> REGULAR</label></div></div></div>
+            <div class="row"><div class="f"><label for="hco">Cardiovascular: corazón</label><input class="in" id="hco" value="RUIDOS CARDIACOS RÍTMICOS, NO SOPLOS"></div><div class="f"><label for="hpu">Pulsos periféricos</label><input class="in" id="hpu" value="PRESENTES Y SIMÉTRICOS"></div><div class="f"><label for="hre">Aparato respiratorio</label><input class="in" id="hre" value="MURMULLO VESICULAR PASA EN AMBOS CAMPOS, CREPITANTES BIBASALES"></div><div class="f"><label for="hab">Abdomen</label><input class="in" id="hab" value="BLANDO, DEPRESIBLE, NO DOLOROSO"></div></div>
+            <div class="row"><div class="f"><label for="hne">Neurológico</label><input class="in" id="hne" value="LÚCIDA, ORIENTADA EN TIEMPO, ESPACIO Y PERSONA"></div><div class="f"><label for="hos">Osteomuscular</label><input class="in" id="hos" value="SIN ALTERACIONES"></div><div class="f"><label for="hen">Estado nutricional</label><input class="in" id="hen" value="REGULAR"></div><div class="f"><label for="hka">Índice de Karnofsky</label><select class="in" id="hka"><option>100</option><option>90</option><option>80</option><option selected>70</option><option>60</option><option>50</option><option>40</option><option>30</option><option>20</option><option>10</option></select></div></div>
+
+          </fieldset>
+          <div id="hcPerm" class="nota err" hidden>Solo un nefrólogo registra y firma la HC inicial. Cambie el perfil en «Ver como».</div>
+        </div>
+</div></div>
+<div class="velo alto" id="veloProg"><div class="modal xl" id="progModal" role="dialog" aria-modal="true" aria-labelledby="progTit">
+        <div class="bar"><span id="progTit">PROGRAMACIÓN DE TURNOS Y CITAS</span><button type="button" class="btn sm k" id="progX" aria-label="Cerrar" style="margin-left:auto">✕</button></div>
+        <div class="box">
+          <div id="pgDat"></div>
+          <div id="pgGuia"></div>
+
+          <div class="tabs" id="pgDias"></div>
+          <div class="kpis" id="pgKpis"></div>
+          <div class="tw"><table class="cal" id="pgCal"></table></div>
+
+          <div id="pgForm">
+            <div class="sub">CITA DEL PACIENTE · PROGRAMA REGULAR (3 VECES POR SEMANA)</div>
+            <div class="row">
+              <div class="f2"><label for="pgSeq">Secuencia de la terapia <i>*</i></label><select class="in" id="pgSeq"><option value="LMV">L-M-V · lunes, miércoles y viernes</option><option value="MJS">Ma-J-S · martes, jueves y sábado</option></select></div>
+              <div class="f2"><label for="pgTurTxt">Turno <i>*</i></label><input class="in" readonly id="pgTurTxt" placeholder="Elija un cupo en la grilla"></div>
+              <div class="f2"><label for="pgMaqTxt">Máquina <i>*</i></label><input class="in" readonly id="pgMaqTxt" placeholder="Elija un cupo en la grilla"></div>
+              <div class="f"><label for="pgHora">Hora de inicio <i>*</i></label><input class="in" id="pgHora" type="time"></div>
+            </div>
+            <div class="row">
+              <div class="f"><label for="pgDes">Vigencia desde <i>*</i></label><input class="in" id="pgDes" type="date" value="2026-10-26" min="2026-10-22"></div>
+              <div class="f"><label for="pgN">N° de citas (sesiones) <i>*</i></label><input class="in" id="pgN" type="number" min="1" max="60" step="1" value="13" inputmode="numeric"><div class="ayuda" id="pgNAyuda">3 por semana · 13 ≈ 1 mes</div></div>
+              <div class="f2"><label for="pgMed">Nefrólogo responsable del turno <i>*</i></label><input class="in" readonly id="pgMed"></div>
+              <div class="f2"><label for="pgEnf">Enfermera del turno</label><input class="in" readonly id="pgEnf"></div>
+            </div>
+            <div class="row"><div class="f2"><label>Consultorio</label><input class="in" readonly value="175 - CONSULTORIO HEMODIÁLISIS"></div><div class="f3"></div></div>
+            <div id="pgMsg"></div>
+          </div>
+          <div class="sub" id="pgPrevTit">CITAS QUE SE GENERARÁN</div>
+          <div class="tw"><table id="pgPrev"></table></div>
+          <div class="acciones" id="pgFin" style="justify-content:flex-end" hidden><button type="button" class="btn r" id="pgCerrar">CERRAR</button><button type="button" class="btn g" id="pgGuardarAt">GUARDAR</button></div>
+          <div class="acciones" id="pgBtns" style="justify-content:flex-end"><button type="button" class="btn r" id="pgCancel">CANCELAR</button><button type="button" class="btn g" id="btnGenerar">GUARDAR</button></div>
+        </div>
+</div></div>
+<div class="velo alto" id="veloSes"><div class="modal xl" id="sesModal" role="dialog" aria-modal="true" aria-labelledby="sesTit"><div class="bar"><span id="sesTit">REGISTRO DE ATENCIÓN</span><button type="button" class="btn sm k" id="sesX" aria-label="Cerrar" style="margin-left:auto">✕</button></div><iframe id="sesFrame" title="Registro de atención de la cita" style="width:100%;height:calc(92vh - 46px);border:0;display:block"></iframe></div></div>
+<div class="velo" id="velo"><div class="modal lg" id="pgEdit" role="dialog" aria-modal="true" aria-labelledby="cbTit"></div></div>
+<div class="aviso" id="aviso" role="status"></div>
+<script src="js/hemodialisis.js?v=3.40"></script>
+</body>
+</html>

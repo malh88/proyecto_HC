@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo de Procedimientos Programados · SIGESAPOL</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.40">
+</head>
+<body data-pagina="bandeja">
+<div class="top">
+  <span class="logo">Sistema de Gestión<br>de Salud Policial<br>SIGESAPOL</span>
+  <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Hemodiálisis ▾</span><a class="top-ef" href="enfermeria.html">Enfermería (EF) ▾</a><span>[USUARIO] ▾</span>
+  <span class="rol">Ver como:
+    <select id="selRol">
+      <option value="nef" selected>Nefrólogo (turno día)</option>
+      <option value="enf">Enfermería de Hemodiálisis (turno día)</option>
+      <option value="adm">Admisión de Hemodiálisis</option>
+      <option value="tec">Técnico de citas (Hemodiálisis)</option>
+    </select>
+  </span>
+  <span class="rt">Hospital Nacional PNP Luis N. Sáenz</span>
+</div>
+
+<div class="wrap">
+  <div class="side" id="side"></div>
+  <div class="main">
+    <h1>HOSPITAL NACIONAL PNP LUIS N. SAENZ<br>DEPARTAMENTO DE NEFROLOGÍA · SERVICIO DE HEMODIÁLISIS</h1>
+
+    <div class="bar">MÓDULO DE PROCEDIMIENTOS PROGRAMADOS</div>
+    <div class="box">
+      <form id="formBandeja">
+        <div class="row">
+          <div class="f"><label for="fDes">Fecha de Solicitud (Desde)</label><input class="in" id="fDes" value="01-10-2026"></div>
+          <div class="f"><label for="fHas">Fecha de Solicitud (Hasta)</label><input class="in" id="fHas" value="22-10-2026"></div>
+          <div class="f"><label for="fDoc">Nº de Documento</label><input class="in" id="fDoc" inputmode="numeric"></div>
+          <div class="f2"><label for="fNom">Nombres y Apellidos</label><input class="in" id="fNom"></div>
+        </div>
+        <div class="row">
+          <div class="f"><label for="fEst">Estado de Solicitud</label><select class="in" id="fEst"><option>TODOS</option><option>PENDIENTE</option><option>OBSERVADO</option><option>ANULADO</option></select></div>
+          <div class="f"><label for="fTip">Tipo de Atención</label><select class="in" id="fTip"><option>TODOS</option><option>AMBULATORIO</option><option>REFERIDO</option></select></div>
+          <div class="f"><label>&nbsp;</label><button type="submit" class="btn g" style="width:100%">Buscar</button></div>
+          <div class="f2"></div>
+        </div>
+      </form>
+
+      <div class="tw">
+        <table id="tablaBandeja"></table>
+      </div>
+      <div class="leg" id="contador">Mostrando registros del 1 al 4 de un total de 4 registros</div>
+    </div>
+  </div>
+</div>
+<div class="aviso" id="aviso" role="status"></div>
+<script src="js/hemodialisis.js?v=3.40"></script>
+</body>
+</html>
