@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Módulo de Procedimiento Programado · Sesión de Hemodiálisis · SIGESAPOL</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="css/hemodialisis.css?v=3.40">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.41">
 </head>
 <body data-pagina="sesion">
 <div class="top">
-  <span class="logo">Sistema de Gestión<br>de Salud Policial<br>SIGESAPOL</span>
+  <img class="logo" src="img/logo-sigesapol.png" alt="Sistema de Gestión de Salud Policial SIGESAPOL">
   <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Hemodiálisis ▾</span><a class="top-ef" href="enfermeria.html">Enfermería (EF) ▾</a><span>[USUARIO] ▾</span>
   <span class="rol">Ver como:
     <select id="selRol">
@@ -30,7 +30,7 @@
     <div class="bar">MÓDULO DE PROCEDIMIENTO PROGRAMADO<span class="tag" style="background:#6C6C6C" data-p="cita">cita única · Nº 21</span></div>
     <div class="box">
       <div class="tabs pp-tabs" role="tablist" aria-label="Secciones de la atención">
-        <div role="tab" tabindex="0" data-tab="nueva">NUEVA ATENCIÓN</div>
+        <div role="tab" tabindex="0" data-tab="nueva" class="on">NUEVA ATENCIÓN</div>
         <div role="tab" tabindex="0" data-tab="hatn">HIST. ATENCIONES</div>
         <div role="tab" tabindex="0" data-tab="hist">HIST. EXÁMENES DE LABORATORIO</div>
         <div role="tab" tabindex="0" data-tab="hist">HIST. EXÁMENES DE RADIOLOGÍA</div>
@@ -38,12 +38,10 @@
         <div role="tab" tabindex="0" data-tab="hist">HIST. REFERENCIAS / CONTRARREFERENCIAS</div>
         <div role="tab" tabindex="0" data-tab="seg">HIST. DE ATENCIONES P. PROGRAMADO</div>
         <div role="tab" tabindex="0" data-tab="henf">HIST. ENFERMERÍA <span class="st" id="stHenf" hidden></span></div>
-        <div role="tab" tabindex="0" data-tab="hc" class="pp-hd">HISTORIA CLÍNICA INICIAL <span class="st s4">COMPLETADA</span></div>
-        <div role="tab" tabindex="0" data-tab="ses" class="pp-hd on">SESIÓN DE HEMODIÁLISIS <span class="st s1" id="stSes">EVALUACIÓN INICIAL</span></div>
       </div>
 
       <!-- ===================== NUEVA ATENCIÓN (pantalla actual) ===================== -->
-      <div data-panel="nueva" hidden>
+      <div data-panel="nueva">
         <div class="dos">
           <div><div class="sub" style="margin-top:0">DATOS DEL PACIENTE</div>
             <div class="kv" data-p="kvPac"></div></div>
@@ -58,30 +56,9 @@
           <tr><td><input type="checkbox" checked aria-label="Procedimiento seleccionado"></td><td>90937</td><td>Procedimiento de hemodiálisis que requiere repetida(s) evaluación(es) con o sin una revisión médica substancial de la prescripción de la diálisis</td><td>01</td><td>Z49.2 - OTRAS DIALISIS</td><td class="c"><button type="button" class="btn sm g" data-origen aria-label="Ver atención origen">👁</button></td></tr></table></div>
         <div id="notaReq"></div>
         <div class="row" style="margin-top:8px"><div class="f3"><label for="obsProc">Observaciones de la realización del procedimiento</label><textarea class="in" id="obsProc" placeholder="— Registro de observaciones de la realización del procedimiento —"></textarea></div></div>
-        <div id="naExtra"></div>
-        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="bandeja.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn g" id="btnGuardar">GUARDAR</button></div>
-      </div>
-
-      <!-- ===================== HIST. ENFERMERÍA: notas registradas en el Módulo de Enfermería ===================== -->
-      <div data-panel="henf" hidden>
-        <div id="histEnf"></div>
-      </div>
-
-      <div data-panel="hatn" hidden><div id="histAtn"></div></div>
-      <div data-panel="hist" hidden>
-        <div class="tw"><table><tr><th>Fecha</th><th>Servicio</th><th>Profesional</th><th>Detalle</th></tr><tr><td colspan="4" class="vacio">Historial existente de SIGESAPOL (sin cambios).</td></tr></table></div>
-      </div>
-
-      <!-- ===================== HISTORIA CLÍNICA INICIAL (consulta) ===================== -->
-      <div data-panel="hc" hidden>
-        <div class="bar" style="margin-top:4px">HISTORIA CLÍNICA INICIAL DEL PROGRAMA DE HEMODIÁLISIS · FICHAS 0026_01 Y 0026_02<span class="tag" style="background:#5CB85C">firmada</span></div>
-        <div class="box">
-          <div data-p="hcRes"></div>
-        </div>
-      </div>
-
-      <!-- ===================== SESIÓN DE HEMODIÁLISIS · 3 TIEMPOS ===================== -->
-      <div data-panel="ses">
+        <!-- SESIÓN DE HEMODIÁLISIS · 3 TIEMPOS: no es una pestaña, se habilita con su flag NO / SI (como la HC inicial) -->
+        <div id="naSes"></div>
+        <div id="sesInline" class="hc-inline ses-inline" hidden>
         <div class="flujo" id="flujo"></div>
         <div data-p="datGen"></div>
         <div id="guardaHc"></div>
@@ -163,6 +140,19 @@
             <div id="firma3"></div>
           </div>
         </section>
+        </div>
+        <div id="naExtra"></div>
+        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="bandeja.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn g" id="btnGuardar">GUARDAR</button></div>
+      </div>
+
+      <!-- ===================== HIST. ENFERMERÍA: notas registradas en el Módulo de Enfermería ===================== -->
+      <div data-panel="henf" hidden>
+        <div id="histEnf"></div>
+      </div>
+
+      <div data-panel="hatn" hidden><div id="histAtn"></div></div>
+      <div data-panel="hist" hidden>
+        <div class="tw"><table><tr><th>Fecha</th><th>Servicio</th><th>Profesional</th><th>Detalle</th></tr><tr><td colspan="4" class="vacio">Historial existente de SIGESAPOL (sin cambios).</td></tr></table></div>
       </div>
 
       <!-- ===================== HISTORIAL DE SESIONES HD ===================== -->
@@ -174,6 +164,6 @@
   </div>
 </div>
 <div class="aviso" id="aviso" role="status"></div>
-<script src="js/hemodialisis.js?v=3.40"></script>
+<script src="js/hemodialisis.js?v=3.41"></script>
 </body>
 </html>

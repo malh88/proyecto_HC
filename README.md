@@ -78,7 +78,7 @@ js/hemodialisis.js     Lógica
 
 ## Menú lateral
 
-1. Solicitudes de atención · 2. Programación y citas · Enfermería (EF) · Flujo propuesto. Por ahora se retiraron «Historia clínica inicial» y «Registro de atención del día».
+1. Solicitudes de atención · 2. Programación y citas · Enfermería (EF). Se retiró «Flujo propuesto» del menú (index.html sigue disponible). Por ahora se retiraron «Historia clínica inicial» y «Registro de atención del día».
 
 ## Flags de NUEVA ATENCIÓN
 
@@ -174,3 +174,8 @@ Participantes: paciente, médico nefrólogo, enfermera y **Técnico de citas** (
 3. El **Técnico** registra las CITAS MÚLTIPLES en GESTIÓN DE CITAS (citas.html, solo perfil Técnico/Admisión). Al FINALIZAR, **cada cita llega al MÓDULO DE PROCEDIMIENTOS PROGRAMADOS como su propia atención** (Nº 22, 23, 24…; PENDIENTE · Atender / Observar).
 4. Cada atención se atiende el día que corresponde: I.1 EVALUACIÓN INICIAL (médico) → EVOLUCIÓN DE ENFERMERÍA (Módulo de Enfermería) → I.2 EVALUACIÓN FINAL (médico, GUARDAR → FINALIZAR) → la atención pasa a HIST. ATENCIONES y en la bandeja queda ATENDIDO con Ver Atención / PDF.
 - Se eliminó la pestaña PROGRAMACIÓN DE TURNOS Y CITAS (CITAS GENERADAS con Atender/Cambiar) del Módulo de Procedimiento Programado.
+
+## Cambios recientes
+
+- **Logo:** el encabezado de todas las pantallas usa el logo de SIGESAPOL (`img/logo-sigesapol.png`).
+- **Sesión de una cita (`atencion-sesion.html`):** se quitaron las pestañas «HISTORIA CLÍNICA INICIAL» y «SESIÓN DE HEMODIÁLISIS». La evaluación de la sesión (I.1, evolución de enfermería e I.2) ya no es una pestaña: en NUEVA ATENCIÓN aparece el flag **SESIÓN DE HEMODIÁLISIS · EVALUACIÓN** (NO / SI), igual que el flag de la HISTORIA CLÍNICA INICIAL, y al pasarlo a SI se despliega la ficha debajo, antes de PRESCRIBIR RECETA, LABORATORIO e IMAGENOLOGÍA. Con los 3 tiempos firmados el flag queda en SI con el botón Ver / Ocultar.
