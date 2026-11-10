@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Módulo de Procedimiento Programado · Sesión de Hemodiálisis · SIGESAPOL</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="css/hemodialisis.css?v=3.41">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.42">
 </head>
 <body data-pagina="sesion">
 <div class="top">
@@ -56,16 +56,31 @@
           <tr><td><input type="checkbox" checked aria-label="Procedimiento seleccionado"></td><td>90937</td><td>Procedimiento de hemodiálisis que requiere repetida(s) evaluación(es) con o sin una revisión médica substancial de la prescripción de la diálisis</td><td>01</td><td>Z49.2 - OTRAS DIALISIS</td><td class="c"><button type="button" class="btn sm g" data-origen aria-label="Ver atención origen">👁</button></td></tr></table></div>
         <div id="notaReq"></div>
         <div class="row" style="margin-top:8px"><div class="f3"><label for="obsProc">Observaciones de la realización del procedimiento</label><textarea class="in" id="obsProc" placeholder="— Registro de observaciones de la realización del procedimiento —"></textarea></div></div>
-        <!-- SESIÓN DE HEMODIÁLISIS · 3 TIEMPOS: no es una pestaña, se habilita con su flag NO / SI (como la HC inicial) -->
-        <div id="naSes"></div>
-        <div id="sesInline" class="hc-inline ses-inline" hidden>
-        <div class="flujo" id="flujo"></div>
+        <div id="naExtra"></div>
+        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="bandeja.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn g" id="btnGuardar">GUARDAR</button></div>
+      </div>
+
+      <!-- ===================== HIST. ENFERMERÍA: notas registradas en el Módulo de Enfermería ===================== -->
+      <div data-panel="henf" hidden>
+        <div id="histEnf"></div>
+      </div>
+
+      <div data-panel="hatn" hidden><div id="histAtn"></div></div>
+      <div data-panel="hist" hidden>
+        <div class="tw"><table><tr><th>Fecha</th><th>Servicio</th><th>Profesional</th><th>Detalle</th></tr><tr><td colspan="4" class="vacio">Historial existente de SIGESAPOL (sin cambios).</td></tr></table></div>
+      </div>
+
+      <!-- ===================== HISTORIAL DE SESIONES HD ===================== -->
+      <div data-panel="seg" hidden>
+        <div data-p="seg"></div>
+        <!-- Atención de la cita de hoy: I.1 EVALUACIÓN INICIAL · flag EVOLUCIÓN DE ENFERMERÍA · I.2 EVALUACIÓN FINAL -->
+        <div id="sesInline" class="ses-inline">
+
         <div data-p="datGen"></div>
         <div id="guardaHc"></div>
         <div class="pac" data-p="cab"></div>
 
         <!-- ---------- TIEMPO 1 · NEFRÓLOGO ---------- -->
-        <div class="nota ok" id="resAtn" hidden><b>RESUMEN COMPLETO DE LA ATENCIÓN</b> · I.1 EVALUACIÓN INICIAL · EVOLUCIÓN DE ENFERMERÍA · I.2 EVALUACIÓN FINAL (solo lectura)</div>
         <section data-tiempo="1">
           <div class="bar">I.1 EVALUACIÓN INICIAL · FICHA 0026_03<span class="tag">tiempo 1 · nefrólogo</span></div>
           <div class="box">
@@ -109,16 +124,15 @@
         </section>
 
         <!-- ---------- TIEMPO 2 · ENFERMERÍA (se registra en el Módulo de Enfermería) ---------- -->
+        <div id="enfSw"></div>
         <section data-tiempo="2" hidden>
-          <div class="bar">EVOLUCIÓN DE ENFERMERÍA · FICHA 0026_04<span class="tag">tiempo 2 · Módulo de Enfermería</span></div>
-          <div class="box">
+          <div class="box hc-inline" style="margin-top:-4px">
             <div id="t2Res"></div>
           </div>
         </section>
 
         <!-- ---------- TIEMPO 3 · NEFRÓLOGO ---------- -->
-        <section data-tiempo="3" hidden>
-          <div class="acciones" style="margin:0 0 8px"><button type="button" class="btn k" data-irt2>← Ver evolución de enfermería</button></div>
+        <section data-tiempo="3">
           <div class="bar">I.2 EVALUACIÓN FINAL · FICHA 0026_03<span class="tag">tiempo 3 · nefrólogo</span></div>
           <div class="box">
             <fieldset id="fs3">
@@ -140,30 +154,14 @@
             <div id="firma3"></div>
           </div>
         </section>
+        <div id="sesAcc"></div>
         </div>
-        <div id="naExtra"></div>
-        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="bandeja.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn g" id="btnGuardar">GUARDAR</button></div>
-      </div>
-
-      <!-- ===================== HIST. ENFERMERÍA: notas registradas en el Módulo de Enfermería ===================== -->
-      <div data-panel="henf" hidden>
-        <div id="histEnf"></div>
-      </div>
-
-      <div data-panel="hatn" hidden><div id="histAtn"></div></div>
-      <div data-panel="hist" hidden>
-        <div class="tw"><table><tr><th>Fecha</th><th>Servicio</th><th>Profesional</th><th>Detalle</th></tr><tr><td colspan="4" class="vacio">Historial existente de SIGESAPOL (sin cambios).</td></tr></table></div>
-      </div>
-
-      <!-- ===================== HISTORIAL DE SESIONES HD ===================== -->
-      <div data-panel="seg" hidden>
-        <div data-p="seg"></div>
       </div>
     </div>
     <div class="acciones"><a class="btn k" href="bandeja.html" style="text-decoration:none">← Volver al Módulo de Procedimientos Programados</a></div>
   </div>
 </div>
 <div class="aviso" id="aviso" role="status"></div>
-<script src="js/hemodialisis.js?v=3.41"></script>
+<script src="js/hemodialisis.js?v=3.42"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 # Prototipo · Programa de Hemodiálisis · SIGESAPOL · Versión 3
 
-El formato, los colores y las fichas son los del «Módulo Hemodiálisis SIGESAPOL» v2. Está hecho en HTML, CSS y JavaScript, sin librerías. Para verlo, abrir `index.html` o `bandeja.html`. Todos los datos de ejemplo son ficticios.
+El formato, los colores y las fichas son los del «Módulo Hemodiálisis SIGESAPOL» v2. Está hecho en HTML, CSS y JavaScript, sin librerías. Para verlo, abrir `bandeja.html`. Todos los datos de ejemplo son ficticios.
 
 ## Flujo
 
@@ -64,7 +64,6 @@ Con otro servicio, o con Nefrología y otro procedimiento (Nº 14 Cardiología, 
 ## Archivos
 
 ```
-index.html             Flujo propuesto (esquema)
 bandeja.html           Módulo de Procedimientos Programados
 atencion.html          Atención Nº 13: ventanas emergentes HC inicial y Programación de turnos y citas
 atencion-sesion.html   Registro de una cita en 3 tiempos (se abre en ventana emergente desde «Atender»; ?modal=1)
@@ -78,7 +77,7 @@ js/hemodialisis.js     Lógica
 
 ## Menú lateral
 
-1. Solicitudes de atención · 2. Programación y citas · Enfermería (EF). Se retiró «Flujo propuesto» del menú (index.html sigue disponible). Por ahora se retiraron «Historia clínica inicial» y «Registro de atención del día».
+1. Solicitudes de atención · 2. Programación y citas · Enfermería (EF). Se retiró «Flujo propuesto» y su página index.html. Por ahora se retiraron «Historia clínica inicial» y «Registro de atención del día».
 
 ## Flags de NUEVA ATENCIÓN
 
@@ -178,4 +177,7 @@ Participantes: paciente, médico nefrólogo, enfermera y **Técnico de citas** (
 ## Cambios recientes
 
 - **Logo:** el encabezado de todas las pantallas usa el logo de SIGESAPOL (`img/logo-sigesapol.png`).
-- **Sesión de una cita (`atencion-sesion.html`):** se quitaron las pestañas «HISTORIA CLÍNICA INICIAL» y «SESIÓN DE HEMODIÁLISIS». La evaluación de la sesión (I.1, evolución de enfermería e I.2) ya no es una pestaña: en NUEVA ATENCIÓN aparece el flag **SESIÓN DE HEMODIÁLISIS · EVALUACIÓN** (NO / SI), igual que el flag de la HISTORIA CLÍNICA INICIAL, y al pasarlo a SI se despliega la ficha debajo, antes de PRESCRIBIR RECETA, LABORATORIO e IMAGENOLOGÍA. Con los 3 tiempos firmados el flag queda en SI con el botón Ver / Ocultar.
+- **Flujo propuesto:** se eliminó `index.html`; el proyecto se abre en `bandeja.html`.
+- **HC inicial (`atencion.html`):** el flag ya no muestra el texto «firmada por…». Al GUARDAR → FINALIZAR, la atención pasa a **HIST. ATENCIONES** (se abre esa pestaña), con el formato de SIGESAPOL: FECHA, HORA, ESTABLECIMIENTO, TIPO ATENCIÓN, SERVICIO, CONSULTORIO, MÉDICO y VER, con «Mostrar N registros», «Buscar» y paginación.
+- **HIST. DE ATENCIONES P. PROGRAMADO:** muestra el «HISTORIAL DE INFORMES DE PROCEDIMIENTO PROGRAMADO» con las citas del paciente (citas múltiples o citas únicas, también las reprogramadas): Establecimiento, Nº de Doc, Servicio solicitante, Procedimiento solicitado, Fecha de atención, Médico y Ver atención.
+- **Atención de la cita (`atencion-sesion.html`):** todo va en HIST. DE ATENCIONES P. PROGRAMADO, debajo del historial: **I.1 EVALUACIÓN INICIAL**, luego el flag **EVOLUCIÓN DE ENFERMERÍA** (NO / SI, muestra la nota registrada en el Módulo de Enfermería) y más abajo la **I.2 EVALUACIÓN FINAL**, que se habilita cuando enfermería registra su nota. Ya no hay botones CANCELAR / GUARDAR dentro de la I.1: hay un solo CANCELAR / GUARDAR al final, que firma la I.1 y luego la I.2. Se quitaron las pestañas HISTORIA CLÍNICA INICIAL y SESIÓN DE HEMODIÁLISIS.
