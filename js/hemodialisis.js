@@ -297,6 +297,15 @@ function pasoActual(){
 }
 document.addEventListener("click",function(e){var d=e.target.closest("#secuencia [data-href]");if(d)location.href=d.getAttribute("data-href")});
 
+/* ===== Menú superior «Otras Atenciones» → Procedimientos Programados (como en SIGESAPOL) ===== */
+(function(){var d=$("ddOtras");if(!d)return;var b=d.querySelector(".dd-b"),m=d.querySelector(".dd-m");
+  if(["bandeja","atencion","sesion","otro","dia"].indexOf(PAGINA)>=0)d.classList.add("on");
+  var abrirM=function(v){m.hidden=!v;b.setAttribute("aria-expanded",v?"true":"false")};
+  b.addEventListener("click",function(e){e.stopPropagation();abrirM(m.hidden)});
+  document.addEventListener("click",function(e){if(!d.contains(e.target))abrirM(false)});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!m.hidden){abrirM(false);b.focus()}});
+  m.addEventListener("click",function(e){var a=e.target.closest("[data-sig]");if(a){e.preventDefault();abrirM(false);aviso("«"+a.textContent+"»: opción existente de SIGESAPOL (sin cambios).")}});
+})();
 /* ===== Perfil «Ver como» (se recuerda entre páginas) ===== */
 var refrescar=null,STD_G=null;
 (function(){var s=$("selRol");if(!s)return;
