@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Módulo de Procedimiento Programado · Sesión de Hemodiálisis · SIGESAPOL</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="css/hemodialisis.css?v=3.47">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.50">
 </head>
 <body data-pagina="sesion">
 <div class="top">
   <img class="logo" src="img/logo-sigesapol.png" alt="Sistema de Gestión de Salud Policial SIGESAPOL">
-  <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Hemodiálisis ▾</span><a class="top-ef" href="enfermeria.html">Enfermería (EF) ▾</a><span>[USUARIO] ▾</span>
+  <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Hemodiálisis ▾</span><span class="dd" id="ddOtras"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Otras Atenciones ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="#" data-sig>Interconsultas</a><a role="menuitem" href="#" data-sig>Referencias</a><a role="menuitem" href="#" data-sig>Formulas Farmacotecnia</a><a role="menuitem" href="index.html" class="dd-pp">Procedimientos Programados</a><a role="menuitem" href="#" data-sig>Salud Materna Vista Individual</a><a role="menuitem" href="#" data-sig>Estrategias sanitarias</a><a role="menuitem" href="#" data-sig>Vista Pacientes Dirrehum</a></span></span><a class="top-ef" href="enfermeria.html">Enfermería (EF) ▾</a><span>[USUARIO] ▾</span>
   <span class="rol">Ver como:
     <select id="selRol">
       <option value="nef" selected>Nefrólogo (turno día)</option>
@@ -137,7 +137,7 @@
         </section>
         </div>
         <div id="naExtra"></div>
-        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="bandeja.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn k" id="edSes">EDITAR</button><button type="button" class="btn g" id="btnGuardar">GUARDAR</button><button type="button" class="btn g" id="finSes">FINALIZAR</button></div>
+        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="index.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn k" id="edSes">EDITAR</button><button type="button" class="btn g" id="btnGuardar">GUARDAR</button><button type="button" class="btn g" id="finSes">FINALIZAR</button></div>
       </div>
 
       <!-- ===================== HIST. ENFERMERÍA: notas registradas en el Módulo de Enfermería ===================== -->
@@ -158,6 +158,6 @@
   </div>
 </div>
 <div class="aviso" id="aviso" role="status"></div>
-<script src="js/hemodialisis.js?v=3.47"></script>
+<script src="js/hemodialisis.js?v=3.50"></script>
 </body>
 </html>

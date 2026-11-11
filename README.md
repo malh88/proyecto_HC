@@ -1,6 +1,6 @@
 # Prototipo · Programa de Hemodiálisis · SIGESAPOL · Versión 3
 
-El formato, los colores y las fichas son los del «Módulo Hemodiálisis SIGESAPOL» v2. Está hecho en HTML, CSS y JavaScript, sin librerías. Para verlo, abrir `bandeja.html`. Todos los datos de ejemplo son ficticios.
+El formato, los colores y las fichas son los del «Módulo Hemodiálisis SIGESAPOL» v2. Está hecho en HTML, CSS y JavaScript, sin librerías. Para verlo, abrir `index.html`. Todos los datos de ejemplo son ficticios.
 
 ## Flujo
 
@@ -64,7 +64,7 @@ Con otro servicio, o con Nefrología y otro procedimiento (Nº 14 Cardiología, 
 ## Archivos
 
 ```
-bandeja.html           Módulo de Procedimientos Programados
+index.html           Módulo de Procedimientos Programados
 atencion.html          Atención Nº 13: ventanas emergentes HC inicial y Programación de turnos y citas
 atencion-sesion.html   Registro de una cita en 3 tiempos (se abre en ventana emergente desde «Atender»; ?modal=1)
 atencion-otro.html     Procedimiento que no es de hemodiálisis (pantalla actual)
@@ -77,7 +77,7 @@ js/hemodialisis.js     Lógica
 
 ## Menú lateral
 
-1. Solicitudes de atención · 2. Programación y citas · Enfermería (EF). Se retiró «Flujo propuesto» y su página index.html. Por ahora se retiraron «Historia clínica inicial» y «Registro de atención del día».
+1. Solicitudes de atención · 2. Programación y citas · Enfermería (EF). Se retiró «Flujo propuesto». Por ahora se retiraron «Historia clínica inicial» y «Registro de atención del día».
 
 ## Flags de NUEVA ATENCIÓN
 
@@ -157,7 +157,7 @@ js/hemodialisis.js     Lógica
 
 ## MÓDULO DE GESTIÓN DE CITAS (CE) · citas múltiples para Nefrología (citas.html)
 - Reemplaza la ventana emergente PROGRAMACIÓN DE TURNOS Y CITAS: se incorpora al módulo de citas existente de SIGESAPOL, manteniendo su formato (Información del paciente, Información de la prescripción y servicio, calendario, pestañas de historial, Programación Médica por médico/consultorio).
-- Cualquier servicio (o Nefrología sin programa): **una cita por día**, horarios de 15 minutos por consultorio y botón CREAR (comportamiento actual).
+- **Cualquier paciente y servicio** (propuesta de mejora): TIPO DE PROGRAMACIÓN **Cita única** o **Citas múltiples**. Con citas múltiples se marcan varias fechas en el calendario y se elige un consultorio y horario libre en todas; CREAR genera todas las citas. Con NEFROLOGÍA y paciente del Programa de Hemodiálisis, las citas múltiples se programan por máquina y turno.
 - NEFROLOGÍA + paciente con HC inicial del Programa de Hemodiálisis («Programa de hemodiálisis · citas múltiples»):
   - Los días se marcan en el calendario (clic en un día, o en LU/MA/MI… para marcar todo el mes; sin domingos ni fechas anteriores a la orden). La secuencia (L-M-V / Ma-J-S / personalizada), la vigencia y el N° de sesiones se generan solos en el resumen.
   - Programación Médica con el formato del SIGESAPOL: una tarjeta por máquina con Médico, Consultorio (175 - HEMODIÁLISIS), Máquina, Enfermera y Turno, y los horarios en bloques de 30 minutos («06:00 AM - 06:30 AM»…). Un clic en la hora de inicio selecciona un **rango de 4 horas**; el médico, la enfermera y el turno se completan según el horario elegido. Solo se permiten rangos libres en TODAS las fechas (ocupados, aislamiento por serología y turno sin nefrólogo bloqueados).
@@ -177,7 +177,7 @@ Participantes: paciente, médico nefrólogo, enfermera y **Técnico de citas** (
 ## Cambios recientes
 
 - **Logo:** el encabezado de todas las pantallas usa el logo de SIGESAPOL (`img/logo-sigesapol.png`).
-- **Flujo propuesto:** se eliminó `index.html`; el proyecto se abre en `bandeja.html`.
+- **Página de entrada:** se eliminó «Flujo propuesto»; ahora `index.html` es la bandeja (Módulo de Procedimientos Programados), antes `bandeja.html`.
 - **HC inicial (`atencion.html`):** el flag ya no muestra el texto «firmada por…». Al GUARDAR → FINALIZAR, la atención pasa a **HIST. ATENCIONES** (se abre esa pestaña), con el formato de SIGESAPOL: FECHA, HORA, ESTABLECIMIENTO, TIPO ATENCIÓN, SERVICIO, CONSULTORIO, MÉDICO y VER, con «Mostrar N registros», «Buscar» y paginación.
 - **HIST. DE ATENCIONES P. PROGRAMADO:** muestra el «HISTORIAL DE INFORMES DE PROCEDIMIENTO PROGRAMADO» con las citas del paciente (citas múltiples o citas únicas, también las reprogramadas): Establecimiento, Nº de Doc, Servicio solicitante, Procedimiento solicitado, Fecha de atención, Médico y Ver atención.
 - **Atención de la cita (`atencion-sesion.html`):** las fichas van en **NUEVA ATENCIÓN** (que mantiene su formato), cada una con su flag NO / SI: **I.1 EVALUACIÓN INICIAL**, **FICHA DE ENFERMERÍA** (solo lectura: lo que registró la enfermera) e **I.2 EVALUACIÓN FINAL**. Con la I.1 firmada se habilitan la ficha de enfermería y la I.2. El GUARDAR de NUEVA ATENCIÓN firma la I.1 y, cuando ya está la nota de enfermería, la I.2 (GUARDAR → FINALIZAR). HIST. DE ATENCIONES P. PROGRAMADO queda solo con el historial de citas y el enlace con la cita.
@@ -186,3 +186,4 @@ Participantes: paciente, médico nefrólogo, enfermera y **Técnico de citas** (
 - **NUEVA ATENCIÓN de la cita:** se quitó el bloque PRESCRIBIR RECETA / PRODUCTOS MÉDICOS suelto, porque la receta ya está dentro de la I.1 EVALUACIÓN INICIAL (5.2). Quedan EXAMEN DE LABORATORIO e IMAGENOLOGÍA. Al **GUARDAR** la I.1 (sin esperar a FINALIZAR) se habilitan la FICHA DE ENFERMERÍA y la I.2 EVALUACIÓN FINAL para su llenado.
 - **Evaluaciones como pestañas:** en NUEVA ATENCIÓN de la cita, I.1 EVALUACIÓN INICIAL · FICHA DE ENFERMERÍA · I.2 EVALUACIÓN FINAL son pestañas (con su estado: PENDIENTE, GUARDADA, FIRMADA, REGISTRADA). Se ve una ficha a la vez; la ficha de enfermería y la I.2 se desbloquean al GUARDAR la I.1.
 - **HIST. DE ATENCIONES P. PROGRAMADO es solo para ver:** ya no tiene «Atender». El 👁 muestra la atención registrada de la cita (solo lectura); si la cita aún no tiene atención, lo avisa. Las citas se atienden desde el Módulo de Procedimientos Programados.
+- **Menú superior «Otras Atenciones ▾»** (como en SIGESAPOL): Interconsultas, Referencias, Formulas Farmacotecnia, **Procedimientos Programados** (abre `index.html`, la bandeja), Salud Materna Vista Individual, Estrategias sanitarias y Vista Pacientes Dirrehum. Las demás opciones son las existentes de SIGESAPOL.

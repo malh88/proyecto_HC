@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Módulo de Procedimiento Programado · SIGESAPOL</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="css/hemodialisis.css?v=3.47">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.50">
 </head>
 <body data-pagina="otro">
 <div class="top">
   <img class="logo" src="img/logo-sigesapol.png" alt="Sistema de Gestión de Salud Policial SIGESAPOL">
-  <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Hemodiálisis ▾</span><a class="top-ef" href="enfermeria.html">Enfermería (EF) ▾</a><span>[USUARIO] ▾</span>
+  <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Hemodiálisis ▾</span><span class="dd" id="ddOtras"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Otras Atenciones ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="#" data-sig>Interconsultas</a><a role="menuitem" href="#" data-sig>Referencias</a><a role="menuitem" href="#" data-sig>Formulas Farmacotecnia</a><a role="menuitem" href="index.html" class="dd-pp">Procedimientos Programados</a><a role="menuitem" href="#" data-sig>Salud Materna Vista Individual</a><a role="menuitem" href="#" data-sig>Estrategias sanitarias</a><a role="menuitem" href="#" data-sig>Vista Pacientes Dirrehum</a></span></span><a class="top-ef" href="enfermeria.html">Enfermería (EF) ▾</a><span>[USUARIO] ▾</span>
   <span class="rol">Ver como:
     <select id="selRol">
       <option value="nef" selected>Nefrólogo (turno día)</option>
@@ -50,7 +50,7 @@
         <div class="tw"><table id="otProc"></table></div>
         <div class="row" style="margin-top:8px"><div class="f3"><label for="obsProc">Observaciones de la realización del procedimiento</label><textarea class="in" id="obsProc" placeholder="— Registro de observaciones de la realización del procedimiento —"></textarea></div></div>
         <div id="naExtra"></div>
-        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="bandeja.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn g" id="btnGuardar">GUARDAR</button></div>
+        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="index.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn g" id="btnGuardar">GUARDAR</button></div>
       </div>
       <div data-panel="hist" hidden>
         <div class="tw"><table><tr><th>Fecha</th><th>Servicio</th><th>Profesional</th><th>Detalle</th></tr><tr><td colspan="4" class="vacio">Historial existente de SIGESAPOL (sin cambios).</td></tr></table></div>
@@ -59,10 +59,10 @@
         <div class="tw"><table><tr><th>N°</th><th>Fecha</th><th>Servicio</th><th>Procedimiento</th><th>Responsable</th><th>Estado</th></tr><tr><td colspan="6" class="vacio">Sin atenciones previas de procedimientos programados.</td></tr></table></div>
       </div>
     </div>
-    <div class="acciones"><a class="btn k" href="bandeja.html" style="text-decoration:none">← Volver al Módulo de Procedimientos Programados</a></div>
+    <div class="acciones"><a class="btn k" href="index.html" style="text-decoration:none">← Volver al Módulo de Procedimientos Programados</a></div>
   </div>
 </div>
 <div class="aviso" id="aviso" role="status"></div>
-<script src="js/hemodialisis.js?v=3.47"></script>
+<script src="js/hemodialisis.js?v=3.50"></script>
 </body>
 </html>
