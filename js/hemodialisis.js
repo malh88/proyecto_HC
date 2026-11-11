@@ -966,6 +966,7 @@ if(PAGINA==="sesion"||(PAGINA==="enfnota"&&param("p")&&param("p")!=="nohd")){
   function rBtnGuardar(){var g=$("btnGuardar");if(!g||ENF||!habilitada)return;var ed=$("edSes"),fn=$("finSes"),f=fase();
     var gu=f===1?!!S.ini.guard:f===3?!!ESTP.finGuard:false,ei=f===1?!!S.ini.edit:!!S.finEdit,ok=esNef()&&f>0;
     g.textContent="GUARDAR";g.disabled=!ok||(gu&&!ei);
+    g.hidden=f===0;if(ed)ed.hidden=f===0;
     if(ed)ed.disabled=!ok||!gu||ei;
     if(fn){fn.disabled=!ok||!gu||ei;fn.title=f===3&&!S.enf.firm?"Requiere la nota de enfermería":""}}
   /* Pestañas de las evaluaciones: I.1 EVALUACIÓN INICIAL · FICHA DE ENFERMERÍA · I.2 EVALUACIÓN FINAL.
@@ -1000,7 +1001,7 @@ if(PAGINA==="sesion"||(PAGINA==="enfnota"&&param("p")&&param("p")!=="nohd")){
       var puede=!S.enf.firm&&esEnf(),gd=!!S.enf.guard&&!S.enf.edit;
       if($("fs2"))$("fs2").disabled=!puede||gd;
       if($("sign2"))$("sign2").disabled=!puede||gd;
-      if($("edit2")){$("edit2").hidden=$("fin2").hidden=false;$("edit2").disabled=!puede||!S.enf.guard||!!S.enf.edit;$("fin2").disabled=!puede||!gd}
+      if($("edit2")){$("edit2").hidden=$("sign2").hidden=!!S.enf.firm;$("fin2").hidden=false;$("edit2").disabled=!puede||!S.enf.guard||!!S.enf.edit;$("fin2").disabled=!puede||!gd}
       estEsp(S.enf.firm?null:S.enf.guard);
       if($("firma2"))$("firma2").innerHTML=S.enf.firm?''
         :!esEnf()?'<div class="nota err">Solo enfermería de hemodiálisis registra esta ficha. Cambie el perfil en «Ver como».</div>'
