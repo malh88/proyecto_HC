@@ -895,7 +895,8 @@ if(PAGINA==="sesion"||(PAGINA==="enfnota"&&param("p")&&param("p")!=="nohd")){
 
   /* --- Enlace: esta sesión pertenece a una cita programada --- */
   function rEnlace(){
-    if(!habilitada)return;if(ENF){$("guardaHc").innerHTML="";return}
+    /* Se quitó el bloque «ENLACE CON LA CITA PROGRAMADA» */
+    if(!habilitada||!$("guardaHc"))return;$("guardaHc").innerHTML="";return;
     var T=TURNOS[(P.turno||1)-1],e=estadoReg(ESTP.reg,ESTP.atendidoSes);
     $("guardaHc").innerHTML='<div class="sub" style="margin-top:4px">ENLACE CON LA CITA PROGRAMADA</div>'+
       '<div class="tw"><table><tr><th>Cita (Módulo de Procedimientos Programados)</th><th>Sesión</th><th>Fecha programada</th><th>Turno · máquina</th><th>Origen de la cita</th><th>Registro de atención de esta sesión</th><th></th></tr>'+
