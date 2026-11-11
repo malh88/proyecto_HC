@@ -275,7 +275,7 @@ function menu(){
     SECUENCIA.filter(function(x){return!x.oculto}).map(function(x){var c=x.cuenta();return'<a href="'+(typeof x.href==="function"?x.href():x.href)+'" class="'+(act===x.id&&!/^enf/.test(PAGINA)?"on":"")+'">▦ '+x.t+''+(c?'<span class="c">'+c+'</span>':'')+'</a>'}).join("")+
     '<a href="enfermeria.html" class="'+(/^enf/.test(PAGINA)?"on":"")+'">▦ Enfermería (EF) · Consulta Externa'+(pendEnf()?'<span class="c">'+pendEnf()+'</span>':'')+'</a>'+
     '<a href="#" id="btnReset" style="color:#A94442">↺ Reiniciar demostración</a>';
-  $("btnReset").onclick=function(e){e.preventDefault();try{localStorage.removeItem("hd_demo");sessionStorage.removeItem("hd_demo")}catch(x){}location.href="bandeja.html"};
+  $("btnReset").onclick=function(e){e.preventDefault();try{localStorage.removeItem("hd_demo");sessionStorage.removeItem("hd_demo")}catch(x){}location.href="index.html"};
   var sb=$("secuencia");
   if(sb)sb.innerHTML=SECUENCIA.map(function(x){var h=x.hecho();return'<div class="'+(act===x.id?"on":h?"dep":"")+'" data-href="'+(typeof x.href==="function"?x.href():x.href)+'">'+x.t+'<small>'+x.ayuda+(h?" · listo":"")+'</small></div>'}).join("");
 }
@@ -284,7 +284,7 @@ function pendEnf(){var n=0;citasHDde().forEach(function(pc){if(pc.citas.some(fun
 /* Secuencia del menú de la v2 (sin 5. Seguimiento ni 6. Reportes): es el orden en que se programa y se atiende la terapia.
    2 y 3 son pestañas de la atención del paciente en el Módulo de Procedimiento Programado. */
 var SECUENCIA=[
- {id:"bandeja",href:"bandeja.html",t:"1. Solicitudes de atención",ayuda:"Módulo de Procedimientos Programados",cuenta:function(){return filasBandeja().filter(function(r){return r.estado==="PENDIENTE"}).length},hecho:function(){return EST.romero.atendidoOrden}},
+ {id:"bandeja",href:"index.html",t:"1. Solicitudes de atención",ayuda:"Módulo de Procedimientos Programados",cuenta:function(){return filasBandeja().filter(function(r){return r.estado==="PENDIENTE"}).length},hecho:function(){return EST.romero.atendidoOrden}},
  {oculto:true,id:"hc",href:"atencion.html#hc",t:"2. Historia clínica inicial",ayuda:"Una sola vez, primera atención",cuenta:function(){return EST.romero.hc?0:1},hecho:function(){return EST.romero.hc}},
  {id:"cal",href:"citas.html",t:"2. Gestión de citas · citas múltiples (Técnico)",ayuda:"Registro de citas de hemodiálisis",cuenta:function(){return EST.romero.hc&&!EST.romero.prog?1:0},hecho:function(){return!!EST.romero.prog}},
  {oculto:true,id:"dia",href:"registro-dia.html",t:"4. Registro de atención del día",ayuda:"Cada sesión en 3 tiempos",cuenta:function(){return(EST.gutierrez.atendidoSes?0:1)+(EST.romero.atendidoOrden&&!EST.romero.atendidoSes?1:0)},hecho:function(){return EST.romero.atendidoSes}}];
@@ -1289,7 +1289,7 @@ if(PAGINA==="sesion"||(PAGINA==="enfnota"&&param("p")&&param("p")!=="nohd")){
   /* «Continuar» con la nota de enfermería ya firmada: pasa directo a la I.2 EVALUACIÓN FINAL */
   try{if(sessionStorage.getItem("hd_irI2")){sessionStorage.removeItem("hd_irI2");if(!ENF&&S.enf.firm&&!S.fin.firm){S.t=3;rFlujo()}}}catch(x){}
   if(ENF){aplicarEnf();rMon();irTab("nueva");irNt("hd")}
-  else{irTab("nueva");if(MODAL)q('[data-panel="nueva"] a[href="bandeja.html"]').forEach(function(a){var x=document.createElement("button");x.type="button";x.className="btn r";x.textContent=a.textContent;x.setAttribute("data-cancelar","");a.replaceWith(x)})}
+  else{irTab("nueva");if(MODAL)q('[data-panel="nueva"] a[href="index.html"]').forEach(function(a){var x=document.createElement("button");x.type="button";x.className="btn r";x.textContent=a.textContent;x.setAttribute("data-cancelar","");a.replaceWith(x)})}
 }
 
 /* =====================================================================
@@ -1624,10 +1624,10 @@ if(PAGINA==="citas"){
     if(id==="ccFin"){sg("¿Deseas finalizar el registro? Se crearán las "+H.fechas.length+" citas del programa de hemodiálisis.",function(){
       var citas=H.fechas.map(function(f){return{f:f2s(iso2d(f)),t:H.sel.t,m:H.sel.m,h:H.hora,est:"PROGRAMADA",hist:[]}}),sq=hSeq(),dat=datosHd(true);
       if(PAC.clave==="romero"){R.prog={seq:sq==="MJS"?"MJS":"LMV",turno:H.sel.t,maq:H.sel.m,hora:H.hora,desde:H.fechas[0],citas:citas,fechas:citas.map(function(c){return c.f})};
-        guardar();menu();fichaCita(dat);aviso(citas.length+" citas creadas: cada una llegó al Módulo de Procedimientos Programados.");setTimeout(function(){location.href="bandeja.html"},2200)}
+        guardar();menu();fichaCita(dat);aviso(citas.length+" citas creadas: cada una llegó al Módulo de Procedimientos Programados.");setTimeout(function(){location.href="index.html"},2200)}
       else aviso("Demostración: el paciente ya tiene programa vigente.",true)})}});
   /* Llega desde la atención Nº 13 (HC inicial firmada) con el paciente y NEFROLOGÍA ya cargados */
-  if(ORI){$("ctOrigen").innerHTML='<div class="nota ok"><b>Paciente con HC inicial firmada</b> (atención Nº '+esc(ORI)+'). Marque los días en el calendario, elija la máquina y el horario y pulse <b>GUARDAR</b>; en la ficha CITA pulse <b>FINALIZAR</b>.</div>';$("ctCancel").href="bandeja.html"}
+  if(ORI){$("ctOrigen").innerHTML='<div class="nota ok"><b>Paciente con HC inicial firmada</b> (atención Nº '+esc(ORI)+'). Marque los días en el calendario, elija la máquina y el horario y pulse <b>GUARDAR</b>; en la ficha CITA pulse <b>FINALIZAR</b>.</div>';$("ctCancel").href="index.html"}
   var dIni=param("p")==="romero"?"40871236":param("d");
   if(dIni){$("ctDni").value=dIni;buscar(dIni)}else pintarModo();
 }
