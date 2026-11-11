@@ -346,6 +346,7 @@ function nuevaAtencion(o){
   var sv=function(x){return x.type==="checkbox"?x.checked:x.value==="SI"};
   var del=function(t,i){return'<button type="button" class="btn sm r" data-nadel="'+t+'" data-i="'+i+'">✖ Eliminar</button>'};
   function receta(){
+    if(o.sinRx)return"";
     if(o.rxHD){var r=o.rxHD();
       if(r.firm&&r.sin)return'<div class="na-card"><div class="na-t">PRESCRIBIR RECETA</div>'+sino("naRx",false,true)+'</div>';
       if(!r.firm)return'<div class="na-card"><div class="na-t">PRESCRIBIR RECETA</div>'+sino("naRx",null,true)+'</div>';
@@ -964,13 +965,14 @@ if(PAGINA==="sesion"||(PAGINA==="enfnota"&&param("p")&&param("p")!=="nohd")){
     if(!habilitada||ENF)return;
     if(S.iniOn==null)S.iniOn=!S.ini.firm;
     if(S.enfOn==null)S.enfOn=false;
-    if(S.finOn==null)S.finOn=!!S.ini.firm&&!S.fin.firm;
+    if(S.finOn==null)S.finOn=!!(S.ini.firm||S.ini.guard)&&!S.fin.firm;
+    var i1=!!(S.ini.firm||S.ini.guard);
     var card=function(id,t,on,dis,extra){return'<div class="na-card"><div class="na-t">'+t+'</div>'+tgl(id,on,dis,id)+(extra||"")+'</div>'};
-    var hab='<span class="orig">se habilita cuando la I.1 EVALUACIÓN INICIAL está llenada y firmada</span>';
+    var hab='<span class="orig">se habilita al GUARDAR la I.1 EVALUACIÓN INICIAL</span>';
     $("swIni").innerHTML=card("iniFlag","I.1 EVALUACIÓN INICIAL",S.iniOn,false,S.ini.firm?'<span class="st s4">FIRMADA · '+esc(S.ini.firm.u)+'</span>':'<span class="st s1">PENDIENTE</span>');
-    $("enfSw").innerHTML=card("enfFlag","FICHA DE ENFERMERÍA",S.enfOn&&!!S.ini.firm,!S.ini.firm,!S.ini.firm?hab:S.enf.firm?'<span class="st s4">REGISTRADA · '+esc(S.enf.firm.u)+'</span>':'<span class="st s2">PENDIENTE · la enfermera aún no registra la nota</span>');
-    $("swFin").innerHTML=card("finFlag","I.2 EVALUACIÓN FINAL",S.finOn&&!!S.ini.firm,!S.ini.firm,!S.ini.firm?hab:S.fin.firm?'<span class="st s4">FIRMADA · '+esc(S.fin.firm.u)+'</span>':'<span class="st s1">PENDIENTE</span>');
-    q("[data-tiempo]").forEach(function(sec){var t=+sec.getAttribute("data-tiempo");sec.hidden=t===1?!S.iniOn:t===2?!(S.enfOn&&S.ini.firm):!(S.finOn&&S.ini.firm)});
+    $("enfSw").innerHTML=card("enfFlag","FICHA DE ENFERMERÍA",S.enfOn&&i1,!i1,!i1?hab:S.enf.firm?'<span class="st s4">REGISTRADA · '+esc(S.enf.firm.u)+'</span>':'<span class="st s2">PENDIENTE · la enfermera aún no registra la nota</span>');
+    $("swFin").innerHTML=card("finFlag","I.2 EVALUACIÓN FINAL",S.finOn&&i1,!i1,!i1?hab:S.fin.firm?'<span class="st s4">FIRMADA · '+esc(S.fin.firm.u)+'</span>':'<span class="st s1">PENDIENTE</span>');
+    q("[data-tiempo]").forEach(function(sec){var t=+sec.getAttribute("data-tiempo");sec.hidden=t===1?!S.iniOn:t===2?!(S.enfOn&&i1):!(S.finOn&&i1)});
     var e=estSes();if($("stSegHoy")){$("stSegHoy").className="st "+e[0];$("stSegHoy").textContent=e[1]}
     rBtnGuardar();
   }
@@ -997,7 +999,7 @@ if(PAGINA==="sesion"||(PAGINA==="enfnota"&&param("p")&&param("p")!=="nohd")){
     $("fs1").disabled=!!S.ini.firm||!esNef()||(!!S.ini.guard&&!S.ini.edit);$("fs3").disabled=!!S.fin.firm||!esNef()||(!!ESTP.finGuard&&!S.finEdit);
     $("medT1").value=S.ini.firm?S.ini.firm.u:(esNef()?usuario():"—");$("medT3").value=S.fin.firm?S.fin.firm.u:(esNef()?usuario():"—");
     $("firma1").innerHTML=firma(S.ini.firm,esNef(),"Firmar evaluación inicial","sign1","Al firmar se generan la receta y el FUR, se bloquea este tiempo y se habilita automáticamente la EVOLUCIÓN DE ENFERMERÍA en el Módulo de Enfermería.","Solo un nefrólogo registra y firma este tiempo.");
-    $("fs3").disabled=$("fs3").disabled||!S.ini.firm;$("firma3").innerHTML=!S.enf.firm?'<div class="nota">Para firmar la I.2 EVALUACIÓN FINAL, la enfermera debe registrar antes su nota de enfermería de esta cita (Módulo de Enfermería → Nueva Nota Enfermería).</div>':firma(S.fin.firm,esNef(),"Firmar y cerrar sesión","sign3","Puede firmarla un nefrólogo distinto al de la evaluación inicial. Al cerrar, la prestación pasa a producción con CIE-10 y CPMS.","Solo un nefrólogo cierra la sesión.");
+    $("fs3").disabled=$("fs3").disabled||!(S.ini.firm||S.ini.guard);$("firma3").innerHTML=!S.enf.firm?'<div class="nota">Para firmar la I.2 EVALUACIÓN FINAL, la enfermera debe registrar antes su nota de enfermería de esta cita (Módulo de Enfermería → Nueva Nota Enfermería).</div>':firma(S.fin.firm,esNef(),"Firmar y cerrar sesión","sign3","Puede firmarla un nefrólogo distinto al de la evaluación inicial. Al cerrar, la prestación pasa a producción con CIE-10 y CPMS.","Solo un nefrólogo cierra la sesión.");
     if(!S.fin.firm&&ESTP.finGuard&&$("sign3"))$("sign3").textContent="FINALIZAR";if(S.fin.firm){$("firma3").innerHTML="";if(!ENF&&$("firma1"))$("firma1").innerHTML=""}
     rBtnGuardar();
   }
@@ -1104,10 +1106,10 @@ if(PAGINA==="sesion"||(PAGINA==="enfnota"&&param("p")&&param("p")!=="nohd")){
 
   /* Módulo de Procedimientos: tiempo 2 = estado en el Módulo de Enfermería y resultados registrados por la enfermera */
   function rT2Res(){var el=$("t2Res");if(!el||!habilitada)return;var e=S.enf,v=e.val||{};
-    if(!S.ini.firm){el.innerHTML='<div class="nota err">Se habilita en el Módulo de Enfermería al firmar la I.1 EVALUACIÓN INICIAL.</div>';return}
+    if(!S.ini.firm&&!S.ini.guard){el.innerHTML='<div class="nota">Se habilita al GUARDAR la I.1 EVALUACIÓN INICIAL.</div>';return}
     NOTAS_VISTAS=[];var ns=notasEnf(P.clave),act=null;ns.forEach(function(x){if(x.hd&&(P.clave==="gutierrez"||x.j===nCita))act=x});
     if(!e.firm){el.innerHTML='<div class="nota"><b>Pendiente.</b> La enfermera registra la nota de esta cita en el Módulo de Enfermería (Detalles enfermería → Nueva Nota Enfermería). Aquí se verá lo que registró.</div><div class="acciones" style="justify-content:flex-end"><button type="button" class="btn g" id="btnContEnf"'+(esNef()?'':' disabled title="Solo el nefrólogo registra la evaluación final"')+'>Continuar →</button></div>';return}
-    if(!act){act={id:idEnf(P.cod),serv:"NEFROLOGÍA",fecha:String(P.fecha).replace(/-/g,"/"),hora:h12(e.firm.h),u:e.firm.u,med:S.ini.firm.u,hd:true,cod:P.cod,ses:P.ses,total:P.total,j:nCita,e:e,ini:S.ini,clave:P.clave};ns.push(act)}
+    if(!act){act={id:idEnf(P.cod),serv:"NEFROLOGÍA",fecha:String(P.fecha).replace(/-/g,"/"),hora:h12(e.firm.h),u:e.firm.u,med:(S.ini.firm||S.ini.guard||{u:"—"}).u,hd:true,cod:P.cod,ses:P.ses,total:P.total,j:nCita,e:e,ini:S.ini,clave:P.clave};ns.push(act)}
     q('[data-p="datGen"]').forEach(function(d){d.innerHTML=datosGen(P,String(P.fecha).replace(/\//g,"-")+" "+(P.hora||"00:00")+":00",(P.turno?TURNOS[P.turno-1]:TURNOS[0]).med,{u:e.firm.u,id:act.id,fecha:act.fecha,hora:act.hora})});
     var bI2=function(){return!S.fin.firm&&!ENF?'<button type="button" class="btn g" data-iri2'+(esNef()?'':' disabled title="Solo el nefrólogo registra la evaluación final"')+'>Continuar EV. FINAL →</button>':''};
     el.innerHTML=(bI2()?'<div class="nota ok" style="display:flex;align-items:center;gap:12px;justify-content:space-between"><span><b>Enfermería registró y firmó la nota</b> ('+esc(e.firm.u)+' · '+e.firm.h+').</span>'+bI2()+'</div>':'')+detalleEnf(act,true)+
@@ -1178,7 +1180,7 @@ if(PAGINA==="sesion"||(PAGINA==="enfnota"&&param("p")&&param("p")!=="nohd")){
         if(!S.ini.kit.length&&!S.ini.med.length){aviso("Receta en SÍ: agregue al menos un insumo o medicamento, o cambie «Prescribir receta» a NO.",true);return}
         var malas=q("[data-kq]").filter(function(x){return!/^[1-9]\d*$/.test(String(x.value).trim())});
         if(malas.length){malas.forEach(function(x){x.classList.add("err")});aviso("Las cantidades del kit deben ser números enteros mayores que 0.",true);return}}
-      if(id==="sign1g"){S.ini.guard={u:usuario(),h:ahora()};S.ini.edit=false;guardarReg();rFirmas();aviso("I.1 EVALUACIÓN INICIAL guardada. Pulse FINALIZAR para firmarla o EDITAR para corregirla.");return}
+      if(id==="sign1g"){S.ini.guard={u:usuario(),h:ahora()};S.ini.edit=false;if(S.finOn===false||S.finOn==null)S.finOn=true;guardarReg();rFlujo();rFirmas();rT2Res();aviso("I.1 EVALUACIÓN INICIAL guardada. Se habilitaron la FICHA DE ENFERMERÍA y la I.2 EVALUACIÓN FINAL. Pulse FINALIZAR para firmar la I.1 o EDITAR para corregirla.");return}
       S.ini.receta=S.ini.rxOn?{r:"R-0045921",f:"FUR-0012421"}:{r:"SIN RECETA",f:"SIN FUR"};$("rxVale").value=S.ini.receta.r;$("rxFur").value=S.ini.receta.f;
       S.ini.vit={pa:$("pa").value,fc:$("fc").value,fr:$("fr").value,so2:$("so2").value,ps:$("ps").value,pi:$("pi").value,uf:$("uf").value,hhd:$("hhd").value};
       S.ini.firm={u:usuario(),h:ahora()};S.t=2;S.iniOn=false;S.finOn=true;guardarReg();todo();cerrarModal();window.scrollTo(0,0);aviso("Evaluación inicial firmada"+(S.ini.rxOn?"; receta y FUR enviados a farmacia":" sin receta")+". Se habilitaron la FICHA DE ENFERMERÍA y la I.2 EVALUACIÓN FINAL.");return}
@@ -1264,14 +1266,14 @@ if(PAGINA==="sesion"||(PAGINA==="enfnota"&&param("p")&&param("p")!=="nohd")){
   document.addEventListener("click",function(e){var t=e.target.closest(".nt-tabs [data-nt]");if(t)irNt(t.getAttribute("data-nt"))});
   window.addEventListener("pageshow",function(e){if(e.persisted)location.reload()});
 
-  if(!ENF&&habilitada)NA=nuevaAtencion({dx:["Z49.2 - OTRAS DIALISIS"].concat(S.ini.cie.map(function(c){return c.c.replace(" · "," - ")})),paq:{t:"Paquete mensual del Programa HD",l:NA_PAQ.mensual},
+  if(!ENF&&habilitada)NA=nuevaAtencion({sinRx:true,dx:["Z49.2 - OTRAS DIALISIS"].concat(S.ini.cie.map(function(c){return c.c.replace(" · "," - ")})),paq:{t:"Paquete mensual del Programa HD",l:NA_PAQ.mensual},
     rxHD:function(){var stock=function(p){var x=NA_PROD.filter(function(n){return n[0].slice(0,7)===String(p).slice(0,7)})[0];return x?x[1]:"—"};
       return{firm:!!S.ini.firm,sin:!S.ini.rxOn,fecha:P.fecha,farm:NA_FARM[0],cont:S.ini.cont!=null?S.ini.cont:S.ini.med.some(function(m){return m.o==="MEN"}),vale:S.ini.receta?S.ini.receta.r:"—",fur:S.ini.receta?S.ini.receta.f:"—",
         items:S.ini.med.map(function(m){return{p:m.p.replace(" · "," - "),st:stock(m.p),v:m.v,pos:m.d,dias:m.dias||1,q:m.q||1,o:ORIGEN[m.o]}}).concat(S.ini.kit.map(function(k){return{p:k.c+" - "+k.n,st:k.st,v:"—",pos:"EN CADA SESIÓN DE HEMODIÁLISIS",q:k.q,o:"KIT · FUR"}})).concat(S.fin.med.map(function(m){return{p:m.p,st:stock(m.p),v:m.v,pos:m.d+" "+m.pos+" · "+m.dias+" día(s)",q:m.q,o:"I.2 EVALUACIÓN FINAL"}}))}}});
   todo();
   /* Registro de la cita tal como está guardado (lo comparten la pestaña del médico y la de enfermería) */
   function regActual(){var x=leerDemo();if(!x)return null;var e=P.clave==="gutierrez"?x.gutierrez:(nCita?(x.romero.ses||{})[nCita]:x.romero);return e&&e.reg}
-  if(!ENF&&habilitada&&S.ini.firm&&!S.enf.firm){var chk=function(){var r=regActual();if(r&&r.enf)location.reload()};setInterval(chk,4000);window.addEventListener("storage",function(e){if(e.key==="hd_demo")chk()})}
+  if(!ENF&&habilitada&&(S.ini.firm||S.ini.guard)&&!S.enf.firm){var chk=function(){var r=regActual();if(r&&r.enf)location.reload()};setInterval(chk,4000);window.addEventListener("storage",function(e){if(e.key==="hd_demo")chk()})}
   /* «Continuar» con la nota de enfermería ya firmada: pasa directo a la I.2 EVALUACIÓN FINAL */
   try{if(sessionStorage.getItem("hd_irI2")){sessionStorage.removeItem("hd_irI2");if(!ENF&&S.enf.firm&&!S.fin.firm){S.t=3;rFlujo()}}}catch(x){}
   if(ENF){aplicarEnf();rMon();irTab("nueva");irNt("hd")}
