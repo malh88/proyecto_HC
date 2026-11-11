@@ -304,8 +304,18 @@ body.en-modal{background:#fff}
 @media print{.top,.side,.main>h1,.aviso,.cc-acc,#ctForm{display:none!important}.wrap{display:block}.main{border:0;box-shadow:none;padding:0}}
 .pm-card.pm-on{border-color:var(--verde);box-shadow:0 0 0 1px var(--verde)}
 
-/* SESIÓN DE HEMODIÁLISIS dentro de NUEVA ATENCIÓN (flag NO / SI, sin pestaña propia) */
-.ses-inline{padding:10px 12px}
-.en-modal [data-panel="nueva"]>*:not(#sesInline){display:none!important}
-.en-modal #sesInline{display:block!important;border:0;padding:0;margin:0}
-body:not(.en-modal) #sesInline [data-p="datGen"]{display:none}
+/* Tablas con «Mostrar N registros» y «Buscar» (formato SIGESAPOL) */
+.dt{border:1px solid var(--linea);border-radius:3px;padding:0 14px 12px;background:#fff}
+.dt-tit{background:var(--verde-cl);color:var(--verde-osc);font-weight:700;text-align:center;padding:10px;font-size:14px;margin:0 -14px 12px}
+.dt-ctl{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.dt-ctl label{display:flex;align-items:center;gap:6px;font-weight:400;font-size:13px;margin:0}
+.dt-ctl select.in{width:auto;min-width:70px}.dt-ctl input.in{width:180px}
+.dt-pie{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:13px}
+.dt-pg{display:inline-flex}.dt-pg .btn{background:#fff;color:#555;border:1px solid var(--linea);border-radius:0}.dt-pg .btn:disabled{opacity:.6}
+td.c,.vacio.c{text-align:center}
+/* Pestañas de las evaluaciones de la sesión (NUEVA ATENCIÓN) */
+.ses-tabs{margin:12px 0 0}
+.ses-tabs div{font-weight:700;color:var(--azul);display:flex;align-items:center;gap:6px}
+.ses-tabs div.on{color:var(--verde-osc)}
+.ses-tabs div.lock{color:#999;cursor:not-allowed}
+.ses-tabs+section>.bar{margin-top:0}

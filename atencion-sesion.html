@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Módulo de Procedimiento Programado · Sesión de Hemodiálisis · SIGESAPOL</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="css/hemodialisis.css?v=3.41">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.47">
 </head>
 <body data-pagina="sesion">
 <div class="top">
@@ -56,17 +56,12 @@
           <tr><td><input type="checkbox" checked aria-label="Procedimiento seleccionado"></td><td>90937</td><td>Procedimiento de hemodiálisis que requiere repetida(s) evaluación(es) con o sin una revisión médica substancial de la prescripción de la diálisis</td><td>01</td><td>Z49.2 - OTRAS DIALISIS</td><td class="c"><button type="button" class="btn sm g" data-origen aria-label="Ver atención origen">👁</button></td></tr></table></div>
         <div id="notaReq"></div>
         <div class="row" style="margin-top:8px"><div class="f3"><label for="obsProc">Observaciones de la realización del procedimiento</label><textarea class="in" id="obsProc" placeholder="— Registro de observaciones de la realización del procedimiento —"></textarea></div></div>
-        <!-- SESIÓN DE HEMODIÁLISIS · 3 TIEMPOS: no es una pestaña, se habilita con su flag NO / SI (como la HC inicial) -->
-        <div id="naSes"></div>
-        <div id="sesInline" class="hc-inline ses-inline" hidden>
-        <div class="flujo" id="flujo"></div>
-        <div data-p="datGen"></div>
+        <!-- Fichas de la sesión de hemodiálisis: cada una con su flag NO / SI (como la HC inicial) -->
         <div id="guardaHc"></div>
-        <div class="pac" data-p="cab"></div>
-
+        <div id="sesFichas">
         <!-- ---------- TIEMPO 1 · NEFRÓLOGO ---------- -->
-        <div class="nota ok" id="resAtn" hidden><b>RESUMEN COMPLETO DE LA ATENCIÓN</b> · I.1 EVALUACIÓN INICIAL · EVOLUCIÓN DE ENFERMERÍA · I.2 EVALUACIÓN FINAL (solo lectura)</div>
-        <section data-tiempo="1">
+        <div id="swIni"></div>
+        <section data-tiempo="1" hidden>
           <div class="bar">I.1 EVALUACIÓN INICIAL · FICHA 0026_03<span class="tag">tiempo 1 · nefrólogo</span></div>
           <div class="box">
             <fieldset id="fs1">
@@ -109,16 +104,16 @@
         </section>
 
         <!-- ---------- TIEMPO 2 · ENFERMERÍA (se registra en el Módulo de Enfermería) ---------- -->
+        <div id="enfSw"></div>
         <section data-tiempo="2" hidden>
-          <div class="bar">EVOLUCIÓN DE ENFERMERÍA · FICHA 0026_04<span class="tag">tiempo 2 · Módulo de Enfermería</span></div>
-          <div class="box">
+          <div class="box hc-inline" style="margin-top:-4px">
             <div id="t2Res"></div>
           </div>
         </section>
 
         <!-- ---------- TIEMPO 3 · NEFRÓLOGO ---------- -->
+        <div id="swFin"></div>
         <section data-tiempo="3" hidden>
-          <div class="acciones" style="margin:0 0 8px"><button type="button" class="btn k" data-irt2>← Ver evolución de enfermería</button></div>
           <div class="bar">I.2 EVALUACIÓN FINAL · FICHA 0026_03<span class="tag">tiempo 3 · nefrólogo</span></div>
           <div class="box">
             <fieldset id="fs3">
@@ -142,7 +137,7 @@
         </section>
         </div>
         <div id="naExtra"></div>
-        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="bandeja.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn g" id="btnGuardar">GUARDAR</button></div>
+        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="bandeja.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn k" id="edSes">EDITAR</button><button type="button" class="btn g" id="btnGuardar">GUARDAR</button><button type="button" class="btn g" id="finSes">FINALIZAR</button></div>
       </div>
 
       <!-- ===================== HIST. ENFERMERÍA: notas registradas en el Módulo de Enfermería ===================== -->
@@ -160,10 +155,9 @@
         <div data-p="seg"></div>
       </div>
     </div>
-    <div class="acciones"><a class="btn k" href="bandeja.html" style="text-decoration:none">← Volver al Módulo de Procedimientos Programados</a></div>
   </div>
 </div>
 <div class="aviso" id="aviso" role="status"></div>
-<script src="js/hemodialisis.js?v=3.41"></script>
+<script src="js/hemodialisis.js?v=3.47"></script>
 </body>
 </html>
