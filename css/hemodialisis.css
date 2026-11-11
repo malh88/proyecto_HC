@@ -304,10 +304,6 @@ body.en-modal{background:#fff}
 @media print{.top,.side,.main>h1,.aviso,.cc-acc,#ctForm{display:none!important}.wrap{display:block}.main{border:0;box-shadow:none;padding:0}}
 .pm-card.pm-on{border-color:var(--verde);box-shadow:0 0 0 1px var(--verde)}
 
-/* Atención de la cita dentro de HIST. DE ATENCIONES P. PROGRAMADO */
-.ses-inline{margin-top:16px}
-.en-modal [data-panel="seg"]>[data-p="seg"]{display:none!important}
-.en-modal .ses-inline{margin-top:0}
 /* Tablas con «Mostrar N registros» y «Buscar» (formato SIGESAPOL) */
 .dt{border:1px solid var(--linea);border-radius:3px;padding:0 14px 12px;background:#fff}
 .dt-tit{background:var(--verde-cl);color:var(--verde-osc);font-weight:700;text-align:center;padding:10px;font-size:14px;margin:0 -14px 12px}
