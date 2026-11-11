@@ -313,3 +313,9 @@ body.en-modal{background:#fff}
 .dt-pie{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:13px}
 .dt-pg{display:inline-flex}.dt-pg .btn{background:#fff;color:#555;border:1px solid var(--linea);border-radius:0}.dt-pg .btn:disabled{opacity:.6}
 td.c,.vacio.c{text-align:center}
+/* Pestañas de las evaluaciones de la sesión (NUEVA ATENCIÓN) */
+.ses-tabs{margin:12px 0 0}
+.ses-tabs div{font-weight:700;color:var(--azul);display:flex;align-items:center;gap:6px}
+.ses-tabs div.on{color:var(--verde-osc)}
+.ses-tabs div.lock{color:#999;cursor:not-allowed}
+.ses-tabs+section>.bar{margin-top:0}
