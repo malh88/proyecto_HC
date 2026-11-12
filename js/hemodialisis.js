@@ -1504,11 +1504,11 @@ if(PAGINA==="citas"){
     f("ctNom",PAC?PAC.nom:"");f("ctDoc",PAC?"DNI - "+PAC.dni:"");f("ctPar",PAC?PAC.par:"");f("ctGra",PAC?PAC.grado:"");f("ctHc",PAC?PAC.hc:"");f("ctTel",PAC?PAC.tel:"");f("ctDom",PAC?PAC.dom:"")}
   /* Propuesta de mejora: CITA ÚNICA o CITAS MÚLTIPLES para cualquier paciente y servicio.
      Con NEFROLOGÍA y paciente del Programa de Hemodiálisis, las citas múltiples se programan por máquina y turno. */
-  function multiHd(){return $("ctSer").value==="NEFROLOGÍA"&&PAC&&PAC.hd}
+  function multiHd(){return!!PAC}
   function pintarModo(){
     if(MODO!=="std")MODO=multiHd()?"hd":"multi";
     $("ctModo").innerHTML=!PAC?'':
-      '<div class="na-card" style="margin-top:10px"><div class="na-t">TIPO DE PROGRAMACIÓN</div><div class="ops"><label class="ck"><input type="radio" name="ctM" value="std"'+(MODO==="std"?" checked":"")+'> Cita única</label><label class="ck"><input type="radio" name="ctM" value="multi"'+(MODO!=="std"?" checked":"")+'> Citas múltiples'+(multiHd()?' · Programa de hemodiálisis (máquina y turno)':' · varias fechas con el mismo consultorio y horario')+'</label></div></div>';
+      '<div class="na-card" style="margin-top:10px"><div class="na-t">TIPO DE PROGRAMACIÓN</div><div class="ops"><label class="ck"><input type="radio" name="ctM" value="std"'+(MODO==="std"?" checked":"")+'> Cita única</label><label class="ck"><input type="radio" name="ctM" value="multi"'+(MODO!=="std"?" checked":"")+'> Citas múltiples · por máquina y turno (rango de 4 horas)</label></div></div>';
     $("ctHd").hidden=MODO!=="hd";
     pintarTodo()}
   function yaProg(){return MODO==="hd"&&PAC&&((PAC.clave==="romero"&&R.prog)||PAC.vigente)}
@@ -1608,18 +1608,18 @@ if(PAGINA==="citas"){
   function fichaCita(o){
     var cp=function(l,v,c){return'<div class="'+(c||"cc")+'"><label>'+l+'</label><span>'+(v||"&nbsp;")+'</span></div>'};
     var tabla=o.lista?'<div class="cc-sub">CITAS PROGRAMADAS ('+o.lista.length+')</div><div class="tw"><table><tr><th>N°</th><th>Fecha de cita</th><th>Día</th><th>Hora de cita</th><th>'+(o.hd?'Turno':'Servicio')+'</th><th>Consultorio'+(o.hd?' / máquina':'')+'</th><th>Médico</th><th>Estado</th></tr>'+o.lista.map(function(c,i){return'<tr><td><b>'+(i+1)+'</b></td><td>'+c.f+'</td><td>'+c.d+'</td><td>'+c.h+'</td><td>'+c.t+'</td><td>'+esc(c.con)+'</td><td>'+esc(c.med)+'</td><td><span class="st '+(o.fin||!o.hd?'s4">PROGRAMADA':'s2">GUARDADA')+'</span></td></tr>'}).join("")+'</table></div>':'';
-    $("ctCita").innerHTML='<div class="cita-card"><div class="bar">CITA'+(o.hd?' · PROGRAMA DE HEMODIÁLISIS':o.lista?' · CITAS MÚLTIPLES':'')+'</div><div class="box">'+
+    $("ctCita").innerHTML='<div class="cita-card"><div class="bar">CITA'+(o.prog?' · PROGRAMA DE HEMODIÁLISIS':o.lista?' · CITAS MÚLTIPLES':'')+'</div><div class="box">'+
       '<div class="cc-g">'+cp("FECHA DE CITA",o.fecha)+cp("HORA DE CITA",o.hora)+cp("SERVICIO",o.ser,"cc cc2")+
       cp("CONSULTORIO",esc(o.con))+cp("MEDICO",esc(o.med),"cc cc2")+cp("TIPO CITA",o.tipo)+
       (o.hd?cp("SECUENCIA",o.seq)+cp("N° DE SESIONES",o.lista.length)+cp("ENFERMERA",esc(o.enf),"cc cc2"):o.lista?cp("N° DE CITAS",o.lista.length):'')+
       cp("DNI",PAC.dni)+cp("NOMBRE Y APELLIDOS",esc(o.nom),"cc cc3")+cp("PARENTESCO",PAC.par)+cp("GRADO",PAC.grado)+cp("CORREO",esc($("ctMail").value),"cc cc2")+cp("ESTABLECIMIENTO","HOSPITAL NACIONAL PNP LUIS N. SAENZ","cc cc4")+'</div>'+tabla+
-      (o.fin&&o.hd?'<div class="nota ok" style="margin-top:10px">Citas creadas: cada sesión llegó como atención al MÓDULO DE PROCEDIMIENTOS PROGRAMADOS (Nº 22 al Nº '+(21+o.lista.length)+'). Abriendo la bandeja…</div>':'')+
-      '<div class="acciones cc-acc"><button type="button" class="btn g" id="ccNueva"'+(o.fin&&o.hd?' disabled':'')+'>Nueva Cita</button><span style="flex:1"></span><button type="button" class="btn r" id="ccImp">Imprimir 🗎</button>'+(o.hd&&!o.fin?'<button type="button" class="btn g" id="ccFin">FINALIZAR</button>':'')+'</div></div></div>';
+      (o.fin&&o.prog?'<div class="nota ok" style="margin-top:10px">Citas creadas: cada sesión llegó como atención al MÓDULO DE PROCEDIMIENTOS PROGRAMADOS (Nº 22 al Nº '+(21+o.lista.length)+'). Abriendo la bandeja…</div>':'')+
+      '<div class="acciones cc-acc"><button type="button" class="btn g" id="ccNueva"'+(o.fin&&o.prog?' disabled':'')+'>Nueva Cita</button><span style="flex:1"></span><button type="button" class="btn r" id="ccImp">Imprimir 🗎</button>'+(o.hd&&!o.fin?'<button type="button" class="btn g" id="ccFin">FINALIZAR</button>':'')+'</div></div></div>';
     $("ctForm").hidden=true;$("ctCita").hidden=false;window.scrollTo(0,0)}
   function nomInv(n){var x=String(n).split(",");return x.length>1?(x[1].trim()+" "+x[0].trim()):n}
   function datosHd(fin){var T=TURNOS[H.sel.t-1],f=H.fechas;
     var rg=ap(H.sel.ini)+" - "+ap(H.sel.ini+RANGO);
-    return{hd:true,fin:fin,fecha:f2s(iso2d(f[0])).replace(/-/g,"/")+" al "+f2s(iso2d(f[f.length-1])).replace(/-/g,"/"),hora:rg,ser:"NEFROLOGÍA · HEMODIÁLISIS (90937)",con:"175 - HEMODIÁLISIS · "+MAQ[H.sel.m],med:T.med,enf:T.enf,tipo:$("ctTipo").value,nom:nomInv(PAC.nom),seq:hTxtSeq(),
+    return{hd:true,prog:PAC.clave==="romero"&&!!R.hc,fin:fin,fecha:f2s(iso2d(f[0])).replace(/-/g,"/")+" al "+f2s(iso2d(f[f.length-1])).replace(/-/g,"/"),hora:rg,ser:$("ctSer").value==="NEFROLOGÍA"?"NEFROLOGÍA · HEMODIÁLISIS (90937)":$("ctSer").value,con:"175 - HEMODIÁLISIS · "+MAQ[H.sel.m],med:T.med,enf:T.enf,tipo:$("ctTipo").value,nom:nomInv(PAC.nom),seq:hTxtSeq(),
       lista:f.map(function(x){var d=iso2d(x);return{f:f2s(d).replace(/-/g,"/"),d:DSEM[d.getDay()],h:rg,t:T.n,con:"175 - HEMODIÁLISIS · "+MAQ[H.sel.m],med:T.med}})}}
   $("ctCrear").onclick=function(){
     if(!PAC){aviso("Busque al paciente.",true);$("ctDni").focus();return}
@@ -1650,11 +1650,13 @@ if(PAGINA==="citas"){
   document.addEventListener("click",function(e){var id=e.target.id;
     if(id==="ccImp"){window.print();return}
     if(id==="ccNueva"){$("ctCita").hidden=true;$("ctForm").hidden=false;if(MODO==="hd"){H.guard=false;pintarTodo();aviso("Puede cambiar los días o la máquina y volver a GUARDAR.")}else{U={fecha:null,slot:null,fechas:[]};pintarTodo()}window.scrollTo(0,0);return}
-    if(id==="ccFin"){sg("¿Deseas finalizar el registro? Se crearán las "+H.fechas.length+" citas del programa de hemodiálisis.",function(){
+    if(id==="ccFin"){sg("¿Deseas finalizar el registro? Se crearán las "+H.fechas.length+" citas.",function(){
       var citas=H.fechas.map(function(f){return{f:f2s(iso2d(f)),t:H.sel.t,m:H.sel.m,h:H.hora,est:"PROGRAMADA",hist:[]}}),sq=hSeq(),dat=datosHd(true);
-      if(PAC.clave==="romero"){R.prog={seq:sq==="MJS"?"MJS":"LMV",turno:H.sel.t,maq:H.sel.m,hora:H.hora,desde:H.fechas[0],citas:citas,fechas:citas.map(function(c){return c.f})};
+      if(PAC.clave==="romero"&&R.hc){R.prog={seq:sq==="MJS"?"MJS":"LMV",turno:H.sel.t,maq:H.sel.m,hora:H.hora,desde:H.fechas[0],citas:citas,fechas:citas.map(function(c){return c.f})};
         guardar();menu();fichaCita(dat);aviso(citas.length+" citas creadas: cada una llegó al Módulo de Procedimientos Programados.");setTimeout(function(){location.href="index.html"},2200)}
-      else aviso("Demostración: el paciente ya tiene programa vigente.",true)})}});
+      else{var ser=$("ctSer").value,con="175 - HEMODIÁLISIS · "+MAQ[H.sel.m],T=TURNOS[H.sel.t-1],rg=ap(H.sel.ini)+" - "+ap(H.sel.ini+RANGO);
+        H.fechas.forEach(function(x){EST.citasStd.push({dni:PAC.dni,f:f2s(iso2d(x)),c:-1,i:-1,ser:ser,con:con,med:T.med,h:rg})});guardar();
+        fichaCita(dat);H={fechas:[],sel:null,hora:"",guard:false};TAB="his";pintarTodo();aviso(citas.length+" citas creadas.")}})}});
   /* Llega desde la atención Nº 13 (HC inicial firmada) con el paciente y NEFROLOGÍA ya cargados */
   if(ORI){$("ctOrigen").innerHTML='<div class="nota ok"><b>Paciente con HC inicial firmada</b> (atención Nº '+esc(ORI)+'). Marque los días en el calendario, elija la máquina y el horario y pulse <b>GUARDAR</b>; en la ficha CITA pulse <b>FINALIZAR</b>.</div>';$("ctCancel").href="index.html"}
   var dIni=param("p")==="romero"?"40871236":param("d");

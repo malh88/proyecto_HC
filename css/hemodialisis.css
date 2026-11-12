@@ -328,3 +328,12 @@ td.c,.vacio.c{text-align:center}
 .dd-m a{padding:6px 16px;color:#333;text-decoration:none;font-size:14px;white-space:nowrap}
 .dd-m a:hover,.dd-m a:focus{background:var(--verde-cl)}
 .dd-m a.dd-pp{font-weight:700;color:var(--verde-osc)}
+/* Menú de la maqueta en forma horizontal (antes lista vertical a la izquierda) */
+.wrap{flex-direction:column;align-items:stretch;gap:12px}
+.side{width:auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;background:#fff;border:1px solid var(--linea);border-radius:3px;padding:6px 8px}
+.side .usr{margin:0 6px 0 0;border:0;border-right:1px solid var(--linea);border-radius:0;padding:2px 14px 2px 4px;background:none}
+.side .usr b{display:inline;margin-right:6px}
+.side a{margin:0;padding:7px 12px;gap:6px}
+.side .c{margin-left:6px}
+.side #btnReset{margin-left:auto}
+@media (max-width:900px){.side .usr{border-right:0;width:100%;padding-bottom:4px}.side #btnReset{margin-left:0}}
