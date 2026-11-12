@@ -1,7 +1,7 @@
 /* Maqueta · Módulo M6 «Consultas y reportes» del Movimiento de HC (SIGESAPOL)
-   Reportes del análisis funcional v4.2: HU16 récord de una HC, HU17 movimientos por
-   fechas/servicio/motivo, HU18 HC no devueltas, HU19 reportes del legado (salidas por
-   rango de fechas, cuadro estadístico, pacientes citados) y HU23 indicadores.
+   Reportes del análisis funcional v4.2: HU23 indicadores, HU18 HC no devueltas y HU17
+   movimientos por fechas/servicio/motivo. (Se retiraron Cuadro estadístico, Salidas por
+   rango de fechas, Pacientes citados y Récord de una HC.)
    Los datos son FICTICIOS, generados al abrir la página, solo para ver la pantalla. */
 
 window.Reportes = (function () {
@@ -63,10 +63,9 @@ window.Reportes = (function () {
   // ------------------------------------------------------------------ estado de la pantalla
   var R = { tab: 'ind', desde: '2026-09-14', hasta: '2026-10-12', serv: 'TODOS', mot: 'TODOS', hc: '[N° HC 0007]', citFecha: '2026-10-13', citServ: 'ONCOLOGÍA', citTurno: 'MAÑANA' };
   var TABS = [
-    ['ind', 'Indicadores', 'HU23'], ['nodev', 'HC no devueltas', 'HU18'], ['mov', 'Movimientos', 'HU17'], ['est', 'Cuadro estadístico', 'HU19'],
-    ['sal', 'Salidas por rango de fechas', 'HU19'], ['cit', 'Pacientes citados', 'HU19'], ['rec', 'Récord de una HC', 'HU16']
+    ['ind', 'Indicadores', 'HU23'], ['nodev', 'HC no devueltas', 'HU18'], ['mov', 'Movimientos', 'HU17']
   ];
-  var TABS_DEP = ['ind', 'nodev', 'mov', 'rec'];
+  var TABS_DEP = ['ind', 'nodev', 'mov'];
   var ultimaTabla = null;      // para exportar
 
   function render(ctx) {
