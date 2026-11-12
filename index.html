@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquetas SIGESAPOL</title>
+<style>
+  :root{--verde:#2E6B30;--linea:#DDD;--gris:#555;--fondo:#fff;--tarjeta:#F8F8F8;--texto:#000}
+  body{margin:0;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--fondo);color:var(--texto)}
+  header{background:var(--tarjeta);border-bottom:1px solid var(--linea);padding:10px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header img{height:46px;width:auto}
+  header .rt{margin-left:auto;font-family:Georgia,serif;font-size:13px;color:var(--gris)}
+  main{max-width:960px;margin:0 auto;padding:24px 16px}
+  h1{font-size:20px;color:var(--verde);margin:0 0 4px}
+  p.sub{color:var(--gris);margin:0 0 20px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  a.mod{display:block;border:1px solid var(--linea);border-top:4px solid var(--verde);border-radius:6px;padding:16px;text-decoration:none;color:inherit;background:var(--tarjeta)}
+  a.mod:hover,a.mod:focus-visible{border-color:var(--verde)}
+  a.mod h2{font-size:16px;margin:0 0 6px;color:var(--verde)}
+  a.mod p{margin:0;color:var(--gris);font-size:13px}
+  footer{color:var(--gris);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<header>
+  <img src="hemodialisis/img/logo-sigesapol.png" alt="Sistema de Gestión de Salud Policial SIGESAPOL">
+  <span class="rt">Hospital Nacional PNP Luis N. Sáenz</span>
+</header>
+<main>
+  <h1>Maquetas SIGESAPOL</h1>
+  <p class="sub">Prototipos navegables de los módulos. Todos los datos son ficticios.</p>
+  <div class="grid">
+    <a class="mod" href="historia-clinica/index.html">
+      <h2>Historia Clínica · Archivo de HC</h2>
+      <p>Solicitud de HC desde los departamentos médicos, bandeja y despacho de la Unidad de Archivo, apertura de HC y reportes de movimiento.</p>
+    </a>
+    <a class="mod" href="hemodialisis/index.html">
+      <h2>Programa de Hemodiálisis</h2>
+      <p>Procedimientos programados, historia clínica inicial, programación de turnos y citas, evaluaciones I.1 / I.2 y nota de enfermería.</p>
+    </a>
+    <a class="mod" href="epidemiologia/index.html">
+      <h2>Epidemiología</h2>
+      <p>Fichas de vigilancia epidemiológica (NTS MINSA) ligadas a diagnósticos y alta.</p>
+    </a>
+  </div>
+  <footer>Cada módulo conserva su propio diseño y datos; la barra verde superior permite pasar de uno a otro.</footer>
+</main>
+</body>
+</html>
