@@ -268,17 +268,18 @@ function paciente(clave,idx){
 
 /* ===== Menú lateral (igual a la v2) ===== */
 function menu(){
-  var side=$("side");if(!side)return;
+  /* Menús superiores (formato SIGESAPOL): usuario, contadores y «Reiniciar demostración» */
   var perfiles={nef:["Dra. M. SALAZAR","CMP 045812 · perfil «Nefrólogo»"],enf:["Lic. C. HUAMAN","CEP 087412 · perfil «Enfermería HD»"],adm:["[admisión HD]","perfil «Admisión de Hemodiálisis»"],tec:["Téc. R. QUISPE","perfil «Técnico de citas · Hemodiálisis»"]};
-  var pf=perfiles[rol()],act=pasoActual();
-  side.innerHTML='<div class="usr"><b>'+pf[0]+'</b>Servicio de Hemodiálisis · '+pf[1]+'</div>'+
-    SECUENCIA.filter(function(x){return!x.oculto}).map(function(x){var c=x.cuenta();return'<a href="'+(typeof x.href==="function"?x.href():x.href)+'" class="'+(act===x.id&&!/^enf/.test(PAGINA)?"on":"")+'">▦ '+x.t+''+(c?'<span class="c">'+c+'</span>':'')+'</a>'}).join("")+
-    '<a href="enfermeria.html" class="'+(/^enf/.test(PAGINA)?"on":"")+'">▦ Enfermería (EF) · Consulta Externa'+(pendEnf()?'<span class="c">'+pendEnf()+'</span>':'')+'</a>'+
-    '<a href="#" id="btnReset" style="color:#A94442">↺ Reiniciar demostración</a>';
-  $("btnReset").onclick=function(e){e.preventDefault();try{localStorage.removeItem("hd_demo");sessionStorage.removeItem("hd_demo")}catch(x){}location.href="index.html"};
+  var pf=perfiles[rol()]||perfiles.nef,act=pasoActual(),u=$("ddUsr");
+  if(u){u.querySelector(".dd-b").textContent=pf[0]+" ▾";u.querySelector(".dd-usr").innerHTML='<b>'+esc(pf[0])+'</b>Servicio de Hemodiálisis · '+esc(pf[1])}
+  var sq=function(id){var x=SECUENCIA.filter(function(z){return z.id===id})[0];return x?x.cuenta():0};
+  var cnt={pp:sq("bandeja"),cit:sq("cal"),enf:pendEnf()};
+  q("[data-cnt]").forEach(function(e){var n=cnt[e.getAttribute("data-cnt")];e.textContent=n||"";e.hidden=!n});
+  q(".dd").forEach(function(d){var n=0;q("[data-cnt]",d).forEach(function(e){n+=+(e.textContent||0)});var b=q(".dd-b .c",d)[0];if(!b&&n){d.querySelector(".dd-b").insertAdjacentHTML("beforeend",' <span class="c"></span>');b=q(".dd-b .c",d)[0]}if(b){b.textContent=n;b.hidden=!n}});
   var sb=$("secuencia");
   if(sb)sb.innerHTML=SECUENCIA.map(function(x){var h=x.hecho();return'<div class="'+(act===x.id?"on":h?"dep":"")+'" data-href="'+(typeof x.href==="function"?x.href():x.href)+'">'+x.t+'<small>'+x.ayuda+(h?" · listo":"")+'</small></div>'}).join("");
 }
+document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest("#btnReset")){e.preventDefault();try{localStorage.removeItem("hd_demo");sessionStorage.removeItem("hd_demo")}catch(x){}location.href="index.html"}});
 /* Notas de enfermería de hemodiálisis habilitadas (I.1 firmada) y aún sin registrar */
 function pendEnf(){var n=0;citasHDde().forEach(function(pc){if(pc.citas.some(function(c){return!(c.atendido||c.reg.enf)}))n++});return n}
 /* Secuencia del menú de la v2 (sin 5. Seguimiento ni 6. Reportes): es el orden en que se programa y se atiende la terapia.
@@ -297,14 +298,15 @@ function pasoActual(){
 }
 document.addEventListener("click",function(e){var d=e.target.closest("#secuencia [data-href]");if(d)location.href=d.getAttribute("data-href")});
 
-/* ===== Menú superior «Otras Atenciones» → Procedimientos Programados (como en SIGESAPOL) ===== */
-(function(){var d=$("ddOtras");if(!d)return;var b=d.querySelector(".dd-b"),m=d.querySelector(".dd-m");
-  if(["bandeja","atencion","sesion","otro","dia"].indexOf(PAGINA)>=0)d.classList.add("on");
-  var abrirM=function(v){m.hidden=!v;b.setAttribute("aria-expanded",v?"true":"false")};
-  b.addEventListener("click",function(e){e.stopPropagation();abrirM(m.hidden)});
-  document.addEventListener("click",function(e){if(!d.contains(e.target))abrirM(false)});
-  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!m.hidden){abrirM(false);b.focus()}});
-  m.addEventListener("click",function(e){var a=e.target.closest("[data-sig]");if(a){e.preventDefault();abrirM(false);aviso("«"+a.textContent+"»: opción existente de SIGESAPOL (sin cambios).")}});
+/* ===== Menús desplegables de la barra superior (Consulta Externa, Otras Atenciones, Enfermería, usuario) ===== */
+(function(){var dds=q(".dd");if(!dds.length)return;
+  var cerrarTodos=function(ex){dds.forEach(function(d){if(d===ex)return;d.querySelector(".dd-m").hidden=true;d.querySelector(".dd-b").setAttribute("aria-expanded","false")})};
+  dds.forEach(function(d){var b=d.querySelector(".dd-b"),m=d.querySelector(".dd-m");
+    if((" "+d.getAttribute("data-pag")+" ").indexOf(" "+PAGINA+" ")>=0)d.classList.add("on");
+    b.addEventListener("click",function(e){e.stopPropagation();cerrarTodos(d);m.hidden=!m.hidden;b.setAttribute("aria-expanded",m.hidden?"false":"true")});
+    m.addEventListener("click",function(e){var a=e.target.closest("[data-sig]");if(a){e.preventDefault();cerrarTodos();aviso("«"+a.textContent.trim()+"»: opción existente de SIGESAPOL (sin cambios).")}})});
+  document.addEventListener("click",function(e){if(!e.target.closest||!e.target.closest(".dd"))cerrarTodos()});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")cerrarTodos()});
 })();
 /* ===== Perfil «Ver como» (se recuerda entre páginas) ===== */
 var refrescar=null,STD_G=null;
