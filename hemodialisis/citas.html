@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo de Gestión de Citas · SIGESAPOL</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.53">
+</head>
+<body data-pagina="citas">
+<div class="top">
+  <img class="logo" src="img/logo-sigesapol.png" alt="Sistema de Gestión de Salud Policial SIGESAPOL">
+  <span>SETUP ▾</span><span class="dd" id="ddCE" data-pag="citas"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Consulta Externa (C) ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="citas.html" class="dd-pp">Registro de Cita <span class="c" data-cnt="cit" hidden></span></a><a role="menuitem" href="#" data-sig>Citas Médicas</a><a role="menuitem" href="#" data-sig>Atenciónes Médicas</a><a role="menuitem" href="#" data-sig>Historia Clinica</a><a role="menuitem" href="#" data-sig>Movimiento Historias</a></span></span><span>Hemodiálisis ▾</span><span class="dd" id="ddOtras" data-pag="bandeja atencion sesion otro dia"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Otras Atenciones ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="#" data-sig>Interconsultas</a><a role="menuitem" href="#" data-sig>Referencias</a><a role="menuitem" href="#" data-sig>Formulas Farmacotecnia</a><a role="menuitem" href="index.html" class="dd-pp">Procedimientos Programados <span class="c" data-cnt="pp" hidden></span></a><a role="menuitem" href="#" data-sig>Salud Materna Vista Individual</a><a role="menuitem" href="#" data-sig>Estrategias sanitarias</a><a role="menuitem" href="#" data-sig>Vista Pacientes Dirrehum</a></span></span><span class="dd" id="ddEF" data-pag="enf enfnota"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Enfermería (EF) ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="enfermeria.html" class="dd-pp">Listado de Consulta Externa <span class="c" data-cnt="enf" hidden></span></a><a role="menuitem" href="#" data-sig>Listado de Emergencia</a><a role="menuitem" href="#" data-sig>Listado de Hospitalizacion</a></span></span><span class="dd" id="ddUsr" data-pag=""><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">[USUARIO] ▾</button><span class="dd-m" role="menu" hidden><span class="dd-usr"></span><a role="menuitem" href="#" id="btnReset" style="color:#A94442">↺ Reiniciar demostración</a></span></span>
+  <span class="rol">Ver como:
+    <select id="selRol">
+      <option value="nef">Nefrólogo (turno día)</option>
+      <option value="enf">Enfermería de Hemodiálisis (turno día)</option>
+      <option value="adm">Admisión de Hemodiálisis</option>
+      <option value="tec" selected>Técnico de citas (Hemodiálisis)</option>
+    </select>
+  </span>
+  <span class="rt">Hospital Nacional PNP Luis N. Sáenz</span>
+</div>
+
+<div class="wrap">
+  <div class="main">
+    <h1>HOSPITAL NACIONAL PNP LUIS N. SAENZ<br>CONSULTA EXTERNA (CE) · MÓDULO DE GESTIÓN DE CITAS</h1>
+
+    <div id="ctForm">
+    <div class="bar"><span class="ce">CE</span>MÓDULO DE GESTIÓN DE CITAS</div>
+    <div class="box">
+      <div id="ctOrigen"></div>
+
+      <div class="sub" style="margin-top:0">INFORMACIÓN DEL PACIENTE</div>
+      <div class="row">
+        <div class="f"><label for="ctTd">TIPO DOC.</label><select class="in" id="ctTd"><option>DNI</option><option>CARNÉ DE EXTRANJERÍA</option><option>CIP</option></select></div>
+        <div class="f"><label for="ctDni">NRO DOC.</label><div style="display:flex"><input class="in" id="ctDni" inputmode="numeric" placeholder="N° de documento"><button type="button" class="btn k" id="ctBuscar" style="margin-left:4px">Buscar</button></div></div>
+        <div class="f2"><label for="ctNom">APELLIDOS Y NOMBRES</label><input class="in" id="ctNom" readonly></div>
+      </div>
+      <div class="row">
+        <div class="f"><label for="ctDoc">DOCUMENTO</label><input class="in" id="ctDoc" readonly></div>
+        <div class="f"><label for="ctPar">PARENTESCO</label><input class="in" id="ctPar" readonly></div>
+        <div class="f"><label for="ctGra">GRADO</label><input class="in" id="ctGra" readonly></div>
+        <div class="f"><label for="ctHc">HISTORIA CLÍNICA</label><input class="in" id="ctHc" readonly></div>
+      </div>
+      <div class="row">
+        <div class="f"><label for="ctTel">TELÉFONO</label><input class="in" id="ctTel"></div>
+        <div class="f"><label for="ctTel2">TELÉFONO 2</label><input class="in" id="ctTel2"></div>
+        <div class="f2"><label for="ctDom">DOMICILIO</label><input class="in" id="ctDom"></div>
+        <div class="f"><label for="ctMail">CORREO</label><input class="in" id="ctMail"></div>
+      </div>
+
+      <div class="sub">INFORMACIÓN DE LA PRESCRIPCIÓN Y SERVICIO</div>
+      <div class="row">
+        <div class="f2"><label for="ctAbs">ABSCRIPCIÓN</label><select class="in" id="ctAbs"><option>HOSPITAL NACIONAL PNP LUIS N. SAENZ</option></select></div>
+        <div class="f"><label for="ctSer">SERVICIO</label><select class="in" id="ctSer"><option>NEFROLOGÍA</option><option>CARDIOLOGÍA</option><option>NEUMOLOGÍA</option><option>GASTROENTEROLOGÍA</option><option>MEDICINA INTERNA</option></select></div>
+        <div class="f"><label for="ctTipo">TIPO CITA</label><select class="in" id="ctTipo"><option>Presencial</option><option>Teleconsulta</option></select></div>
+      </div>
+      <div class="row">
+        <div class="f"><label for="ctRef">REFERIDO</label><select class="in" id="ctRef"><option>NO</option><option>SI</option></select></div>
+        <div class="f2"><label for="ctProc">CONSULTORIO DE PROCEDENCIA</label><select class="in" id="ctProc"><option>--Seleccionar--</option><option>175 - CONSULTORIO HEMODIÁLISIS</option><option>NEFROLOGÍA - CONSULTORIO 12</option></select></div>
+        <div class="f"><label for="ctObs">OBSERVACIÓN</label><input class="in" id="ctObs"></div>
+      </div>
+
+      <!-- Solo NEFROLOGÍA con paciente del Programa de Hemodiálisis (HC inicial firmada) -->
+      <div id="ctModo"></div>
+      <div id="ctHd" hidden>
+        <div class="sub">PROGRAMA DE HEMODIÁLISIS · CITAS MÚLTIPLES</div>
+        <div class="hd-res" id="hdRes"></div>
+      </div>
+
+      <div class="mcal-h"><button type="button" class="btn sm k" id="calPrev" aria-label="Mes anterior">‹</button><span id="calTit"></span><button type="button" class="btn sm k" id="calNext" aria-label="Mes siguiente">›</button></div>
+      <div class="tw"><table class="mcal" id="cal"></table></div>
+
+      <div class="tabs" id="ctTabs" style="margin-top:12px">
+        <div data-ct="emg" class="on" role="tab" tabindex="0">CITAS DE EMERGENCIA Y REFERENCIA</div>
+        <div data-ct="his" role="tab" tabindex="0">HISTORIAL DE CITA</div>
+        <div data-ct="img" role="tab" tabindex="0">HISTORIAL DE CITA DE IMÁGENES</div>
+        <div data-ct="lab" role="tab" tabindex="0">HISTORIAL LABORATORIO</div>
+      </div>
+      <div id="ctTabP"></div>
+
+      <div class="pm-tit" id="pmTit"></div>
+      <div id="pm"></div>
+
+      <div class="acciones" style="justify-content:flex-end;border-top:1px solid var(--linea);padding-top:12px"><a class="btn r" id="ctCancel" href="index.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn g" id="ctCrear">CREAR</button></div>
+    </div>
+    </div>
+    <div id="ctCita" hidden></div>
+  </div>
+</div>
+<div class="velo" id="veloSg"><div class="sg-modal" role="alertdialog" aria-modal="true" aria-labelledby="sgMsg"><div class="sg-b" id="sgMsg"></div><div class="sg-f"><button type="button" class="btn sg-no" id="sgNo">Cancelar</button><button type="button" class="btn sg-si" id="sgSi">Aceptar</button></div></div></div>
+<div class="aviso" id="aviso" role="status"></div>
+<script src="js/hemodialisis.js?v=3.53"></script>
+</body>
+</html>

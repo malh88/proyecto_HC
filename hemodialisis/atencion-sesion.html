@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo de Procedimiento Programado · Sesión de Hemodiálisis · SIGESAPOL</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.53">
+</head>
+<body data-pagina="sesion">
+<div class="top">
+  <img class="logo" src="img/logo-sigesapol.png" alt="Sistema de Gestión de Salud Policial SIGESAPOL">
+  <span>SETUP ▾</span><span class="dd" id="ddCE" data-pag="citas"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Consulta Externa (C) ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="citas.html" class="dd-pp">Registro de Cita <span class="c" data-cnt="cit" hidden></span></a><a role="menuitem" href="#" data-sig>Citas Médicas</a><a role="menuitem" href="#" data-sig>Atenciónes Médicas</a><a role="menuitem" href="#" data-sig>Historia Clinica</a><a role="menuitem" href="#" data-sig>Movimiento Historias</a></span></span><span>Hemodiálisis ▾</span><span class="dd" id="ddOtras" data-pag="bandeja atencion sesion otro dia"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Otras Atenciones ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="#" data-sig>Interconsultas</a><a role="menuitem" href="#" data-sig>Referencias</a><a role="menuitem" href="#" data-sig>Formulas Farmacotecnia</a><a role="menuitem" href="index.html" class="dd-pp">Procedimientos Programados <span class="c" data-cnt="pp" hidden></span></a><a role="menuitem" href="#" data-sig>Salud Materna Vista Individual</a><a role="menuitem" href="#" data-sig>Estrategias sanitarias</a><a role="menuitem" href="#" data-sig>Vista Pacientes Dirrehum</a></span></span><span class="dd" id="ddEF" data-pag="enf enfnota"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Enfermería (EF) ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="enfermeria.html" class="dd-pp">Listado de Consulta Externa <span class="c" data-cnt="enf" hidden></span></a><a role="menuitem" href="#" data-sig>Listado de Emergencia</a><a role="menuitem" href="#" data-sig>Listado de Hospitalizacion</a></span></span><span class="dd" id="ddUsr" data-pag=""><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">[USUARIO] ▾</button><span class="dd-m" role="menu" hidden><span class="dd-usr"></span><a role="menuitem" href="#" id="btnReset" style="color:#A94442">↺ Reiniciar demostración</a></span></span>
+  <span class="rol">Ver como:
+    <select id="selRol">
+      <option value="nef" selected>Nefrólogo (turno día)</option>
+      <option value="enf">Enfermería de Hemodiálisis (turno día)</option>
+      <option value="adm">Admisión de Hemodiálisis</option>
+      <option value="tec">Técnico de citas (Hemodiálisis)</option>
+    </select>
+  </span>
+  <span class="rt">Hospital Nacional PNP Luis N. Sáenz</span>
+</div>
+
+<div class="wrap">
+  <div class="main">
+    <h1>HOSPITAL NACIONAL PNP LUIS N. SAENZ<br>DEPARTAMENTO DE NEFROLOGÍA · SERVICIO DE HEMODIÁLISIS</h1>
+
+    <div class="bar">MÓDULO DE PROCEDIMIENTO PROGRAMADO<span class="tag" style="background:#6C6C6C" data-p="cita">cita única · Nº 21</span></div>
+    <div class="box">
+      <div class="tabs pp-tabs" role="tablist" aria-label="Secciones de la atención">
+        <div role="tab" tabindex="0" data-tab="nueva" class="on">NUEVA ATENCIÓN</div>
+        <div role="tab" tabindex="0" data-tab="hatn">HIST. ATENCIONES</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. EXÁMENES DE LABORATORIO</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. EXÁMENES DE RADIOLOGÍA</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. INTERCONSULTA</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. REFERENCIAS / CONTRARREFERENCIAS</div>
+        <div role="tab" tabindex="0" data-tab="seg">HIST. DE ATENCIONES P. PROGRAMADO</div>
+        <div role="tab" tabindex="0" data-tab="henf">HIST. ENFERMERÍA <span class="st" id="stHenf" hidden></span></div>
+      </div>
+
+      <!-- ===================== NUEVA ATENCIÓN (pantalla actual) ===================== -->
+      <div data-panel="nueva">
+        <div class="dos">
+          <div><div class="sub" style="margin-top:0">DATOS DEL PACIENTE</div>
+            <div class="kv" data-p="kvPac"></div></div>
+          <div><div class="sub" style="margin-top:0">DATOS GENERALES DE LA ATENCIÓN</div>
+            <div class="kv" data-p="kvAte"></div></div>
+        </div>
+        <div class="sub">DATOS DEL RESPONSABLE DEL PROCEDIMIENTO</div>
+        <div class="tw"><table><tr><th>TIPO Y Nº DE DOC</th><th>APELLIDOS Y NOMBRES</th><th>ESPECIALIDAD</th><th>Nº DE CMP</th><th>Nº DE RNE</th></tr>
+          <tr><td>DNI - [Nº]</td><td>Dra. M. SALAZAR</td><td>NEFROLOGÍA</td><td>045812</td><td>028731</td></tr></table></div>
+        <div class="sub">PROCEDIMIENTO SOLICITADO</div>
+        <div class="tw"><table><tr><th style="width:30px"></th><th>Código</th><th>Descripción</th><th>Cantidad</th><th>Diagnóstico</th><th class="c">Atención origen</th></tr>
+          <tr><td><input type="checkbox" checked aria-label="Procedimiento seleccionado"></td><td>90937</td><td>Procedimiento de hemodiálisis que requiere repetida(s) evaluación(es) con o sin una revisión médica substancial de la prescripción de la diálisis</td><td>01</td><td>Z49.2 - OTRAS DIALISIS</td><td class="c"><button type="button" class="btn sm g" data-origen aria-label="Ver atención origen">👁</button></td></tr></table></div>
+        <div id="notaReq"></div>
+        <div class="row" style="margin-top:8px"><div class="f3"><label for="obsProc">Observaciones de la realización del procedimiento</label><textarea class="in" id="obsProc" placeholder="— Registro de observaciones de la realización del procedimiento —"></textarea></div></div>
+        <!-- Fichas de la sesión de hemodiálisis: cada una con su flag NO / SI (como la HC inicial) -->
+        <div id="guardaHc"></div>
+        <div id="sesFichas">
+        <!-- ---------- TIEMPO 1 · NEFRÓLOGO ---------- -->
+        <div id="swIni"></div>
+        <section data-tiempo="1" hidden>
+          <div class="bar">I.1 EVALUACIÓN INICIAL · FICHA 0026_03<span class="tag">tiempo 1 · nefrólogo</span></div>
+          <div class="box">
+            <fieldset id="fs1">
+              <div class="row"><div class="f"><label for="hIni">Hora de evaluación inicial <i>*</i></label><input class="in" id="hIni" type="time" value="06:05"></div><div class="f"><label>Atención en condiciones COVID-19</label><div class="ops"><label class="ck"><input type="radio" name="covid"> SÍ</label><label class="ck"><input type="radio" name="covid" checked> NO</label></div></div><input type="hidden" id="medT1" value="Dra. M. SALAZAR"><div class="f2"></div></div>
+
+              <div class="sub">1. PROBLEMAS CLÍNICOS (CIE-10)</div>
+              <div class="row"><div class="f3"><label for="cieAdd">Buscar diagnóstico CIE-10 <i>*</i></label><select class="in" id="cieAdd"></select></div><div class="f"><label for="cieTipo">Tipo <i>*</i></label><select class="in" id="cieTipo"><option>PRESUNTIVO</option><option selected>DEFINITIVO</option><option>REITERATIVO</option></select></div><div class="fh"><label>&nbsp;</label><button type="button" class="btn k" style="width:100%" id="btnCie">Agregar</button></div></div>
+              <div class="tw"><table id="tblCie"></table></div>
+              <div class="row" style="margin-top:8px"><div class="f3"><label for="sys">Signos y síntomas</label><textarea class="in" id="sys">Refiere astenia leve. Niega disnea.</textarea></div></div>
+
+              <div class="sub">2. FUNCIONES VITALES</div>
+              <div class="row"><div class="f"><label for="pa">PA (mmHg) <i>*</i></label><input class="in" id="pa" value="140/85"></div><div class="f"><label for="fc">FC (lpm) <i>*</i></label><input class="in" id="fc" type="number" value="76"></div><div class="f"><label for="fr">FR (rpm) <i>*</i></label><input class="in" id="fr" type="number" value="18"></div><div class="f"><label for="so2">SO2 (%) <i>*</i></label><input class="in" id="so2" type="number" value="97"></div><div class="f2"><label for="otv">Otras</label><input class="in" id="otv" placeholder="Temperatura, glucosa…"></div></div>
+
+              <div class="sub">3. PRESCRIPCIÓN PARA MÁQUINA DE HEMODIÁLISIS <span class="orig">precargada de la sesión del 02-11-2026</span></div>
+              <div class="row"><div class="f"><label for="hhd">Horas de hemodiálisis <i>*</i></label><select class="in" id="hhd"></select></div><div class="f"><label for="hep">Dosis de heparina (UI)</label><input class="in" id="hep" value="5000"></div><div class="f"><label for="ps">Peso seco (kg) <i>*</i></label><input class="in" id="ps" value="62.5"></div><div class="f"><label for="pi">Peso inicial (kg) <i>*</i></label><input class="in" id="pi" value="65.1"></div><div class="f"><label for="uf">Ultrafiltrado a programar (L) <i>*</i></label><input class="in" id="uf" value="2.6"><div class="ayuda" id="ufh">Peso inicial − peso seco: 2.6 kg</div></div></div>
+              <div class="row"><div class="f"><label for="qb">QB (ml/min) <i>*</i></label><select class="in" id="qb"><option>250</option><option>300</option><option selected>350</option><option>400</option><option>450</option><option>500</option></select></div><div class="f"><label for="qd">QD (ml/min)</label><input class="in" id="qd" value="500"></div><div class="f"><label for="buf">Buffer</label><select class="in" id="buf"><option>BICARBONATO</option><option>ACETATO</option></select></div><div class="f"><label for="bic">Bicarbonato (mEq/L)</label><input class="in" id="bic" value="32"></div><div class="f"><label for="cond">Conductividad (mS/cm)</label><input class="in" id="cond" value="14.0"></div></div>
+              <div class="row"><div class="f"><label for="nai">Na inicial (mEq/L)</label><input class="in" id="nai" value="140"></div><div class="f"><label for="naf">Na final (mEq/L)</label><input class="in" id="naf" value="138"></div><div class="f"><label for="pna">Perfil de Na</label><select class="in" id="pna"><option>SIN PERFIL</option><option>PERFIL 1</option><option>PERFIL 2</option><option>PERFIL 3</option></select></div><div class="f"><label for="puf">Perfil de UF</label><select class="in" id="puf"><option>SIN PERFIL</option><option>PERFIL 1</option><option>PERFIL 2</option><option>PERFIL 3</option></select></div><div class="f"></div></div>
+
+              <div class="sub">4. PRESCRIPCIÓN PARA DIALIZADOR</div>
+              <div class="row"><div class="f"><label for="area">Área de dializador (m²)</label><select class="in" id="area"><option>1.3</option><option>1.5</option><option selected>1.8</option><option>2.1</option></select></div><div class="f2"><label for="memb">Membrana de dializador</label><select class="in" id="memb"><option>POLISULFONA ALTO FLUJO</option><option>POLISULFONA BAJO FLUJO</option><option>TRIACETATO DE CELULOSA</option></select></div><div class="f2"></div></div>
+
+              <div class="sub">5. RECETA DE LA SESIÓN</div>
+              <div class="row"><div class="f"><label>Prescribir receta <i>*</i></label><div class="ops"><label class="ck"><input type="radio" name="rx" id="rx0" checked> SÍ</label><label class="ck"><input type="radio" name="rx" id="rx1"> NO</label></div></div><div class="f3"><label for="farm">Farmacia <i>*</i></label><select class="in" id="farm"><option>-Seleccionar-</option><option selected>FARMACIA CENTRAL DEL HOSPITAL NACIONAL PNP LUIS N. SAENZ</option><option>FARMACIA PIP I DEL HOSPITAL NACIONAL PNP LUIS N. SAENZ</option><option>FARMACIA CENTRO QUIRÚRGICO</option></select></div><div class="f"><label>Fec. expedición</label><input class="in" readonly value="04-11-2026"></div></div>
+              <div id="rxBox">
+                <div class="sub">5.1 KIT DE INSUMOS DE LA SESIÓN <span class="orig">precargado según acceso FAV</span></div>
+                <div class="tw"><table id="tblKit"></table></div>
+                <div class="na-card" style="margin-top:12px"><div class="na-t">5.2 PRESCRIBIR RECETA</div><span id="rxMedTg"></span></div>
+                <div class="na-card" id="rxMedBox"><div class="na-h">PRODUCTOS MÉDICOS</div>
+                  <div class="row"><div class="f"><label>FEC. EXPEDICIÓN (A)</label><input class="in" readonly id="rxFec"></div><div class="f3"><label>FARMACIA</label><input class="in" readonly id="rxFarm2"></div></div>
+                  <div class="row"><div class="f"><label>PACIENTE CONTINUADOR</label><span id="rxContTg"></span></div></div>
+                  <div class="acciones" style="margin-top:0"><button type="button" class="btn k" id="btnMed">Agregar Producto</button></div>
+                  <div class="tw"><table id="tblMed"></table></div>
+                </div>
+              </div>
+              <div class="row" style="margin-top:8px"><div class="f3"><label for="oind">Otras indicaciones (plan de trabajo)</label><textarea class="in" id="oind">Control de potasio en la próxima sesión.</textarea></div></div>
+              <input type="hidden" id="rxVale"><input type="hidden" id="rxFur"><input type="hidden" id="cpms" value="90937">
+            </fieldset>
+            <div id="firma1"></div>
+          </div>
+        </section>
+
+        <!-- ---------- TIEMPO 2 · ENFERMERÍA (se registra en el Módulo de Enfermería) ---------- -->
+        <div id="enfSw"></div>
+        <section data-tiempo="2" hidden>
+          <div class="box hc-inline" style="margin-top:-4px">
+            <div id="t2Res"></div>
+          </div>
+        </section>
+
+        <!-- ---------- TIEMPO 3 · NEFRÓLOGO ---------- -->
+        <div id="swFin"></div>
+        <section data-tiempo="3" hidden>
+          <div class="bar">I.2 EVALUACIÓN FINAL · FICHA 0026_03<span class="tag">tiempo 3 · nefrólogo</span></div>
+          <div class="box">
+            <fieldset id="fs3">
+              <div id="t3Ev"></div>
+              <div class="row"><div class="f"><label for="hFin">Hora de evaluación final <i>*</i></label><input class="in" id="hFin" type="time" value="10:02"></div><div class="f2"><label>Médico</label><input class="in" readonly id="medT3" value="Dra. M. SALAZAR"></div><div class="f2"><label>Consultorio</label><input class="in" readonly value="175 - CONSULTORIO HEMODIÁLISIS"></div></div>
+              <div class="sub">DIAGNÓSTICOS DE LA PRESTACIÓN <span class="orig">del tiempo 1</span></div>
+              <div class="tw"><table id="tblDx3"></table></div>
+              <div class="sub">PROCEDIMIENTOS MÉDICOS (CPMS) <span class="orig">generados desde la sesión</span></div>
+              <div class="tw"><table id="tblCpms"></table></div>
+              <div class="na-card" style="margin-top:12px"><div class="na-t">PRESCRIBIR RECETA</div><span id="fmRxTg"></span></div>
+              <div class="na-card" id="fmRxBox"><div class="na-h">PRODUCTOS MÉDICOS</div>
+                <div class="row"><div class="f"><label>FEC. EXPEDICIÓN (A)</label><input class="in" readonly id="fmFec"></div><div class="f3"><label>FARMACIA</label><input class="in" readonly id="fmFarm" value="FARMACIA CENTRAL DEL HOSPITAL NACIONAL PNP LUIS N. SAENZ"></div></div>
+                <div class="row"><div class="f"><label>PACIENTE CONTINUADOR</label><span id="fmContTg"></span></div></div>
+                <div class="acciones" style="margin-top:0"><button type="button" class="btn k" id="btnFinMed">Agregar Producto</button></div>
+                <div class="tw"><table id="tblFinMed"></table></div>
+              </div>
+              <div class="row"><div class="f3"><label for="condFin">Condición clínica del paciente al finalizar hemodiálisis y otros <i>*</i></label><textarea class="in" id="condFin">Paciente estable, sin molestias. Se retira deambulando.</textarea></div></div>
+            </fieldset>
+            <div id="firma3"></div>
+          </div>
+        </section>
+        </div>
+        <div id="naExtra"></div>
+        <div class="acciones" style="justify-content:flex-end"><a class="btn r" href="index.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn k" id="edSes">EDITAR</button><button type="button" class="btn g" id="btnGuardar">GUARDAR</button><button type="button" class="btn g" id="finSes">FINALIZAR</button></div>
+      </div>
+
+      <!-- ===================== HIST. ENFERMERÍA: notas registradas en el Módulo de Enfermería ===================== -->
+      <div data-panel="henf" hidden>
+        <div id="histEnf"></div>
+      </div>
+
+      <div data-panel="hatn" hidden><div id="histAtn"></div></div>
+      <div data-panel="hist" hidden>
+        <div class="tw"><table><tr><th>Fecha</th><th>Servicio</th><th>Profesional</th><th>Detalle</th></tr><tr><td colspan="4" class="vacio">Historial existente de SIGESAPOL (sin cambios).</td></tr></table></div>
+      </div>
+
+      <!-- ===================== HISTORIAL DE SESIONES HD ===================== -->
+      <div data-panel="seg" hidden>
+        <div data-p="seg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="aviso" id="aviso" role="status"></div>
+<script src="js/hemodialisis.js?v=3.53"></script>
+</body>
+</html>

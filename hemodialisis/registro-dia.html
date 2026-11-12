@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro de atención del día · Hemodiálisis SIGESAPOL</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.53">
+</head>
+<body data-pagina="dia">
+<div class="top">
+  <img class="logo" src="img/logo-sigesapol.png" alt="Sistema de Gestión de Salud Policial SIGESAPOL">
+  <span>SETUP ▾</span><span class="dd" id="ddCE" data-pag="citas"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Consulta Externa (C) ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="citas.html" class="dd-pp">Registro de Cita <span class="c" data-cnt="cit" hidden></span></a><a role="menuitem" href="#" data-sig>Citas Médicas</a><a role="menuitem" href="#" data-sig>Atenciónes Médicas</a><a role="menuitem" href="#" data-sig>Historia Clinica</a><a role="menuitem" href="#" data-sig>Movimiento Historias</a></span></span><span>Hemodiálisis ▾</span><span class="dd" id="ddOtras" data-pag="bandeja atencion sesion otro dia"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Otras Atenciones ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="#" data-sig>Interconsultas</a><a role="menuitem" href="#" data-sig>Referencias</a><a role="menuitem" href="#" data-sig>Formulas Farmacotecnia</a><a role="menuitem" href="index.html" class="dd-pp">Procedimientos Programados <span class="c" data-cnt="pp" hidden></span></a><a role="menuitem" href="#" data-sig>Salud Materna Vista Individual</a><a role="menuitem" href="#" data-sig>Estrategias sanitarias</a><a role="menuitem" href="#" data-sig>Vista Pacientes Dirrehum</a></span></span><span class="dd" id="ddEF" data-pag="enf enfnota"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Enfermería (EF) ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="enfermeria.html" class="dd-pp">Listado de Consulta Externa <span class="c" data-cnt="enf" hidden></span></a><a role="menuitem" href="#" data-sig>Listado de Emergencia</a><a role="menuitem" href="#" data-sig>Listado de Hospitalizacion</a></span></span><span class="dd" id="ddUsr" data-pag=""><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">[USUARIO] ▾</button><span class="dd-m" role="menu" hidden><span class="dd-usr"></span><a role="menuitem" href="#" id="btnReset" style="color:#A94442">↺ Reiniciar demostración</a></span></span>
+  <span class="rol">Ver como:
+    <select id="selRol">
+      <option value="nef" selected>Nefrólogo (turno día)</option>
+      <option value="enf">Enfermería de Hemodiálisis (turno día)</option>
+      <option value="adm">Admisión de Hemodiálisis</option>
+      <option value="tec">Técnico de citas (Hemodiálisis)</option>
+    </select>
+  </span>
+  <span class="rt">Hospital Nacional PNP Luis N. Sáenz</span>
+</div>
+<div class="wrap">
+  <div class="main">
+    <h1>HOSPITAL NACIONAL PNP LUIS N. SAENZ<br>DEPARTAMENTO DE NEFROLOGÍA · SERVICIO DE HEMODIÁLISIS</h1>
+    <div id="vista"></div>
+  </div>
+</div>
+<div class="aviso" id="aviso" role="status"></div>
+<script src="js/hemodialisis.js?v=3.53"></script>
+</body>
+</html>
