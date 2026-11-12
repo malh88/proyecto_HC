@@ -1,5 +1,6 @@
 /* Maqueta interactiva · Solicitud de HC desde los departamentos médicos (SIGESAPOL)
-   - Perfil «Departamento médico»: Mis solicitudes, Registrar solicitud (solo enviar), Recepcionar HC.
+   Las opciones están en el desplegable «Archivo» del menú superior y dependen del perfil del usuario:
+   - Perfil «Departamento médico»: Mis solicitudes, Registrar solicitud (solo enviar), Recepcionar HC, Devolver HC.
    - Perfil «Archivo de HC»: Bandeja de solicitudes (ve lo que envían los departamentos) y despacho.
    Los datos son ficticios ([paciente], [N° HC]) y viven solo en memoria: al recargar se reinician. */
 
@@ -82,59 +83,87 @@
   function mias() { return S.sols.filter(function (s) { return s.servicio === SERVICIO_USUARIO; }); }
   function cuenta(f) { return S.sols.filter(f).length; }
 
-  // ------------------------------------------------------------------ menú lateral
+  // ------------------------------------------------------------------ menú superior (como SIGESAPOL)
+  // Las opciones de HC van en el desplegable «Archivo». Cada usuario ve solo las de su perfil,
+  // y un usuario cuyo perfil no tiene habilitada la opción Archivo no ve ese desplegable.
+  var USUARIOS = {
+    dep: { nombre: function () { return PERSONAL[0]; }, perfil: function () { return SERVICIO_USUARIO + ' · perfil «Solicitante de HC»'; }, inicio: 'mis' },
+    arc: { nombre: function () { return '[archivero]'; }, perfil: function () { return 'Unidad de Archivo de HC · perfil «Operador de Archivo»'; }, inicio: 'bandeja' },
+    sin: { nombre: function () { return '[médico]'; }, perfil: function () { return 'Consulta Externa · perfil «Médico» · sin la opción Archivo'; }, inicio: 'sin' }
+  };
+  function opcionesArchivo() {
+    if (S.rol === 'dep') return [
+      ['mis', 'Mis solicitudes de HC'], ['reg', 'Registrar solicitud'],
+      ['rec', 'Recepcionar HC', mias().filter(function (s) { return s.estado === 'DESPACHADA'; }).length],
+      ['dev', 'Devolver HC', enMiServicio().filter(function (o) { return !o.h.retPend; }).length]];
+    if (S.rol === 'arc') return [
+      ['bandeja', 'Bandeja de solicitudes', cuenta(function (s) { return s.estado === 'ENVIADA'; })], ['areg', 'Registrar solicitud'],
+      ['ing', 'Ingreso de Historias', (S.retornos || []).filter(function (r) { return r.estado === 'POR_CONFIRMAR'; }).length],
+      ['seg', 'Seguimiento de HC'], ['rep', 'Reportes'], ['bus', 'Buscar Historias']];
+    return [];
+  }
+  function tieneArchivo() { return opcionesArchivo().length > 0; }
   function menu() {
-    var h = '';
-    if (S.rol === 'dep') {
-      var porRec = mias().filter(function (s) { return s.estado === 'DESPACHADA'; }).length;
-      h += '<div class="usr"><b>' + PERSONAL[0] + '</b>' + SERVICIO_USUARIO + ' · perfil «Solicitante de HC»</div>';
-      h += item('mis', 'Mis solicitudes de HC', true);
-      h += item('reg', 'Registrar solicitud', false);
-      h += item('rec', 'Recepcionar HC', true, porRec);
-      h += item('dev', 'Devolver HC', true, enMiServicio().filter(function (o) { return !o.h.retPend; }).length);
-    } else {
-      var nuevas = cuenta(function (s) { return s.estado === 'ENVIADA'; });
-      h += '<div class="usr"><b>[archivero]</b>Unidad de Archivo de HC · perfil «Operador de Archivo»</div>';
-      h += item('bandeja', 'Bandeja de solicitudes', false, nuevas);
-      h += item('areg', 'Registrar solicitud', false);
-      h += item('ing', 'Ingreso de Historias', false, (S.retornos || []).filter(function (r) { return r.estado === 'POR_CONFIRMAR'; }).length);
-      h += item('seg', 'Seguimiento de HC', true);
-      h += item('rep', 'Reportes', true);
-      h += item('bus', 'Buscar Historias', false);
-      h += item('nueva', 'Nueva Historia', false);
-    }
-    $('side').innerHTML = h;
-    Array.prototype.forEach.call(document.querySelectorAll('.side a[data-v]'), function (a) {
-      a.onclick = function () { S.vista = a.getAttribute('data-v'); S.sel = null; pintar(); };
+    var ops = opcionesArchivo();
+    var sig = function (t) { return '<a role="menuitem" class="sig" title="Opción de SIGESAPOL que no forma parte de esta maqueta">' + t + '</a>'; };
+    var dd = function (id, t, items, on, cnt) {
+      return '<span class="dd' + (on ? ' on' : '') + '" id="' + id + '"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">' + t +
+        (cnt ? '<span class="c">' + cnt + '</span>' : '') + ' ▾</button><span class="dd-m" role="menu" hidden>' + items + '</span></span>';
+    };
+    var arch = ops.map(function (o) {
+      return '<a role="menuitem" tabindex="-1" data-v="' + o[0] + '"' + (S.vista === o[0] ? ' class="on"' : '') + '>' + o[1] + (o[2] ? '<span class="c">' + o[2] + '</span>' : '') + '</a>';
+    }).join('');
+    var total = ops.reduce(function (t, o) { return t + (o[2] || 0); }, 0);
+    var u = USUARIOS[S.rol];
+    $('menu').innerHTML =
+      dd('ddSetup', 'SETUP', sig('Perfiles') + sig('Usuarios') + sig('Establecimientos')) +
+      (ops.length ? dd('ddArchivo', 'Archivo', arch, true, total) : '') +
+      dd('ddRrhh', 'RR.HH.', sig('Personal') + sig('Programación')) +
+      dd('ddCE', 'Consulta Externa (C)', sig('Registro de Cita') + sig('Citas Médicas') + sig('Atenciones Médicas') + sig('Historia Clínica')) +
+      dd('ddEme', 'Emergencia (E)', sig('Admisión de Emergencia') + sig('Atenciones de Emergencia')) +
+      dd('ddHos', 'Hospitalización (H)', sig('Ingreso Hospitalario') + sig('Censo de camas')) +
+      dd('ddOtras', 'Otras Atenciones', sig('Interconsultas') + sig('Referencias') + sig('Procedimientos Programados')) +
+      dd('ddUsr', '[USUARIO]', '<span class="usr"><b>' + esc(u.nombre()) + '</b>' + esc(u.perfil()) + '</span>' + sig('Cambiar contraseña') + sig('Cerrar sesión'));
+    Array.prototype.forEach.call(document.querySelectorAll('#menu .dd'), function (d) {
+      var b = d.querySelector('.dd-b');
+      b.onclick = function (e) { e.stopPropagation(); var abrir = !d.classList.contains('abierto'); cerrarMenus(); if (abrir) abrirMenu(d); };
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('#menu a[data-v]'), function (a) {
+      a.onclick = function () { cerrarMenus(); S.vista = a.getAttribute('data-v'); S.sel = null; pintar(); };
     });
   }
-  function item(v, t, nuevo, c) {
-    return '<a data-v="' + v + '" class="' + (S.vista === v ? 'on' : '') + '">▦ ' + t + (nuevo ? ' <span class="n">nuevo</span>' : '') + (c ? '<span class="c">' + c + '</span>' : '') + '</a>';
+  function abrirMenu(d) {
+    d.classList.add('abierto'); d.querySelector('.dd-m').hidden = false; d.querySelector('.dd-b').setAttribute('aria-expanded', 'true');
+    var a = d.querySelector('a[data-v]'); if (a) a.focus();
   }
-  function off(t) { return '<a class="off" title="Sin cambios: se mantiene como en el análisis funcional v4.2">▦ ' + t + '</a>'; }
+  function cerrarMenus() {
+    Array.prototype.forEach.call(document.querySelectorAll('#menu .dd.abierto'), function (d) {
+      d.classList.remove('abierto'); d.querySelector('.dd-m').hidden = true; d.querySelector('.dd-b').setAttribute('aria-expanded', 'false');
+    });
+  }
+  document.addEventListener('click', cerrarMenus);
+  document.addEventListener('keydown', function (e) {
+    var d = document.querySelector('#menu .dd.abierto'); if (!d) return;
+    if (e.key === 'Escape') { cerrarMenus(); d.querySelector('.dd-b').focus(); return; }
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    var it = Array.prototype.slice.call(d.querySelectorAll('a[data-v]')), i = it.indexOf(document.activeElement);
+    if (!it.length) return; e.preventDefault();
+    it[(i + (e.key === 'ArrowDown' ? 1 : it.length - 1)) % it.length].focus();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && document.activeElement && document.activeElement.matches('#menu a[data-v]')) document.activeElement.click();
+  });
 
-  // ------------------------------------------------------------------ flujo
-  function flujo() {
-    $('flujo').style.display = ['rep', 'seg', 'bus', 'nueva'].indexOf(S.vista) >= 0 ? 'none' : '';
-    var pasos = [
-      ['dep', '1. Se registra la solicitud', 'el servicio en SIGESAPOL o Archivo'],
-      ['arc', '2. Archivo recibe en su bandeja', 'ubica y prepara las HC'],
-      ['arc', '3. Archivo despacha', 'orden de salida + cargo'],
-      ['dep', '4. Departamento recepciona', 'confirma la cantidad recibida'],
-      ['dep', '5. Departamento solicita el retorno', 'envía a Archivo las HC que devuelve'],
-      ['arc', '6. Archivo confirma el ingreso', 'recepción de las HC devueltas']
-    ];
-    var on = { mis: -1, reg: 0, areg: 0, bandeja: 1, rec: 3, dev: 4, ing: 5 }[S.vista];
-    if (S.vista === 'bandeja' && $('velo').classList.contains('ver')) on = 2;
-    $('flujo').innerHTML = pasos.map(function (p, i) {
-      return '<div class="' + (i === on ? 'on' : (p[0] === 'dep' ? 'dep' : '')) + '">' + p[1] + '<small>' + p[2] + '</small></div>';
-    }).join('');
+  // ------------------------------------------------------------------ usuario sin la opción Archivo
+  function vistaSin() {
+    $('vista').innerHTML = '<div class="bar">BIENVENIDO A SIGESAPOL</div><div class="box">' +
+      '<div class="nota">El perfil de este usuario <b>no tiene habilitada la opción «Archivo»</b>, por eso no aparece en el menú superior y no puede registrar, recepcionar ni devolver historias clínicas. ' +
+      'La opción se habilita por perfil en <b>SETUP › Perfiles</b>: «Solicitante de HC» para los departamentos médicos y «Operador de Archivo» para la Unidad de Archivo de HC.</div></div>';
   }
 
   // ------------------------------------------------------------------ DEPARTAMENTO · Mis solicitudes
   function vistaMis() {
     var m = mias();
-    var k = function (e) { return m.filter(function (s) { return s.estado === e; }).length; };
     var filas = m.map(function (s) {
       var acc = s.estado === 'DESPACHADA'
         ? '<button class="btn sm g" data-rec="' + s.id + '">Recepcionar</button>'
@@ -144,14 +173,10 @@
     }).join('');
     $('vista').innerHTML =
       '<div class="bar">MIS SOLICITUDES DE HISTORIAS CLÍNICAS · ' + SERVICIO_USUARIO + '<span class="tag">nuevo</span></div><div class="box">' +
-      '<div class="kpis"><div class="kpi"><div class="v">' + k('ENVIADA') + '</div><div class="t">Enviadas a Archivo</div></div>' +
-      '<div class="kpi"><div class="v">' + k('EN_ATENCION') + '</div><div class="t">En atención</div></div>' +
-      '<div class="kpi alerta"><div class="v">' + k('DESPACHADA') + '</div><div class="t">Por recepcionar</div></div>' +
-      '<div class="kpi ok"><div class="v">' + (k('RECEPCIONADA') + k('DIFERENCIA') + k('DEV_PARCIAL') + k('CERRADA')) + '</div><div class="t">Recepcionadas</div></div></div>' +
       '<div style="display:flex;justify-content:flex-end"><button class="btn g" id="btnNueva">+ Registrar nueva solicitud</button></div>' +
       '<table><tr><th>N° Solicitud</th><th>Fecha y hora</th><th>Solicitado por</th><th>Motivo</th><th>Documento</th><th>Cant. HC</th><th>Fecha en que se requiere</th><th>Estado</th><th>Acción</th></tr>' +
       (filas || '<tr><td colspan="9" class="vacio">Aún no hay solicitudes.</td></tr>') + '</table>' +
-      '<div class="leg">El departamento solo ve sus propias solicitudes. Cuando Archivo despacha, la solicitud pasa a «Por recepcionar» y aparece en «Recepcionar HC». Para devolver las HC use «Devolver HC».</div></div>';
+      '<div class="leg">El departamento solo ve sus propias solicitudes. Cuando Archivo despacha, la solicitud pasa a «Por recepcionar» y aparece en Archivo › Recepcionar HC. Para devolver las HC use Archivo › Devolver HC.</div></div>';
     $('btnNueva').onclick = function () { S.vista = 'reg'; pintar(); };
     enlazar('[data-rec]', function (id) { S.vista = 'rec'; S.sel = id; pintar(); });
     enlazar('[data-ver]', function (id) { verSolicitud(id); });
@@ -223,7 +248,7 @@
       S.sols.unshift({ id: b.id, fecha: ahora(), servicio: SERVICIO_USUARIO, persona: b.persona, motivo: b.motivo, doc: b.doc, nroDoc: b.nroDoc,
         cant: b.cant, fechaReq: fmtFecha(b.fechaReq), prioridad: b.prioridad, obs: b.obs, origen: 'SIGESAPOL', estado: 'ENVIADA', hcs: b.hcs });
       S.correl++; S.borrador = null; S.vista = 'mis';
-      aviso('Solicitud <b>' + b.id + '</b> enviada. Archivo la ve en su bandeja. <br><small>Cambie a «Unidad de Archivo de HC» para continuar el flujo.</small>');
+      aviso('Solicitud <b>' + b.id + '</b> enviada. Archivo la ve en su bandeja. <br><small>Cambie al usuario «[archivero]» → Archivo › Bandeja de solicitudes para continuar.</small>');
       pintar();
     };
   }
@@ -268,7 +293,7 @@
     }
     h += '</div>';
     $('vista').innerHTML = h;
-    enlazar('[data-abrir]', function (id) { S.sel = id; vistaRec(); flujo(); });
+    enlazar('[data-abrir]', function (id) { S.sel = id; vistaRec(); });
     if (!s) return;
     enlazar('[data-chk]', function (i, el) { s.hcs[+i].rec = el.checked; vistaRec(); }, 'change');
     $('btnTodas').onclick = function () { s.hcs.forEach(function (x) { if (x.desp) x.rec = true; }); vistaRec(); };
@@ -340,14 +365,13 @@
         S.retornos.unshift({ id: id, fecha: ahora(), sol: sid, servicio: SERVICIO_USUARIO, persona: $('dPers').value, entrega: $('dFecha').value.replace('T', ' '), obs: $('dObs').value.trim(),
           idx: porSol[sid].map(function (o) { return o.i; }), estado: 'POR_CONFIRMAR' });
       });
-      aviso('Solicitud de retorno <b>' + ids.join(', ') + '</b> enviada (' + sel.length + ' HC). Archivo la verá en «Ingreso de Historias» para confirmar la recepción.<br><small>Cambie a «Unidad de Archivo de HC» → «Ingreso de Historias».</small>');
+      aviso('Solicitud de retorno <b>' + ids.join(', ') + '</b> enviada (' + sel.length + ' HC). Archivo la verá en «Ingreso de Historias» para confirmar la recepción.<br><small>Cambie al usuario «[archivero]» → Archivo › Ingreso de Historias.</small>');
       pintar();
     };
   }
 
   // ------------------------------------------------------------------ ARCHIVO · Bandeja
   function vistaBandeja() {
-    var c = function (e) { return cuenta(function (s) { return s.estado === e; }); };
     var orden = ['ENVIADA', 'EN_ATENCION', 'DIFERENCIA', 'DESPACHADA', 'RECEPCIONADA', 'DEV_PARCIAL', 'CERRADA'];
     var lista = S.sols.slice().sort(function (a, b) { return orden.indexOf(a.estado) - orden.indexOf(b.estado); });
     var filas = lista.map(function (s) {
@@ -361,11 +385,6 @@
     }).join('');
     $('vista').innerHTML =
       '<div class="bar">BANDEJA DE SOLICITUDES DE HISTORIAS CLÍNICAS</div><div class="box">' +
-      '<div class="kpis"><div class="kpi alerta"><div class="v">' + c('ENVIADA') + '</div><div class="t">Nuevas enviadas por los servicios</div></div>' +
-      '<div class="kpi"><div class="v">' + c('EN_ATENCION') + '</div><div class="t">En atención</div></div>' +
-      '<div class="kpi"><div class="v">' + c('DESPACHADA') + '</div><div class="t">Despachadas, por recepcionar</div></div>' +
-      '<div class="kpi ok"><div class="v">' + c('RECEPCIONADA') + '</div><div class="t">Recepcionadas</div></div>' +
-      '<div class="kpi' + (c('DIFERENCIA') ? ' alerta' : '') + '"><div class="v">' + c('DIFERENCIA') + '</div><div class="t">Con diferencia</div></div></div>' +
       '<table><tr><th>N° Solicitud</th><th>Fecha y hora</th><th>Servicio</th><th>Solicitado por</th><th>Motivo</th><th>Documento</th><th>Cant. HC</th><th>Se requiere</th><th>Prioridad</th><th>Estado</th><th>Acción</th></tr>' + filas + '</table>' +
       '<div class="leg">Las solicitudes que el departamento envía desde SIGESAPOL llegan aquí directamente, con la etiqueta «enviada por el servicio». Archivo puede seguir registrando solicitudes (consulta del día, expedientes de Mesa de Partes) como hasta ahora.</div></div>';
     enlazar('[data-atender]', function (id) { despachar(id); });
@@ -422,11 +441,11 @@
         s.estado = 'DESPACHADA'; s.ordenSal = 'OS-2026-' + ('000000' + S.orden).slice(-6); s.despPor = '[archivero]'; s.fechaDesp = ahora(); S.orden++;
         cerrar();
         var n = s.hcs.filter(function (x) { return x.desp; }).length;
-        aviso('Orden <b>' + s.ordenSal + '</b> despachada: ' + n + ' de ' + s.cant + ' HC. ' + s.servicio + ' ya puede recepcionarla.' + (s.servicio === SERVICIO_USUARIO ? '<br><small>Cambie a «Departamento médico» → «Recepcionar HC».</small>' : ''));
+        aviso('Orden <b>' + s.ordenSal + '</b> despachada: ' + n + ' de ' + s.cant + ' HC. ' + s.servicio + ' ya puede recepcionarla.' + (s.servicio === SERVICIO_USUARIO ? '<br><small>Cambie al usuario «Departamento médico» → Archivo › Recepcionar HC.</small>' : ''));
       };
     };
     pintarModal();
-    $('velo').classList.add('ver'); flujo();
+    $('velo').classList.add('ver');
   }
   function cerrar() { $('velo').classList.remove('ver'); pintar(); }
 
@@ -468,17 +487,19 @@
   }
 
   function pintar() {
-    $('lblUnidad').textContent = S.rol === 'dep' ? SERVICIO_USUARIO + ' · SOLICITUD Y RECEPCIÓN DE HISTORIAS CLÍNICAS' : 'UNIDAD DE ARCHIVOS Y REGISTROS MEDICOS';
-    $('lblEstab').textContent = 'Hospital Nacional PNP Luis N. Sáenz · ' + (S.rol === 'dep' ? SERVICIO_USUARIO : 'Unidad de Archivo de HC');
+    var u = { dep: SERVICIO_USUARIO + ' · SOLICITUD Y RECEPCIÓN DE HISTORIAS CLÍNICAS', arc: 'UNIDAD DE ARCHIVOS Y REGISTROS MEDICOS', sin: 'CONSULTA EXTERNA' };
+    $('lblUnidad').textContent = u[S.rol];
     $('boxServ').style.display = S.rol === 'dep' ? '' : 'none';
-    menu(); flujo();
-    var arch = { areg: 1, ing: 1, seg: 1, bus: 1, nueva: 1 };
+    // un usuario solo entra a las opciones de Archivo que su perfil tiene habilitadas
+    if (!opcionesArchivo().some(function (o) { return o[0] === S.vista; })) S.vista = USUARIOS[S.rol].inicio;
+    menu();
+    var arch = { areg: 1, ing: 1, seg: 1, bus: 1 };
     if (arch[S.vista]) window.Archivo.render(S.vista, ctxArchivo());
-    else ({ mis: vistaMis, reg: vistaReg, rec: vistaRec, dev: vistaDev, bandeja: vistaBandeja, rep: vistaRep })[S.vista]();
+    else ({ mis: vistaMis, reg: vistaReg, rec: vistaRec, dev: vistaDev, bandeja: vistaBandeja, rep: vistaRep, sin: vistaSin })[S.vista]();
   }
 
   $('selRol').onchange = function () {
-    S.rol = this.value; S.vista = S.rol === 'dep' ? 'mis' : 'bandeja'; S.sel = null;
+    S.rol = this.value; S.vista = USUARIOS[S.rol].inicio; S.sel = null;
     $('velo').classList.remove('ver'); pintar();
   };
   $('velo').onclick = function (e) { if (e.target === this) cerrar(); };
@@ -491,8 +512,8 @@
 
   window.Archivo.preparar(ctxArchivo());
 
-  // permite abrir directamente una vista: index.html#dep-reg, #dep-rec, #arc-bandeja
-  var m = /^#(dep|arc)-(\w+)$/.exec(location.hash);
+  // permite abrir directamente una vista: index.html#dep-reg, #dep-rec, #arc-bandeja, #sin-inicio
+  var m = /^#(dep|arc|sin)-(\w+)$/.exec(location.hash);
   if (m) { S.rol = m[1]; S.vista = m[2]; $('selRol').value = m[1]; }
   pintar();
 })();

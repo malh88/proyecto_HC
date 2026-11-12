@@ -8,26 +8,28 @@
 <script src="../comun/modulos.js" defer></script>
 </head>
 <body>
-  <!-- Barra superior de SIGESAPOL -->
+  <!-- Barra superior de SIGESAPOL: las opciones de Archivo están en su desplegable, según el perfil del usuario -->
   <div class="top">
-    <span class="logo">Sistema de Gestión<br>de Salud Policial<br>SIGESAPOL</span>
-    <span>SETUP ▾</span><span>Consulta Externa ▾</span><span>Archivo de HC ▾</span><span>[USUARIO] ▾</span>
-    <!-- Solo para la maqueta: permite ver la pantalla de cada perfil -->
-    <span class="rol">Ver como:
+    <img class="logo" src="img/logo-sigesapol.png" alt="Sistema de Gestión de Salud Policial SIGESAPOL">
+    <nav class="menu" id="menu" aria-label="Menú principal"></nav>
+    <span class="rt" id="lblEstab">Hospital Nacional PNP Luis N. Sáenz</span>
+  </div>
+  <!-- Solo para la maqueta: permite ver la pantalla de cada usuario -->
+  <div class="demo">
+    <span class="rol">Usuario:
       <select id="selRol">
-        <option value="dep">Departamento médico</option>
-        <option value="arc">Unidad de Archivo de HC</option>
+        <option value="dep">[secretaria de servicio] · Departamento médico</option>
+        <option value="arc">[archivero] · Unidad de Archivo de HC</option>
+        <option value="sin">[médico] · sin la opción Archivo</option>
       </select>
     </span>
     <span class="rol" id="boxServ">Servicio: <select id="selServ"></select></span>
-    <span class="rt" id="lblEstab">Hospital Nacional PNP Luis N. Sáenz</span>
+    <span class="ayuda">La opción <b>Archivo</b> del menú aparece solo si el perfil del usuario la tiene habilitada (SETUP › Perfiles).</span>
   </div>
 
   <div class="wrap">
-    <div class="side" id="side"></div>
     <div class="main">
       <h1>HOSPITAL NACIONAL PNP LUIS N. SAENZ<br><span id="lblUnidad">UNIDAD DE ARCHIVOS Y REGISTROS MEDICOS</span></h1>
-      <div class="flujo" id="flujo"></div>
       <div id="vista"></div>
     </div>
   </div>
