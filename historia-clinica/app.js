@@ -87,9 +87,9 @@
   // Las opciones de HC van en el desplegable «Archivo». Cada usuario ve solo las de su perfil,
   // y un usuario cuyo perfil no tiene habilitada la opción Archivo no ve ese desplegable.
   var USUARIOS = {
-    dep: { nombre: function () { return PERSONAL[0]; }, perfil: function () { return SERVICIO_USUARIO + ' · perfil «Solicitante de HC»'; }, inicio: 'mis' },
-    arc: { nombre: function () { return '[archivero]'; }, perfil: function () { return 'Unidad de Archivo de HC · perfil «Operador de Archivo»'; }, inicio: 'bandeja' },
-    sin: { nombre: function () { return '[médico]'; }, perfil: function () { return 'Consulta Externa · perfil «Médico» · sin la opción Archivo'; }, inicio: 'sin' }
+    dep: { tipo: 'Departamento médico', nombre: function () { return PERSONAL[0]; }, perfil: function () { return SERVICIO_USUARIO + ' · perfil «Solicitante de HC»'; }, inicio: 'mis' },
+    arc: { tipo: 'Unidad de Archivo de HC', nombre: function () { return '[archivero]'; }, perfil: function () { return 'Unidad de Archivo de HC · perfil «Operador de Archivo»'; }, inicio: 'bandeja' },
+    sin: { tipo: 'sin la opción Archivo', nombre: function () { return '[médico]'; }, perfil: function () { return 'Consulta Externa · perfil «Médico» · sin la opción Archivo'; }, inicio: 'sin' }
   };
   function opcionesArchivo() {
     if (S.rol === 'dep') return [
@@ -123,7 +123,12 @@
       dd('ddEme', 'Emergencia (E)', sig('Admisión de Emergencia') + sig('Atenciones de Emergencia')) +
       dd('ddHos', 'Hospitalización (H)', sig('Ingreso Hospitalario') + sig('Censo de camas')) +
       dd('ddOtras', 'Otras Atenciones', sig('Interconsultas') + sig('Referencias') + sig('Procedimientos Programados')) +
-      dd('ddUsr', '[USUARIO]', '<span class="usr"><b>' + esc(u.nombre()) + '</b>' + esc(u.perfil()) + '</span>' + sig('Cambiar contraseña') + sig('Cerrar sesión'));
+      dd('ddUsr', esc(u.nombre()), '<span class="usr"><b>' + esc(u.nombre()) + '</b>' + esc(u.perfil()) + '</span>' + sig('Cambiar contraseña') + sig('Cerrar sesión') +
+        '<span class="tit">Cambiar de usuario (solo maqueta)</span>' +
+        Object.keys(USUARIOS).map(function (k) {
+          return '<a role="menuitem" tabindex="-1" data-u="' + k + '"' + (k === S.rol ? ' class="on"' : '') + '>' + esc(USUARIOS[k].nombre()) + ' · ' + USUARIOS[k].tipo + '</a>';
+        }).join('') +
+        '<span class="ayu">La opción «Archivo» del menú aparece solo si el perfil del usuario la tiene habilitada (SETUP › Perfiles).</span>');
     Array.prototype.forEach.call(document.querySelectorAll('#menu .dd'), function (d) {
       var b = d.querySelector('.dd-b');
       b.onclick = function (e) { e.stopPropagation(); var abrir = !d.classList.contains('abierto'); cerrarMenus(); if (abrir) abrirMenu(d); };
@@ -131,10 +136,13 @@
     Array.prototype.forEach.call(document.querySelectorAll('#menu a[data-v]'), function (a) {
       a.onclick = function () { cerrarMenus(); S.vista = a.getAttribute('data-v'); S.sel = null; pintar(); };
     });
+    Array.prototype.forEach.call(document.querySelectorAll('#menu a[data-u]'), function (a) {
+      a.onclick = function () { cerrarMenus(); cambiarUsuario(a.getAttribute('data-u')); };
+    });
   }
   function abrirMenu(d) {
     d.classList.add('abierto'); d.querySelector('.dd-m').hidden = false; d.querySelector('.dd-b').setAttribute('aria-expanded', 'true');
-    var a = d.querySelector('a[data-v]'); if (a) a.focus();
+    var a = d.querySelector('a[data-v],a[data-u]'); if (a) a.focus();
   }
   function cerrarMenus() {
     Array.prototype.forEach.call(document.querySelectorAll('#menu .dd.abierto'), function (d) {
@@ -146,12 +154,12 @@
     var d = document.querySelector('#menu .dd.abierto'); if (!d) return;
     if (e.key === 'Escape') { cerrarMenus(); d.querySelector('.dd-b').focus(); return; }
     if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-    var it = Array.prototype.slice.call(d.querySelectorAll('a[data-v]')), i = it.indexOf(document.activeElement);
+    var it = Array.prototype.slice.call(d.querySelectorAll('a[data-v],a[data-u]')), i = it.indexOf(document.activeElement);
     if (!it.length) return; e.preventDefault();
     it[(i + (e.key === 'ArrowDown' ? 1 : it.length - 1)) % it.length].focus();
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' && document.activeElement && document.activeElement.matches('#menu a[data-v]')) document.activeElement.click();
+    if (e.key === 'Enter' && document.activeElement && document.activeElement.matches('#menu a[data-v],#menu a[data-u]')) document.activeElement.click();
   });
 
   // ------------------------------------------------------------------ usuario sin la opción Archivo
@@ -248,7 +256,7 @@
       S.sols.unshift({ id: b.id, fecha: ahora(), servicio: SERVICIO_USUARIO, persona: b.persona, motivo: b.motivo, doc: b.doc, nroDoc: b.nroDoc,
         cant: b.cant, fechaReq: fmtFecha(b.fechaReq), prioridad: b.prioridad, obs: b.obs, origen: 'SIGESAPOL', estado: 'ENVIADA', hcs: b.hcs });
       S.correl++; S.borrador = null; S.vista = 'mis';
-      aviso('Solicitud <b>' + b.id + '</b> enviada. Archivo la ve en su bandeja. <br><small>Cambie al usuario «[archivero]» → Archivo › Bandeja de solicitudes para continuar.</small>');
+      aviso('Solicitud <b>' + b.id + '</b> enviada. Archivo la ve en su bandeja. <br><small>Cambie de usuario en el menú del usuario → [archivero] → Archivo › Bandeja de solicitudes para continuar.</small>');
       pintar();
     };
   }
@@ -365,7 +373,7 @@
         S.retornos.unshift({ id: id, fecha: ahora(), sol: sid, servicio: SERVICIO_USUARIO, persona: $('dPers').value, entrega: $('dFecha').value.replace('T', ' '), obs: $('dObs').value.trim(),
           idx: porSol[sid].map(function (o) { return o.i; }), estado: 'POR_CONFIRMAR' });
       });
-      aviso('Solicitud de retorno <b>' + ids.join(', ') + '</b> enviada (' + sel.length + ' HC). Archivo la verá en «Ingreso de Historias» para confirmar la recepción.<br><small>Cambie al usuario «[archivero]» → Archivo › Ingreso de Historias.</small>');
+      aviso('Solicitud de retorno <b>' + ids.join(', ') + '</b> enviada (' + sel.length + ' HC). Archivo la verá en «Ingreso de Historias» para confirmar la recepción.<br><small>Cambie de usuario en el menú del usuario → [archivero] → Archivo › Ingreso de Historias.</small>');
       pintar();
     };
   }
@@ -441,7 +449,7 @@
         s.estado = 'DESPACHADA'; s.ordenSal = 'OS-2026-' + ('000000' + S.orden).slice(-6); s.despPor = '[archivero]'; s.fechaDesp = ahora(); S.orden++;
         cerrar();
         var n = s.hcs.filter(function (x) { return x.desp; }).length;
-        aviso('Orden <b>' + s.ordenSal + '</b> despachada: ' + n + ' de ' + s.cant + ' HC. ' + s.servicio + ' ya puede recepcionarla.' + (s.servicio === SERVICIO_USUARIO ? '<br><small>Cambie al usuario «Departamento médico» → Archivo › Recepcionar HC.</small>' : ''));
+        aviso('Orden <b>' + s.ordenSal + '</b> despachada: ' + n + ' de ' + s.cant + ' HC. ' + s.servicio + ' ya puede recepcionarla.' + (s.servicio === SERVICIO_USUARIO ? '<br><small>Cambie de usuario en el menú del usuario → Departamento médico → Archivo › Recepcionar HC.</small>' : ''));
       };
     };
     pintarModal();
@@ -489,7 +497,6 @@
   function pintar() {
     var u = { dep: SERVICIO_USUARIO + ' · SOLICITUD Y RECEPCIÓN DE HISTORIAS CLÍNICAS', arc: 'UNIDAD DE ARCHIVOS Y REGISTROS MEDICOS', sin: 'CONSULTA EXTERNA' };
     $('lblUnidad').textContent = u[S.rol];
-    $('boxServ').style.display = S.rol === 'dep' ? '' : 'none';
     // un usuario solo entra a las opciones de Archivo que su perfil tiene habilitadas
     if (!opcionesArchivo().some(function (o) { return o[0] === S.vista; })) S.vista = USUARIOS[S.rol].inicio;
     menu();
@@ -498,22 +505,16 @@
     else ({ mis: vistaMis, reg: vistaReg, rec: vistaRec, dev: vistaDev, bandeja: vistaBandeja, rep: vistaRep, sin: vistaSin })[S.vista]();
   }
 
-  $('selRol').onchange = function () {
-    S.rol = this.value; S.vista = USUARIOS[S.rol].inicio; S.sel = null;
+  function cambiarUsuario(rol) {
+    S.rol = rol; S.vista = USUARIOS[rol].inicio; S.sel = null;
     $('velo').classList.remove('ver'); pintar();
-  };
+  }
   $('velo').onclick = function (e) { if (e.target === this) cerrar(); };
-  $('selServ').innerHTML = opts(SERVICIOS, SERVICIO_USUARIO);
-  $('selServ').onchange = function () {
-    SERVICIO_USUARIO = this.value; personal(); S.borrador = null; S.sel = null;
-    if (S.vista === 'reg') S.vista = 'mis';
-    pintar();
-  };
 
   window.Archivo.preparar(ctxArchivo());
 
   // permite abrir directamente una vista: index.html#dep-reg, #dep-rec, #arc-bandeja, #sin-inicio
   var m = /^#(dep|arc|sin)-(\w+)$/.exec(location.hash);
-  if (m) { S.rol = m[1]; S.vista = m[2]; $('selRol').value = m[1]; }
+  if (m) { S.rol = m[1]; S.vista = m[2]; }
   pintar();
 })();
