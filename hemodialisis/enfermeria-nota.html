@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nota de Enfermería · Hemodiálisis · SIGESAPOL</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/hemodialisis.css?v=3.53">
+<script src="../comun/modulos.js" defer></script>
+</head>
+<body data-pagina="enfnota">
+<div class="top">
+  <img class="logo" src="img/logo-sigesapol.png" alt="Sistema de Gestión de Salud Policial SIGESAPOL">
+  <span>SETUP ▾</span><span class="dd" id="ddCE" data-pag="citas"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Consulta Externa (C) ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="citas.html" class="dd-pp">Registro de Cita <span class="c" data-cnt="cit" hidden></span></a><a role="menuitem" href="#" data-sig>Citas Médicas</a><a role="menuitem" href="#" data-sig>Atenciónes Médicas</a><a role="menuitem" href="#" data-sig>Historia Clinica</a><a role="menuitem" href="#" data-sig>Movimiento Historias</a></span></span><span>Hemodiálisis ▾</span><span class="dd" id="ddOtras" data-pag="bandeja atencion sesion otro dia"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Otras Atenciones ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="#" data-sig>Interconsultas</a><a role="menuitem" href="#" data-sig>Referencias</a><a role="menuitem" href="#" data-sig>Formulas Farmacotecnia</a><a role="menuitem" href="index.html" class="dd-pp">Procedimientos Programados <span class="c" data-cnt="pp" hidden></span></a><a role="menuitem" href="#" data-sig>Salud Materna Vista Individual</a><a role="menuitem" href="#" data-sig>Estrategias sanitarias</a><a role="menuitem" href="#" data-sig>Vista Pacientes Dirrehum</a></span></span><span class="dd" id="ddEF" data-pag="enf enfnota"><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">Enfermería (EF) ▾</button><span class="dd-m" role="menu" hidden><a role="menuitem" href="enfermeria.html" class="dd-pp">Listado de Consulta Externa <span class="c" data-cnt="enf" hidden></span></a><a role="menuitem" href="#" data-sig>Listado de Emergencia</a><a role="menuitem" href="#" data-sig>Listado de Hospitalizacion</a></span></span><span class="dd" id="ddUsr" data-pag=""><button type="button" class="dd-b" aria-haspopup="true" aria-expanded="false">[USUARIO] ▾</button><span class="dd-m" role="menu" hidden><span class="dd-usr"></span><a role="menuitem" href="#" id="btnReset" style="color:#A94442">↺ Reiniciar demostración</a></span></span>
+  <span class="rol">Ver como:
+    <select id="selRol">
+      <option value="nef">Nefrólogo (turno día)</option>
+      <option value="enf" selected>Enfermería de Hemodiálisis (turno día)</option>
+      <option value="adm">Admisión de Hemodiálisis</option>
+      <option value="tec">Técnico de citas (Hemodiálisis)</option>
+    </select>
+  </span>
+  <span class="rt">Hospital Nacional PNP Luis N. Sáenz</span>
+</div>
+
+<div class="wrap">
+  <div class="main">
+    <h1>HOSPITAL NACIONAL PNP LUIS N. SAENZ<br>DEPARTAMENTO DE ENFERMERÍA · MÓDULO DE ENFERMERÍA (EF)</h1>
+
+    <div class="bar">NOTA DE ENFERMERÍA - CONSULTA EXTERNA<span class="tag" style="background:#6C6C6C" data-p="cita">cita única · Nº 21</span></div>
+    <div class="box">
+      <div class="tabs pp-tabs" role="tablist" aria-label="Secciones de la nota de enfermería">
+        <div role="tab" tabindex="0" data-tab="nueva" class="on">EDITAR ATENCIÓN</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. ATENCIONES</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. EXÁMENES DE LABORATORIO</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. EXÁMENES DE RADIOLOGÍA</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. INTERCONSULTA</div>
+        <div role="tab" tabindex="0" data-tab="hist">HIST. REFERENCIAS / CONTRARREFERENCIAS</div>
+        <div role="tab" tabindex="0" data-tab="henf">HIST. ENFERMERÍA</div>
+      </div>
+
+      <!-- ===================== EDITAR ATENCIÓN (estructura estándar de la nota de enfermería) ===================== -->
+      <div data-panel="nueva">
+        <div id="guardaHc"></div>
+        <div id="enfEstado"></div>
+        <div class="sub">DATOS DE LA ATENCIÓN</div>
+        <div id="enfAte"></div>
+        <div class="sub">INFORMACIÓN DEL PACIENTE</div>
+        <div id="enfPac"></div>
+        <div class="sub">INFORMACIÓN DEL RESPONSABLE DE ENFERMERÍA</div>
+        <div id="enfResp"></div>
+        <div class="sub">INFORMACIÓN DEL RESPONSABLE DE ATENCIÓN <span class="orig">nefrólogo de la I.1</span></div>
+        <div id="enfMed"></div>
+        <div class="sub">INFORMACIÓN DE RECETA <span class="orig">receta y FUR de la I.1</span></div>
+        <div class="tw"><table id="enfRx"></table></div>
+
+        <div id="ntBox" style="margin-top:14px">
+          <div class="tabs nt-tabs" aria-label="Registro de enfermería">
+            <div data-nt="hd" class="pp-hd on" style="color:var(--verde-osc);font-weight:700">EVOLUCIÓN DE ENFERMERÍA · HEMODIÁLISIS</div>
+            <div data-nt="sv">SIGNOS VITALES</div>
+            <div data-nt="ant">ANTECEDENTES</div>
+            <div data-nt="cpms">CPMS/CPT</div>
+            <div data-nt="obs">OBSERVACIONES</div>
+          </div>
+          <div data-ntp="hd">
+            <section data-tiempo="2">
+          <div class="bar">EVOLUCIÓN DE ENFERMERÍA · FICHA 0026_04<span class="tag">hemodiálisis · tiempo 2 de la sesión</span></div>
+          <div class="box">
+            <fieldset id="fs2">
+              <div class="row"><div class="f"><label for="pai">PA inicial <i>*</i></label><input class="in" id="pai" value="138/84"></div><div class="f"><label for="paf">PA final</label><input class="in" id="paf"></div><div class="f"><label for="pei">Peso inicial (kg) <i>*</i></label><input class="in" id="pei" value="65.1"></div><div class="f"><label for="pef">Peso final (kg)</label><input class="in" id="pef"></div><div class="f2"><label>Lugar de atención</label><input class="in" readonly data-p="lugar" value="Máquina 04"></div></div>
+              <div class="row"><div class="f3"><label for="subj">S (subjetivo)</label><textarea class="in" id="subj">Paciente refiere sentirse bien, niega dolor.</textarea></div></div>
+              <div class="sub">O (OBJETIVO)</div>
+              <div class="row"><div class="f"><label>Sexo</label><input class="in" readonly data-p="sexo" value="HOMBRE"></div><div class="f"><label>Grupo etario</label><input class="in" readonly data-p="grupo" value="ADULTO MAYOR"></div><div class="f2"><label>Estado de conciencia</label><div class="ops"><label class="ck"><input type="radio" name="conc" checked> LÚCIDO</label><label class="ck"><input type="radio" name="conc"> ORIENTADO</label><label class="ck"><input type="radio" name="conc"> DESORIENTADO</label><label class="ck"><input type="radio" name="conc"> CONFUSO</label></div></div></div>
+              <div class="row"><div class="f2"><label>Ventilación</label><div class="ops"><label class="ck"><input type="radio" name="vent" checked> ESPONTÁNEA</label><label class="ck"><input type="radio" name="vent"> DISNEA</label><label class="ck"><input type="radio" name="vent"> OTRO</label></div></div><div class="f"><label>Edema</label><div class="ops"><label class="ck"><input type="radio" name="ede"> SÍ</label><label class="ck"><input type="radio" name="ede" checked> NO</label></div></div><div class="f"><label>Sangrado</label><div class="ops"><label class="ck"><input type="radio" name="san"> SÍ</label><label class="ck"><input type="radio" name="san" checked> NO</label></div></div><div class="f2"><label>Movilización</label><div class="ops"><label class="ck"><input type="radio" name="mov" checked> DEAMBULA</label><label class="ck"><input type="radio" name="mov"> SILLA DE RUEDAS</label><label class="ck"><input type="radio" name="mov"> CAMILLA</label></div></div></div>
+              <div class="row"><div class="f3"><label for="oob">Otras observaciones</label><input class="in" id="oob"></div></div>
+
+              <div class="sub">ACCESO VASCULAR <span class="orig">precargado del acceso actual</span></div>
+              <div class="row"><div class="f2"><label>Tipo de acceso <i>*</i></label><div class="ops"><label class="ck"><input type="radio" name="tacc" id="tacc0" checked> FAV</label><label class="ck"><input type="radio" name="tacc" id="tacc1"> CVC</label><label class="ck"><input type="radio" name="tacc" id="tacc2"> CVCLP</label></div></div></div>
+              <div id="accFav">
+                <div class="row"><div class="f"><label>Thrill</label><div class="ops"><label class="ck"><input type="radio" name="thr" checked> BUENO</label><label class="ck"><input type="radio" name="thr"> FUERTE</label><label class="ck"><input type="radio" name="thr"> DÉBIL</label></div></div><div class="f2"><label>Soplo</label><div class="ops"><label class="ck"><input type="radio" name="sop" checked> AUDIBLE</label><label class="ck"><input type="radio" name="sop"> AUSENTE</label><label class="ck"><input type="radio" name="sop"> PIANTE</label><label class="ck"><input type="radio" name="sop"> CONTINUO</label><label class="ck"><input type="radio" name="sop"> DISCONTINUO</label></div></div><div class="f2"><label>Pulso</label><div class="ops"><label class="ck"><input type="radio" name="pul" checked> PRESENTE</label><label class="ck"><input type="radio" name="pul"> AUSENTE</label><label class="ck"><input type="radio" name="pul"> HIPERPULSÁTIL</label><label class="ck"><input type="radio" name="pul"> DISMINUIDO</label></div></div></div>
+                <div class="row"><div class="f2"><label>Piel</label><div class="ops"><label class="ck"><input type="checkbox" checked> LIMPIA</label><label class="ck"><input type="checkbox"> SUCIA</label><label class="ck"><input type="checkbox"> HEMATOMAS</label></div></div><div class="f"><label for="dven">Distancia de venopunción (cm)</label><input class="in" id="dven" value="4"></div><div class="f"></div></div>
+              </div>
+              <div id="accCvc" hidden>
+                <div class="row"><div class="f2"><label for="ubc">Ubicación</label><select class="in" id="ubc"><option>YUGULAR INTERNA DERECHA</option><option>YUGULAR INTERNA IZQUIERDA</option><option>SUBCLAVIA DERECHA</option><option>FEMORAL DERECHA</option></select></div><div class="f2"><label>Lumen arterial</label><div class="ops"><label class="ck"><input type="radio" name="la" checked> PERMEABLE</label><label class="ck"><input type="radio" name="la"> RESISTENCIA</label><label class="ck"><input type="radio" name="la"> OBSTRUIDO</label></div></div><div class="f2"><label>Lumen venoso</label><div class="ops"><label class="ck"><input type="radio" name="lv" checked> PERMEABLE</label><label class="ck"><input type="radio" name="lv"> RESISTENCIA</label><label class="ck"><input type="radio" name="lv"> OBSTRUIDO</label></div></div></div>
+                <div class="row"><div class="f"><label>Orificio</label><div class="ops"><label class="ck"><input type="radio" name="ori" checked> LIMPIO</label><label class="ck"><input type="radio" name="ori"> CON SECRECIÓN</label></div></div><div class="f"><label>Apósitos</label><div class="ops"><label class="ck"><input type="radio" name="apo" checked> FIJO</label><label class="ck"><input type="radio" name="apo"> DESPEGADO</label></div></div><div class="f2"></div></div>
+              </div>
+              <div class="row"><div class="f3"><label for="obsA">OBS.</label><input class="in" id="obsA"></div></div>
+
+              <div class="sub">PROCESO DE ATENCIÓN DE ENFERMERÍA (NANDA · NOC · NIC)</div>
+              <div id="pae"></div>
+
+              <div class="sub">EVOLUCIÓN DEL TRATAMIENTO</div>
+              <div class="row"><div class="f"><label for="frec">Frecuencia de control <i>*</i></label><select class="in" id="frec"><option value="20">CADA 20 MINUTOS</option><option value="30">CADA 30 MINUTOS</option><option value="60" selected>CADA 60 MINUTOS</option></select></div><div class="f"><label>Siguiente control sugerido</label><input class="in" readonly id="sug"></div><div class="f2"></div></div>
+              <div class="tw"><table id="tblMon"></table></div>
+              <div class="acciones"><button type="button" class="btn g" id="btnCtl">+ Registrar control</button></div>
+              <div class="row" style="margin-top:10px"><div class="f"><label for="eT">Evento</label><select class="in" id="eT"><option>HIPOTENSIÓN</option><option>HIPOTENSIÓN SEVERA</option><option>HIPOGLICEMIA</option><option>CALAMBRES</option><option>COAGULACIÓN DEL CIRCUITO</option><option>OTRO</option></select></div><div class="f3"><label for="eA">Acción tomada <i>*</i></label><input class="in" id="eA" placeholder="Ej.: se avisa al médico, se administra ClNa 0.9 %"></div><div class="fh"><label>&nbsp;</label><button type="button" class="btn o" style="width:100%" id="btnEv">Registrar evento</button></div></div>
+
+              <div class="sub">MEDICAMENTOS APLICADOS <span class="orig">de la receta de la sesión</span></div>
+              <div class="tw"><table id="tblApl"></table></div>
+              <div class="row" id="aplAdd"><div class="f3"><label for="aplP">Agregar medicamento de la receta</label><select class="in" id="aplP"></select></div><div class="f"><label for="aplD">Dosis</label><input class="in" id="aplD" placeholder="Ej.: 1 amp"></div><div class="fh"><label for="aplV">Vía</label><select class="in" id="aplV"><option>EV</option><option>SC</option><option>IM</option><option>VO</option></select></div><div class="fh"><label>&nbsp;</label><button type="button" class="btn g" style="width:100%" id="btnAplAdd">+ Agregar</button></div></div>
+
+              <div class="sub">CIERRE DE ENFERMERÍA</div>
+              <div class="row"><div class="f"><label>Curación de CVC</label><div class="ops"><label class="ck"><input type="radio" name="cur" id="cur0"> SÍ</label><label class="ck"><input type="radio" name="cur" checked> NO</label></div></div><div class="f2"><label for="ocur">Observaciones de curación</label><input class="in" id="ocur"></div><div class="f"><label for="ufe">UF efectiva (L) <i>*</i></label><input class="in" id="ufe" placeholder="Programada: 2.6"><div class="ayuda" id="ufw"></div></div></div>
+              <div class="row"><div class="f"><label for="sell">Solución de sellado de CVC</label><select class="in" id="sell"><option>HEPARINA 5 000 UI</option><option>CITRATO 4 %</option><option>OTRA</option></select></div><div class="f"><label for="asp">Aspecto del dializador</label><select class="in" id="asp"><option>LIMPIO</option><option>COAGULACIÓN LEVE</option><option>COAGULACIÓN MODERADA</option><option>COAGULACIÓN SEVERA</option></select></div><div class="f2"><label for="obf">E. Final</label><input class="in" id="obf"></div></div>
+            </fieldset>
+            <div id="firma2"></div>
+          </div>
+            </section>
+          </div>
+          <div data-ntp="sv" hidden><div id="enfSv"></div></div>
+          <div data-ntp="ant" hidden><div id="enfAnt"></div></div>
+          <div data-ntp="cpms" hidden><div id="enfCpms"></div></div>
+          <div data-ntp="obs" hidden><div class="row"><div class="f3"><label for="enfObs">Detalle</label><textarea class="in" id="enfObs" placeholder="— Observaciones de enfermería —"></textarea></div></div></div>
+          <div id="enfEsp"></div><div class="acciones" style="justify-content:flex-end"><a class="btn r" href="enfermeria.html" style="text-decoration:none">CANCELAR</a><button type="button" class="btn k" id="edit2" hidden>EDITAR</button><button type="button" class="btn g" id="sign2">GUARDAR</button><button type="button" class="btn g" id="fin2" hidden>FINALIZAR</button></div>
+        </div>
+      </div>
+
+      <div data-panel="hist" hidden>
+        <div class="tw"><table><tr><th>Fecha</th><th>Servicio</th><th>Profesional</th><th>Detalle</th></tr><tr><td colspan="4" class="vacio">Historial existente de SIGESAPOL (sin cambios).</td></tr></table></div>
+      </div>
+      <div data-panel="henf" hidden>
+        <div id="enfHist"></div>
+      </div>
+    </div>
+    <div class="acciones"><a class="btn k" href="enfermeria.html" style="text-decoration:none">← Volver a la Lista de Pacientes de Enfermería</a></div>
+  </div>
+</div>
+<div class="aviso" id="aviso" role="status"></div>
+<script src="js/hemodialisis.js?v=3.53"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIGESAPOL Epidemiología</title>
+<meta name="description" content="Prototipo de fichas epidemiológicas (diabetes y cáncer) integradas a la consulta externa de SIGESAPOL. Datos ficticios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="css/sigesapol.css">
+<link rel="stylesheet" href="css/fichas.css">
+<script defer src="js/catalogos.js"></script>
+<script defer src="js/datos.js"></script>
+<script defer src="js/componentes.js"></script>
+<script defer src="js/fichas.js"></script>
+<script defer src="js/pantallas.js"></script>
+<script defer src="js/app.js"></script>
+<script src="../comun/modulos.js" defer></script>
+</head>
+<body>
+
+<!-- Franja del prototipo: navegación entre escenarios (no existe en el sistema real) -->
+<div class="pbar">
+  <b>Prototipo v7 · Fichas epidemiológicas</b>
+  <nav class="nav" id="nav" aria-label="Escenarios del prototipo"></nav>
+  <span class="note">Campos según fichas MINSA (NTS 199 cáncer · diabetes) · datos ficticios</span>
+</div>
+
+<!-- Cabecera SIGESAPOL -->
+<header class="top">
+  <div class="nb">
+    <a class="logo" href="#citas"><img src="img/logo-sigesapol.png" width="316" height="79" alt="Sistema de Gestión de Salud Policial SIGESAPOL"></a>
+    <nav class="menu" aria-label="Menú principal">
+      <span class="car">SETUP</span><span class="car">Archivo</span><span class="car">RR.HH.</span><span id="m-ce" class="car">Consulta Externa (C)</span><span class="car">Emergencia (E)</span><span id="m-hosp" class="car">Hospitalización (H)</span><span class="car">Otras Atenciones</span><span class="car">FEMA</span><span class="car">Enfermería (EF)</span><span id="m-epi" class="car">Epidemiología</span><span class="car">Seguridad</span><span class="ok">Stock Local</span><span class="ok stock">Stock almacén</span><span id="m-user" class="car">👤 DR. LUIS ARANA</span>
+    </nav>
+  </div>
+  <div class="fila2">
+    <a class="bq" href="#citas">☰ Farmacias</a>
+    <a class="bq" href="#citas">🛏 Censo de camas</a>
+    <a class="bq" href="#epi-seg">✎ Firmas Pendientes<span class="glob">3</span></a>
+    <div class="right"><b>Hospital Nacional PNP Luis N. Sáenz</b>📅 Viernes 06 de Noviembre de 2026<br>👥 usuarios conectados: 48 <span class="rf" title="Actualizar">⟳</span></div>
+  </div>
+</header>
+
+<main id="app"></main>
+<div class="mbg" id="modal" hidden></div>
+<div class="mbg" id="prn" hidden></div>
+<div class="abg" id="alerta" hidden></div>
+<div class="toast hide" id="toast" role="status"></div>
+</body>
+</html>
