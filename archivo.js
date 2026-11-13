@@ -359,7 +359,7 @@ window.Archivo = (function () {
   var sembrado = false;
   function sembrar() {
     if (sembrado) return; sembrado = true;
-    var hc = function (n, p) { var a = []; for (var i = 1; i <= n; i++) a.push({ nro: '[N° HC ' + p + i + ']', dni: '[DNI]', pac: '[paciente]', desp: true, rec: true }); return a; };
+    var d = 41556670, hc = function (n, p) { var a = []; for (var i = 1; i <= n; i++) a.push({ nro: '[N° HC ' + p + i + ']', dni: String(d++), pac: '[paciente]', desp: true, rec: true }); return a; };
     C.S.sols.push(
       { id: 'SOL-2026-000121', fecha: '07-10-2026 09:00', servicio: 'CIRUGÍA GENERAL', persona: '[secretaria de Cirugía general]', motivo: 'JUNTA MÉDICA', doc: 'OFICIO', nroDoc: 'Oficio N° [n°]-2026',
         cant: 3, fechaReq: '08-10-2026', prioridad: 'NORMAL', obs: '', origen: 'SIGESAPOL', estado: 'RECEPCIONADA', hcs: hc(3, 'H'),

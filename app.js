@@ -25,9 +25,10 @@
   ];
   var DOCS = ['TICKET', 'NOTA', 'OFICIO', 'PEDIDO'];
 
+  var nDni = 40718230;   // DNI ficticios para poder probar la búsqueda por DNI
   function hcs(n, pref) {
     var a = [];
-    for (var i = 1; i <= n; i++) a.push({ nro: '[N° HC ' + pref + i + ']', dni: '[DNI]', pac: '[paciente]', desp: true, rec: true });
+    for (var i = 1; i <= n; i++) a.push({ nro: '[N° HC ' + pref + i + ']', dni: String(nDni++), pac: '[paciente]', desp: true, rec: true });
     return a;
   }
 
@@ -379,13 +380,24 @@
   }
 
   // ------------------------------------------------------------------ ARCHIVO · Bandeja
+  // filtros de la bandeja: rango de fechas de la solicitud, DNI, N° de solicitud y servicio
+  var FB = { desde: '2026-10-01', hasta: '2026-10-12', dni: '', sol: '', serv: 'TODOS' };
+  function isoDe(f) { var p = f.slice(0, 10).split('-'); return p[2] + '-' + p[1] + '-' + p[0]; }   // '12-10-2026 08:10' → '2026-10-12'
   function vistaBandeja() {
     var orden = ['ENVIADA', 'EN_ATENCION', 'DIFERENCIA', 'DESPACHADA', 'RECEPCIONADA', 'DEV_PARCIAL', 'CERRADA'];
-    var lista = S.sols.slice().sort(function (a, b) { return orden.indexOf(a.estado) - orden.indexOf(b.estado); });
+    var dni = FB.dni.replace(/\D/g, ''), sol = FB.sol.trim().toUpperCase();
+    var lista = S.sols.filter(function (s) {
+      var f = isoDe(s.fecha);
+      return (!FB.desde || f >= FB.desde) && (!FB.hasta || f <= FB.hasta) &&
+        (FB.serv === 'TODOS' || s.servicio === FB.serv) &&
+        (!sol || s.id.indexOf(sol) >= 0) &&
+        (!dni || s.hcs.some(function (x) { return String(x.dni).indexOf(dni) >= 0; }));
+    }).sort(function (a, b) { return orden.indexOf(a.estado) - orden.indexOf(b.estado); });
     var filas = lista.map(function (s) {
       var acc = (s.estado === 'ENVIADA' || s.estado === 'EN_ATENCION') ? '<button class="btn sm g" data-atender="' + s.id + '">Atender</button>'
         : '<button class="btn sm k" data-ver="' + s.id + '">Ver</button>';
-      return '<tr' + (s.estado === 'ENVIADA' ? ' class="nuevo"' : '') + '><td class="nw">' + s.id + '</td><td>' + s.fecha + '</td><td>' + s.servicio +
+      var conDni = dni ? s.hcs.filter(function (x) { return String(x.dni).indexOf(dni) >= 0; }).map(function (x) { return 'DNI ' + esc(x.dni) + ' · ' + esc(x.nro); }).join('<br>') : '';
+      return '<tr' + (s.estado === 'ENVIADA' ? ' class="nuevo"' : '') + '><td class="nw">' + s.id + (conDni ? '<div style="font-size:10.5px;color:#245269;margin-top:2px">' + conDni + '</div>' : '') + '</td><td>' + s.fecha + '</td><td>' + s.servicio +
         (s.origen === 'SIGESAPOL' ? '<span class="orig">enviada por el servicio</span>' : '') + '</td><td>' + esc(s.persona) + '</td><td>' + s.motivo + '</td><td>' + s.doc + '</td><td style="text-align:center">' + s.cant +
         '</td><td>' + s.fechaReq + '</td><td>' + (s.prioridad === 'URGENTE' ? '<b style="color:#A94442">URGENTE</b>' : 'NORMAL') + '</td><td>' + st(s.estado) +
         (s.ordenSal && s.hcs.some(function (x) { return !x.desp; }) ? '<div style="font-size:10.5px;color:#8A6D3B;margin-top:2px">Enviadas ' + s.hcs.filter(function (x) { return x.desp; }).length + ' de ' + s.cant + ' (con motivo)</div>' : '') +
@@ -393,8 +405,29 @@
     }).join('');
     $('vista').innerHTML =
       '<div class="bar">BANDEJA DE SOLICITUDES DE HISTORIAS CLÍNICAS</div><div class="box">' +
-      '<table><tr><th>N° Solicitud</th><th>Fecha y hora</th><th>Servicio</th><th>Solicitado por</th><th>Motivo</th><th>Documento</th><th>Cant. HC</th><th>Se requiere</th><th>Prioridad</th><th>Estado</th><th>Acción</th></tr>' + filas + '</table>' +
-      '<div class="leg">Las solicitudes que el departamento envía desde SIGESAPOL llegan aquí directamente, con la etiqueta «enviada por el servicio». Archivo puede seguir registrando solicitudes (consulta del día, expedientes de Mesa de Partes) como hasta ahora.</div></div>';
+      '<div class="row">' +
+        campo('Fecha de solicitud (desde)', '<input class="in" type="date" id="bDesde" value="' + FB.desde + '">') +
+        campo('Fecha de solicitud (hasta)', '<input class="in" type="date" id="bHasta" value="' + FB.hasta + '">') +
+        campo('DNI del paciente', '<input class="in" id="bDni" inputmode="numeric" maxlength="8" value="' + esc(FB.dni) + '" placeholder="Ej. 40718235">') +
+        campo('N° Solicitud', '<input class="in" id="bSol" value="' + esc(FB.sol) + '" placeholder="Ej. SOL-2026-000133 o 133">') +
+        campo('Servicio', '<select class="in" id="bServ">' + opts(['TODOS'].concat(SERVICIOS), FB.serv) + '</select>', 'f2') +
+        '<div class="f" style="flex:.55"><label>&nbsp;</label><button class="btn g" style="width:100%" id="bBuscar">Buscar</button></div>' +
+        '<div class="f" style="flex:.55"><label>&nbsp;</label><button class="btn k" style="width:100%" id="bLimpiar">Limpiar</button></div>' +
+      '</div>' +
+      '<div style="font-size:11.5px;color:#555;margin-top:2px">Se muestran <b>' + lista.length + '</b> de ' + S.sols.length + ' solicitudes.</div>' +
+      '<table><tr><th>N° Solicitud</th><th>Fecha y hora</th><th>Servicio</th><th>Solicitado por</th><th>Motivo</th><th>Documento</th><th>Cant. HC</th><th>Se requiere</th><th>Prioridad</th><th>Estado</th><th>Acción</th></tr>' +
+      (filas || '<tr><td colspan="11" class="vacio">No hay solicitudes con esos filtros.</td></tr>') + '</table>' +
+      '<div class="leg">Las solicitudes que el departamento envía desde SIGESAPOL llegan aquí directamente, con la etiqueta «enviada por el servicio». Archivo puede seguir registrando solicitudes (consulta del día, expedientes de Mesa de Partes) como hasta ahora. ' +
+      'El DNI busca entre los pacientes de cada solicitud; el N° de solicitud acepta el número completo o una parte.</div></div>';
+    var buscar = function () {
+      var d = $('bDesde').value, h = $('bHasta').value;
+      if (d && h && d > h) { $('bDesde').classList.add('err'); $('bHasta').classList.add('err'); aviso('La fecha «desde» no puede ser posterior a la fecha «hasta».'); return; }
+      FB.desde = d; FB.hasta = h; FB.dni = $('bDni').value.trim(); FB.sol = $('bSol').value.trim(); FB.serv = $('bServ').value;
+      vistaBandeja();
+    };
+    $('bBuscar').onclick = buscar;
+    $('bLimpiar').onclick = function () { FB = { desde: '2026-10-01', hasta: HOY.split('-').reverse().join('-'), dni: '', sol: '', serv: 'TODOS' }; vistaBandeja(); };
+    ['bDni', 'bSol'].forEach(function (id) { $(id).onkeydown = function (e) { if (e.key === 'Enter') buscar(); }; });
     enlazar('[data-atender]', function (id) { despachar(id); });
     enlazar('[data-ver]', function (id) { verSolicitud(id); });
   }
